@@ -10,8 +10,17 @@ public class Employee {
     @GeneratedValue
     private Integer id;
 
+    @Column(nullable = false,length = 40)
+    private String  userId;
+
     @Column(nullable = false, length = 30)
     private String name;
+
+    @Column(nullable = false, length = 50)
+    private String email;
+
+    @Column(nullable = false, length = 250)
+    private String encryptedPassword;
 
     @Column(nullable = false, length = 30)
     private String university;
@@ -22,46 +31,70 @@ public class Employee {
     @Column(nullable = false, length = 2)
     private Integer year_of_experience;
 
-    @Column(nullable = false,length = 30)
-    private String expectedJobPosition;
+    @Column(nullable = false, length = 30)
+    private String expected_Job_Role;
 
     private String resumeURL;
 
-    @Column(nullable = false,length = 5)
-    private boolean availableForJob;
+    @Column(nullable = false, length = 5)
+    private boolean available_For_Job;
 
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "office_experience_id")
-    List<Experience> experienceList ;
+    List<Experience> experienceList;
 
-    Employee(){
+    Employee() {
 
     }
 
-    public Employee(String name, String university, String department, Integer year_of_experience, String resumeURL, List<Experience> experienceList) {
+    public Employee(String name , String university , String department , Integer year_of_experience ,
+                    String resumeURL , List<Experience> experienceList) {
         this.name = name;
         this.university = university;
         this.department = department;
         this.year_of_experience = year_of_experience;
-        this.resumeURL= resumeURL;
+        this.resumeURL = resumeURL;
         this.experienceList = experienceList;
     }
 
-
-    public String getExpectedJobPosition() {
-        return expectedJobPosition;
+    public String getUserId() {
+        return userId;
     }
 
-    public void setExpectedJobPosition(String expectedJobPosition) {
-        this.expectedJobPosition = expectedJobPosition;
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
-    public boolean isAvailableForJob() {
-        return availableForJob;
+    public String getEmail() {
+        return email;
     }
 
-    public void setAvailableForJob(boolean availableForJob) {
-        this.availableForJob = availableForJob;
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getEncryptedPassword() {
+        return encryptedPassword;
+    }
+
+    public void setEncryptedPassword(String encryptedPassword) {
+        this.encryptedPassword = encryptedPassword;
+    }
+
+    public String getExpected_Job_Role() {
+        return expected_Job_Role;
+    }
+
+    public void setExpected_Job_Role(String expected_Job_Role) {
+        this.expected_Job_Role = expected_Job_Role;
+    }
+
+    public boolean isAvailable_For_Job() {
+        return available_For_Job;
+    }
+
+    public void setAvailable_For_Job(boolean available_For_Job) {
+        this.available_For_Job = available_For_Job;
     }
 
     public String getResumeURL() {
@@ -71,6 +104,7 @@ public class Employee {
     public void setResumeURL(String resumeURL) {
         this.resumeURL = resumeURL;
     }
+
     public List<Experience> getExperienceList() {
         return experienceList;
     }

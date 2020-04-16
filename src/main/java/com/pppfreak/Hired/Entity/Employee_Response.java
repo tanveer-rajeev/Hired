@@ -1,16 +1,32 @@
 package com.pppfreak.Hired.Entity;
 
-public class Response {
+import javax.validation.constraints.Email;
+
+public class Employee_Response {
     private String employeeName;
+    private String email;
     private String university;
     private String department;
-    private String fileName;
+    private String expectedJobPosition;
 
-    public Response(String employeeName, String university, String department, String fileName) {
+    public Employee_Response() {
+      
+    }
+
+    public Employee_Response(String employeeName, String email, String university, String department, String expectedJobPosition) {
         this.employeeName = employeeName;
+        this.email = email;
         this.university = university;
         this.department = department;
-        this.fileName = fileName;
+        this.expectedJobPosition = expectedJobPosition;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public String getEmployeeName() {
@@ -37,11 +53,11 @@ public class Response {
         this.department = department;
     }
 
-    public String getFileName() {
-        return fileName;
+    public String getExpectedJobPosition() {
+        return expectedJobPosition;
     }
 
-    public void setFileName(String fileName) {
-        this.fileName = fileName;
+    public void setExpectedJobPosition(String expectedJobPosition) {
+        this.expectedJobPosition = expectedJobPosition;
     }
 }
