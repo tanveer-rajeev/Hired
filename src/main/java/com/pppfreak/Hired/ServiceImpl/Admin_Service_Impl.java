@@ -3,7 +3,7 @@ package com.pppfreak.Hired.ServiceImpl;
 import com.pppfreak.Hired.Customise.Custom;
 import com.pppfreak.Hired.DAO.AdminRepository;
 import com.pppfreak.Hired.Entity.Admin;
-import com.pppfreak.Hired.Entity.Admin_Response;
+import com.pppfreak.Hired.request_response_Model.Admin_Response;
 import com.pppfreak.Hired.request_response_Model.Admin_RequestModel;
 import com.pppfreak.Hired.service.AdminService;
 import org.modelmapper.ModelMapper;

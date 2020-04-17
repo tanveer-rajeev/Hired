@@ -43,19 +43,6 @@ public class Employee {
     @JoinColumn(name = "office_experience_id")
     List<Experience> experienceList;
 
-    Employee() {
-
-    }
-
-    public Employee(String name , String university , String department , Integer year_of_experience ,
-                    String resumeURL , List<Experience> experienceList) {
-        this.name = name;
-        this.university = university;
-        this.department = department;
-        this.year_of_experience = year_of_experience;
-        this.resumeURL = resumeURL;
-        this.experienceList = experienceList;
-    }
 
     public String getUserId() {
         return userId;

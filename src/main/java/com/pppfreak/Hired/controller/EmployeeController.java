@@ -1,15 +1,14 @@
 package com.pppfreak.Hired.controller;
 
-import com.pppfreak.Hired.Entity.Employee_Response;
+import com.pppfreak.Hired.request_response_Model.Employee_Response;
 import com.pppfreak.Hired.request_response_Model.EmployeeRequestModel;
 import com.pppfreak.Hired.service.EmployeeService;
 import com.pppfreak.Hired.Entity.Employee;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import java.io.IOException;
+
 import java.util.List;
 
 @RestController
@@ -22,7 +21,7 @@ public class EmployeeController {
 //   hasRole('ROLE_') hasAnyRole('ROLE_') hasAuthority('permission') hasAnyAuthority('permission')
 
     @GetMapping
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAuthority('employee:read')")
     public List<Employee> getAllEmployee() {
         return employeeService.getAllEmployee();
     }

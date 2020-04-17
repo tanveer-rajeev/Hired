@@ -1,4 +1,4 @@
-package com.pppfreak.Hired.Entity;
+package com.pppfreak.Hired.request_response_Model;
 
 import javax.validation.constraints.Email;
 

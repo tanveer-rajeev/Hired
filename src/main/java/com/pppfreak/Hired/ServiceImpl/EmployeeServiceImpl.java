@@ -4,7 +4,7 @@ import com.pppfreak.Hired.Customise.Custom;
 import com.pppfreak.Hired.Entity.Employee;
 import com.pppfreak.Hired.Entity.Experience;
 import com.pppfreak.Hired.DAO.EmployeeRepository;
-import com.pppfreak.Hired.Entity.Employee_Response;
+import com.pppfreak.Hired.request_response_Model.Employee_Response;
 import com.pppfreak.Hired.request_response_Model.EmployeeRequestModel;
 import com.pppfreak.Hired.service.EmployeeService;
 import com.pppfreak.Hired.service.ExperienceService;

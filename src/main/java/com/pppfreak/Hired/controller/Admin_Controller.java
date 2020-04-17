@@ -1,11 +1,10 @@
 package com.pppfreak.Hired.controller;
 
 import com.pppfreak.Hired.Entity.Admin;
-import com.pppfreak.Hired.Entity.Admin_Response;
+import com.pppfreak.Hired.request_response_Model.Admin_Response;
 import com.pppfreak.Hired.request_response_Model.Admin_RequestModel;
 import com.pppfreak.Hired.service.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

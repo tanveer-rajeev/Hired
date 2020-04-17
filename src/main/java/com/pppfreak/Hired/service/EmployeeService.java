@@ -1,7 +1,7 @@
 package com.pppfreak.Hired.service;
 
 import com.pppfreak.Hired.Entity.Employee;
-import com.pppfreak.Hired.Entity.Employee_Response;
+import com.pppfreak.Hired.request_response_Model.Employee_Response;
 import com.pppfreak.Hired.request_response_Model.EmployeeRequestModel;
 import org.springframework.security.core.userdetails.UserDetailsService;
 

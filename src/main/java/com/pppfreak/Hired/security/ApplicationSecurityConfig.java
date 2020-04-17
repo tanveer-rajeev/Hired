@@ -29,7 +29,7 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable().authorizeRequests()
-                .antMatchers(HttpMethod.POST, "/employees","/admins")
+                .antMatchers(HttpMethod.POST, "/employees/**","/admins")
                 .permitAll()
                 .anyRequest()
                 .authenticated()
@@ -41,7 +41,6 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
     public AuthenticationFilter getAuthenticationFilter() throws Exception {
         final AuthenticationFilter authenticationFilter = new AuthenticationFilter(authenticationManager());
         authenticationFilter.setFilterProcessesUrl("/employees/login");
-        authenticationFilter.setFilterProcessesUrl("/admin/login");
         return authenticationFilter;
     }
 

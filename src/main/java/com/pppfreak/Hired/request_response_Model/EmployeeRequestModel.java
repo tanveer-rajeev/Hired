@@ -12,7 +12,7 @@ public class EmployeeRequestModel {
     private String university;
     private String department;
     private Integer year_of_experience;
-    private String expectedJobPosition;
+    private String expected_Job_Role;
     private String resumeURL;
     private boolean availableForJob;
     List<Experience> experienceList;
@@ -66,12 +66,12 @@ public class EmployeeRequestModel {
         this.year_of_experience = year_of_experience;
     }
 
-    public String getExpectedJobPosition() {
-        return expectedJobPosition;
+    public String getExpected_Job_Role() {
+        return expected_Job_Role;
     }
 
-    public void setExpectedJobPosition(String expectedJobPosition) {
-        this.expectedJobPosition = expectedJobPosition;
+    public void setExpected_Job_Role(String expected_Job_Role) {
+        this.expected_Job_Role = expected_Job_Role;
     }
 
     public String getResumeURL() {
