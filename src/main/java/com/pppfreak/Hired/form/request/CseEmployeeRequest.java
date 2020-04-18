@@ -1,6 +1,6 @@
-package com.pppfreak.Hired.request_response_Model;
+package com.pppfreak.Hired.form.request;
 
-public class Cse_Employee_RequestModel {
+public class CseEmployeeRequest {
 
     private String name;
 

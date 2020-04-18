@@ -1,10 +1,10 @@
-package com.pppfreak.Hired.ServiceImpl;
+package com.pppfreak.Hired.serviceimpl;
 
-import com.pppfreak.Hired.Customise.Custom;
-import com.pppfreak.Hired.DAO.AdminRepository;
+import com.pppfreak.Hired.customise.Custom;
+import com.pppfreak.Hired.repository.AdminRepository;
 import com.pppfreak.Hired.Entity.Admin;
-import com.pppfreak.Hired.request_response_Model.Admin_Response;
-import com.pppfreak.Hired.request_response_Model.Admin_RequestModel;
+import com.pppfreak.Hired.response.AdminResponse;
+import com.pppfreak.Hired.form.request.AdminRequestForm;
 import com.pppfreak.Hired.service.AdminService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
-public class Admin_Service_Impl implements AdminService {
+public class AdminServiceImpl implements AdminService {
     private AdminRepository adminRepository;
 
     private ModelMapper modelMapper;
@@ -24,7 +24,7 @@ public class Admin_Service_Impl implements AdminService {
 
     private BCryptPasswordEncoder bCryptPasswordEncoder;
     @Autowired
-    public Admin_Service_Impl(AdminRepository adminRepository , ModelMapper modelMapper , Custom custom , BCryptPasswordEncoder bCryptPasswordEncoder) {
+    public AdminServiceImpl(AdminRepository adminRepository , ModelMapper modelMapper , Custom custom , BCryptPasswordEncoder bCryptPasswordEncoder) {
         this.adminRepository = adminRepository;
         this.modelMapper = modelMapper;
         this.custom = custom;
@@ -51,7 +51,7 @@ public class Admin_Service_Impl implements AdminService {
     }
 
     @Override
-    public Admin_Response addAdmin(Admin_RequestModel admin) {
+    public AdminResponse addAdmin(AdminRequestForm admin) {
 
         if(adminRepository.findByEmail(admin.getEmail())!=null){
             throw new RuntimeException("Record already exist "+admin.getEmail());
@@ -63,14 +63,14 @@ public class Admin_Service_Impl implements AdminService {
         theAdmin.setEncryptedPassword(bCryptPasswordEncoder.encode(admin.getPassword()));
         adminRepository.save(theAdmin);
 
-        Admin_Response admin_response = modelMapper.map(theAdmin , Admin_Response.class);
+        AdminResponse admin_response = modelMapper.map(theAdmin , AdminResponse.class);
         return admin_response;
     }
 
     @Override
-    public Admin_Response update_Admin(Admin admin) {
+    public AdminResponse update_Admin(Admin admin) {
         Admin admin1 = adminRepository.save(admin);
-        Admin_Response admin_response = modelMapper.map(admin1,Admin_Response.class);
+        AdminResponse admin_response = modelMapper.map(admin1, AdminResponse.class);
         return admin_response;
     }
 

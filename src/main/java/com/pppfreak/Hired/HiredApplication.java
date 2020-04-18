@@ -1,8 +1,6 @@
 package com.pppfreak.Hired;
 
-import com.pppfreak.Hired.ServiceImpl.EmployeeServiceImpl;
-import com.pppfreak.Hired.fileUpload.StorageProperties;
-import com.pppfreak.Hired.service.EmployeeService;
+import com.pppfreak.Hired.upload.StorageProperties;
 import org.modelmapper.ModelMapper;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

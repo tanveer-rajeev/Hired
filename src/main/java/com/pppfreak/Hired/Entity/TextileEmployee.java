@@ -4,7 +4,7 @@ import javax.persistence.*;
 import java.util.List;
 
 @Entity(name = "employee")
-public class Employee {
+public class TextileEmployee {
 
     @Id
     @GeneratedValue

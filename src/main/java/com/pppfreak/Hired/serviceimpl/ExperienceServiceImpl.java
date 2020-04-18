@@ -1,6 +1,6 @@
-package com.pppfreak.Hired.ServiceImpl;
+package com.pppfreak.Hired.serviceimpl;
 
-import com.pppfreak.Hired.DAO.ExperienceRepository;
+import com.pppfreak.Hired.repository.ExperienceRepository;
 import com.pppfreak.Hired.Entity.Experience;
 import com.pppfreak.Hired.service.ExperienceService;
 import org.springframework.beans.factory.annotation.Autowired;

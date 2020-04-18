@@ -1,8 +1,8 @@
 package com.pppfreak.Hired.controller;
 
 import com.pppfreak.Hired.Entity.Admin;
-import com.pppfreak.Hired.request_response_Model.Admin_Response;
-import com.pppfreak.Hired.request_response_Model.Admin_RequestModel;
+import com.pppfreak.Hired.response.AdminResponse;
+import com.pppfreak.Hired.form.request.AdminRequestForm;
 import com.pppfreak.Hired.service.AdminService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -11,12 +11,12 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/admins")
-public class Admin_Controller {
+public class AdminController {
 
     private AdminService adminService;
 
     @Autowired
-    public Admin_Controller(AdminService adminService) {
+    public AdminController(AdminService adminService) {
         this.adminService = adminService;
     }
 
@@ -31,7 +31,7 @@ public class Admin_Controller {
     }
 
     @PostMapping
-    public Admin_Response addAdmin(@RequestBody Admin_RequestModel admin_response){
+    public AdminResponse addAdmin(@RequestBody AdminRequestForm admin_response){
         return adminService.addAdmin(admin_response);
     }
 

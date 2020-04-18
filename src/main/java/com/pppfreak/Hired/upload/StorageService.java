@@ -1,4 +1,4 @@
-package com.pppfreak.Hired.fileUpload;
+package com.pppfreak.Hired.upload;
 
 import org.springframework.core.io.Resource;
 import org.springframework.web.multipart.MultipartFile;

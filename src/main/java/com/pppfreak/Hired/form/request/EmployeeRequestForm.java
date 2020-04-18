@@ -1,10 +1,10 @@
-package com.pppfreak.Hired.request_response_Model;
+package com.pppfreak.Hired.form.request;
 
 import com.pppfreak.Hired.Entity.Experience;
 
 import java.util.List;
 
-public class EmployeeRequestModel {
+public class EmployeeRequestForm {
 
     private String name;
     private String email;

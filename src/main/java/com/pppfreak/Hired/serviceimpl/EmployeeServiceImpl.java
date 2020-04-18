@@ -1,11 +1,11 @@
-package com.pppfreak.Hired.ServiceImpl;
+package com.pppfreak.Hired.serviceimpl;
 
-import com.pppfreak.Hired.Customise.Custom;
-import com.pppfreak.Hired.Entity.Employee;
+import com.pppfreak.Hired.customise.Custom;
+import com.pppfreak.Hired.Entity.TextileEmployee;
 import com.pppfreak.Hired.Entity.Experience;
-import com.pppfreak.Hired.DAO.EmployeeRepository;
-import com.pppfreak.Hired.request_response_Model.Employee_Response;
-import com.pppfreak.Hired.request_response_Model.EmployeeRequestModel;
+import com.pppfreak.Hired.repository.EmployeeRepository;
+import com.pppfreak.Hired.response.EmployeeResponse;
+import com.pppfreak.Hired.form.request.EmployeeRequestForm;
 import com.pppfreak.Hired.service.EmployeeService;
 import com.pppfreak.Hired.service.ExperienceService;
 import org.modelmapper.ModelMapper;
@@ -43,27 +43,27 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public Employee getEmployeeByUserId(String userId) {
-        Employee employee= employeeRepository.findByUserId(userId);
+    public TextileEmployee getEmployeeByUserId(String userId) {
+        TextileEmployee textileEmployee = employeeRepository.findByUserId(userId);
 
-        if(employee==null){
+        if(textileEmployee ==null){
             throw new RuntimeException("Emplopee Not Found "+userId);
         }
-        return employee;
+        return textileEmployee;
 
     }
 
     @Override
-    public List<Employee> getAllEmployee() {
-        List<Employee> employee = new ArrayList<>();
+    public List<TextileEmployee> getAllEmployee() {
+        List<TextileEmployee> textileEmployee = new ArrayList<>();
                 employeeRepository
-                        .findAll().forEach(employee::add);
-                return employee;
+                        .findAll().forEach(textileEmployee::add);
+                return textileEmployee;
     }
 
 
     @Override
-    public Employee_Response addEmployee(EmployeeRequestModel employee)  {
+    public EmployeeResponse addEmployee(EmployeeRequestForm employee)  {
 
 
         if(employeeRepository.findByEmail(employee.getEmail())!=null){
@@ -71,27 +71,29 @@ public class EmployeeServiceImpl implements EmployeeService {
         }
 
         ModelMapper modelMapper = new ModelMapper();
-        Employee theEmployee = modelMapper.map(employee,Employee.class);
-        for (int i = 0; i < theEmployee.getExperienceList().size(); i++) {
-            Experience experience = theEmployee.getExperienceList().get(i);
+        TextileEmployee theTextileEmployee = modelMapper.map(employee, TextileEmployee.class);
+        for (int i = 0; i < theTextileEmployee
+                .getExperienceList().size(); i++) {
+            Experience experience = theTextileEmployee
+                    .getExperienceList().get(i);
             experienceService.addExperience(experience);
         }
 
-        theEmployee.setUserId(customise.generatedCustomUserId());
-        theEmployee.setEncryptedPassword(bCryptPasswordEncoder.encode(employee.getPassword()));
-        employeeRepository.save(theEmployee);
-        return modelMapper.map(theEmployee, Employee_Response.class);
+        theTextileEmployee.setUserId(customise.generatedCustomUserId());
+        theTextileEmployee.setEncryptedPassword(bCryptPasswordEncoder.encode(employee.getPassword()));
+        employeeRepository.save(theTextileEmployee);
+        return modelMapper.map(theTextileEmployee , EmployeeResponse.class);
 
     }
 
     @Override
-    public void updateEmployee(Employee employee) {
-        employeeRepository.save(employee);
+    public void updateEmployee(TextileEmployee textileEmployee) {
+        employeeRepository.save(textileEmployee);
     }
 
     @Override
     public void deleteEmployee(Integer id) {
-        Optional<Employee> employee = employeeRepository.findById(id);
+        Optional<TextileEmployee> employee = employeeRepository.findById(id);
         if(!employee.isPresent()){
             throw  new RuntimeException("Employee not found "+id);
         }
@@ -101,7 +103,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     @Override
     public void deleteEmployeeExperience(Integer employeeId,Integer experienceId) {
 
-        Optional<Employee> employee = employeeRepository.findById(employeeId);
+        Optional<TextileEmployee> employee = employeeRepository.findById(employeeId);
 
         Experience experience = experienceService.getExperience(experienceId);
 
@@ -118,17 +120,17 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public Employee getEmployee(String email) {
+    public TextileEmployee getEmployee(String email) {
         return  employeeRepository.findByEmail(email);
     }
 
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        Employee employee = employeeRepository.findByEmail(email);
-        if(employee==null){
+        TextileEmployee textileEmployee = employeeRepository.findByEmail(email);
+        if(textileEmployee ==null){
             throw new UsernameNotFoundException("User not available  "+email);
         }
-        return new User(employee.getEmail(),employee.getEncryptedPassword(), EMPLOYEE.getGrantedAuthorities());
+        return new User(textileEmployee.getEmail(), textileEmployee.getEncryptedPassword(), EMPLOYEE.getGrantedAuthorities());
     }
 }

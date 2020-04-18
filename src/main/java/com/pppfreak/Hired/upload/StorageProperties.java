@@ -1,4 +1,4 @@
-package com.pppfreak.Hired.fileUpload;
+package com.pppfreak.Hired.upload;
 
 import org.springframework.boot.context.properties.ConfigurationProperties;
 

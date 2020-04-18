@@ -1,10 +1,9 @@
 package com.pppfreak.Hired.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.pppfreak.Hired.Entity.Employee;
-import com.pppfreak.Hired.ServiceImpl.EmployeeServiceImpl;
+import com.pppfreak.Hired.Entity.TextileEmployee;
 import com.pppfreak.Hired.SpringApplicationContext;
-import com.pppfreak.Hired.request_response_Model.LoginRequestModel;
+import com.pppfreak.Hired.form.request.LoginRequest;
 import com.pppfreak.Hired.service.EmployeeService;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -17,7 +16,6 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import javax.servlet.FilterChain;
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -38,8 +36,8 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
         try {
-            LoginRequestModel cred = new ObjectMapper().readValue(request.getInputStream(),
-                                                                  LoginRequestModel.class);
+            LoginRequest cred = new ObjectMapper().readValue(request.getInputStream(),
+                                                                  LoginRequest.class);
 
             return authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(
@@ -65,8 +63,9 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
                                      .compact();
         System.out.println(request.getRequestURI());
         EmployeeService employeeService = (EmployeeService) SpringApplicationContext.getBean("employeeServiceImpl");
-        Employee employee = employeeService.getEmployee(userEmail);
+        TextileEmployee textileEmployee = employeeService.getEmployee(userEmail);
+
         response.addHeader(SecurityConstrants.HEADER_STRING,SecurityConstrants.TOKEN_PREFIX+token);
-        response.addHeader("UserId",employee.getUserId());
+        response.addHeader("UserId", textileEmployee.getUserId());
     }
 }

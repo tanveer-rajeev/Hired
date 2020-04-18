@@ -1,4 +1,4 @@
-package com.pppfreak.Hired.DAO;
+package com.pppfreak.Hired.repository;
 
 import com.pppfreak.Hired.Entity.Admin;
 import org.springframework.data.repository.CrudRepository;

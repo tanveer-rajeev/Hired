@@ -5,7 +5,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
 
-public class CSE_Employee {
+public class CseEmployee {
 
 
     private Integer id;

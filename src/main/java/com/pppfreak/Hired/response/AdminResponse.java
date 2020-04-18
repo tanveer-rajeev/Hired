@@ -1,11 +1,19 @@
-package com.pppfreak.Hired.request_response_Model;
+package com.pppfreak.Hired.response;
 
-public class Admin_RequestModel {
+public class AdminResponse {
 
+    private String userId;
     private String name;
-    private String password;
     private String email;
     private String role;
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
 
     public String getName() {
         return name;
@@ -13,14 +21,6 @@ public class Admin_RequestModel {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 
     public String getEmail() {

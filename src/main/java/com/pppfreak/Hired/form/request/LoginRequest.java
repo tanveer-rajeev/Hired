@@ -1,6 +1,6 @@
-package com.pppfreak.Hired.request_response_Model;
+package com.pppfreak.Hired.form.request;
 
-public class LoginRequestModel {
+public class LoginRequest {
     private String email;
     private String password;
 

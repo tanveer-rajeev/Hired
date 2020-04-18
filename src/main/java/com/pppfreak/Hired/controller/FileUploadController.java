@@ -1,8 +1,8 @@
 package com.pppfreak.Hired.controller;
 
-import com.pppfreak.Hired.DAO.EmployeeRepository;
-import com.pppfreak.Hired.Entity.Employee;
-import com.pppfreak.Hired.fileUpload.StorageService;
+import com.pppfreak.Hired.repository.EmployeeRepository;
+import com.pppfreak.Hired.Entity.TextileEmployee;
+import com.pppfreak.Hired.upload.StorageService;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
@@ -16,7 +16,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Objects;
-import java.util.Optional;
 
 @RestController
 public class FileUploadController {
@@ -44,13 +43,13 @@ public class FileUploadController {
                                   .path(fileName)
                                   .toUriString();
 
-            Employee employee = employeeRepository.findByUserId(id);
+            TextileEmployee textileEmployee = employeeRepository.findByUserId(id);
 
-            if (employee==null){
+            if (textileEmployee ==null){
                 throw new RuntimeException("Employee not found "+id);
             }
-            employee.setResumeURL(viewResumeURI);
-            employeeRepository.save(employee);
+            textileEmployee.setResumeURL(viewResumeURI);
+            employeeRepository.save(textileEmployee);
             return viewResumeURI;
 
         } catch (IOException e) {

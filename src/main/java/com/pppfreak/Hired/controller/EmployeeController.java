@@ -1,9 +1,9 @@
 package com.pppfreak.Hired.controller;
 
-import com.pppfreak.Hired.request_response_Model.Employee_Response;
-import com.pppfreak.Hired.request_response_Model.EmployeeRequestModel;
+import com.pppfreak.Hired.response.EmployeeResponse;
+import com.pppfreak.Hired.form.request.EmployeeRequestForm;
 import com.pppfreak.Hired.service.EmployeeService;
-import com.pppfreak.Hired.Entity.Employee;
+import com.pppfreak.Hired.Entity.TextileEmployee;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -22,20 +22,20 @@ public class EmployeeController {
 
     @GetMapping
     @PreAuthorize("hasAuthority('employee:read')")
-    public List<Employee> getAllEmployee() {
+    public List<TextileEmployee> getAllEmployee() {
         return employeeService.getAllEmployee();
     }
 
     @GetMapping(path = "/{userId}",produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasAuthority('employee:read')")
-    public Employee getEmployeeByUserId(@PathVariable String userId) {
+    public TextileEmployee getEmployeeByUserId(@PathVariable String userId) {
 
         return employeeService.getEmployeeByUserId(userId);
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE,
             produces = MediaType.APPLICATION_JSON_VALUE)
-    public Employee_Response addEmployee(@RequestBody EmployeeRequestModel employee) {
+    public EmployeeResponse addEmployee(@RequestBody EmployeeRequestForm employee) {
 
         return  employeeService.addEmployee(employee);
 
@@ -43,8 +43,8 @@ public class EmployeeController {
 
     @PutMapping
     @PreAuthorize("hasAuthority('employee:write')")
-    public void updateEmployee(@RequestBody Employee employee) {
-        employeeService.updateEmployee(employee);
+    public void updateEmployee(@RequestBody TextileEmployee textileEmployee) {
+        employeeService.updateEmployee(textileEmployee);
     }
 
     @DeleteMapping("{id}")

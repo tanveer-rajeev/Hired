@@ -1,19 +1,19 @@
-package com.pppfreak.Hired.request_response_Model;
+package com.pppfreak.Hired.response;
 
 import javax.validation.constraints.Email;
 
-public class Employee_Response {
+public class EmployeeResponse {
     private String employeeName;
     private String email;
     private String university;
     private String department;
     private String expectedJobPosition;
 
-    public Employee_Response() {
+    public EmployeeResponse() {
       
     }
 
-    public Employee_Response(String employeeName, String email, String university, String department, String expectedJobPosition) {
+    public EmployeeResponse(String employeeName, String email, String university, String department, String expectedJobPosition) {
         this.employeeName = employeeName;
         this.email = email;
         this.university = university;

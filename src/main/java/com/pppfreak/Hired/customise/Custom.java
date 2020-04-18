@@ -1,4 +1,4 @@
-package com.pppfreak.Hired.Customise;
+package com.pppfreak.Hired.customise;
 
 import org.springframework.stereotype.Component;
 
