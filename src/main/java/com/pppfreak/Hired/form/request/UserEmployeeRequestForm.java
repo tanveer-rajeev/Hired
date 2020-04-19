@@ -3,7 +3,7 @@ package com.pppfreak.Hired.form.request;
 public class UserEmployeeRequestForm {
     private String email;
     private String password;
-    private String dept;
+    private String department;
 
     public String getEmail() {
         return email;
@@ -21,11 +21,11 @@ public class UserEmployeeRequestForm {
         this.password = password;
     }
 
-    public String getDept() {
-        return dept;
+    public String getDepartment() {
+        return department;
     }
 
-    public void setDept(String dept) {
-        this.dept = dept;
+    public void setDepartment(String department) {
+        this.department = department;
     }
 }
