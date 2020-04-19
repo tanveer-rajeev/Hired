@@ -31,7 +31,7 @@ public class FileUploadController {
 
     @PostMapping("/upload/{id}")
     public String uploadFile(@RequestParam("file") MultipartFile file,@PathVariable String id) {
-        storageService.deleteAll();
+        //storageService.deleteAll();
         storageService.init();
 
         try {

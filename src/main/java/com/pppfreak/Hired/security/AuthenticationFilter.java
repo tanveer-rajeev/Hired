@@ -2,9 +2,11 @@ package com.pppfreak.Hired.security;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.pppfreak.Hired.Entity.TextileEmployee;
+import com.pppfreak.Hired.Entity.UserEmployee;
 import com.pppfreak.Hired.SpringApplicationContext;
 import com.pppfreak.Hired.form.request.LoginRequest;
 import com.pppfreak.Hired.service.EmployeeService;
+import com.pppfreak.Hired.service.UserEmployeeService;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,11 +63,12 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
                                      .setExpiration(new Date(System.currentTimeMillis()+SecurityConstrants.EXPERATION_TIME))
                                      .signWith(SignatureAlgorithm.HS512,SecurityConstrants.SECRET_TOKEN)
                                      .compact();
-        System.out.println(request.getRequestURI());
-        EmployeeService employeeService = (EmployeeService) SpringApplicationContext.getBean("employeeServiceImpl");
-        TextileEmployee textileEmployee = employeeService.getEmployee(userEmail);
+
+        UserEmployeeService userEmployeeService =
+                    (UserEmployeeService) SpringApplicationContext.getBean("userEmployeeServiceImpl");
+        UserEmployee userEmployee = userEmployeeService.getUserByEmail(userEmail);
 
         response.addHeader(SecurityConstrants.HEADER_STRING,SecurityConstrants.TOKEN_PREFIX+token);
-        response.addHeader("UserId", textileEmployee.getUserId());
+        response.addHeader("UserId", userEmployee.getUserId());
     }
 }

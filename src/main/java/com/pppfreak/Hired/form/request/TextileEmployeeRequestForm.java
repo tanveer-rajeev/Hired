@@ -4,7 +4,7 @@ import com.pppfreak.Hired.Entity.Experience;
 
 import java.util.List;
 
-public class EmployeeRequestForm {
+public class TextileEmployeeRequestForm {
 
     private String name;
     private String email;

@@ -5,7 +5,7 @@ import com.pppfreak.Hired.Entity.TextileEmployee;
 import com.pppfreak.Hired.Entity.Experience;
 import com.pppfreak.Hired.repository.EmployeeRepository;
 import com.pppfreak.Hired.response.EmployeeResponse;
-import com.pppfreak.Hired.form.request.EmployeeRequestForm;
+import com.pppfreak.Hired.form.request.TextileEmployeeRequestForm;
 import com.pppfreak.Hired.service.EmployeeService;
 import com.pppfreak.Hired.service.ExperienceService;
 import org.modelmapper.ModelMapper;
@@ -63,7 +63,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
 
     @Override
-    public EmployeeResponse addEmployee(EmployeeRequestForm employee)  {
+    public EmployeeResponse addEmployee(TextileEmployeeRequestForm employee)  {
 
 
         if(employeeRepository.findByEmail(employee.getEmail())!=null){
@@ -72,8 +72,7 @@ public class EmployeeServiceImpl implements EmployeeService {
 
         ModelMapper modelMapper = new ModelMapper();
         TextileEmployee theTextileEmployee = modelMapper.map(employee, TextileEmployee.class);
-        for (int i = 0; i < theTextileEmployee
-                .getExperienceList().size(); i++) {
+        for (int i = 0; i < theTextileEmployee.getExperienceList().size(); i++) {
             Experience experience = theTextileEmployee
                     .getExperienceList().get(i);
             experienceService.addExperience(experience);
@@ -125,12 +124,5 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
 
-    @Override
-    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        TextileEmployee textileEmployee = employeeRepository.findByEmail(email);
-        if(textileEmployee ==null){
-            throw new UsernameNotFoundException("User not available  "+email);
-        }
-        return new User(textileEmployee.getEmail(), textileEmployee.getEncryptedPassword(), EMPLOYEE.getGrantedAuthorities());
-    }
+
 }
