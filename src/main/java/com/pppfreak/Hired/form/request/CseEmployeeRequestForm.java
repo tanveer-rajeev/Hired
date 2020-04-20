@@ -1,12 +1,8 @@
 package com.pppfreak.Hired.form.request;
 
-public class CseEmployeeRequest {
+public class CseEmployeeRequestForm {
 
     private String name;
-
-    private String email;
-
-    private String password;
 
     private String university;
 
@@ -18,7 +14,7 @@ public class CseEmployeeRequest {
 
     private String job_Experience;
 
-    private String expected_Job_Role;
+    private String expected_Job_Position;
 
     public String getName() {
         return name;
@@ -28,21 +24,6 @@ public class CseEmployeeRequest {
         this.name = name;
     }
 
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
 
     public String getUniversity() {
         return university;
@@ -84,11 +65,11 @@ public class CseEmployeeRequest {
         this.job_Experience = job_Experience;
     }
 
-    public String getExpected_Job_Role() {
-        return expected_Job_Role;
+    public String getExpected_Job_Position() {
+        return expected_Job_Position;
     }
 
-    public void setExpected_Job_Role(String expected_Job_Role) {
-        this.expected_Job_Role = expected_Job_Role;
+    public void setExpected_Job_Position(String expected_Job_Position) {
+        this.expected_Job_Position = expected_Job_Position;
     }
 }

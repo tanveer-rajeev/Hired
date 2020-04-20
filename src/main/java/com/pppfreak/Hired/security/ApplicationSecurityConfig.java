@@ -1,6 +1,8 @@
 package com.pppfreak.Hired.security;
 
+import com.pppfreak.Hired.Entity.UserEmployee;
 import com.pppfreak.Hired.service.EmployeeService;
+import com.pppfreak.Hired.service.UserEmployeeService;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -13,10 +15,10 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private final EmployeeService employeeService;
+    private final UserEmployeeService employeeService;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
-    public ApplicationSecurityConfig(EmployeeService employeeService, BCryptPasswordEncoder bCryptPasswordEncoder) {
+    public ApplicationSecurityConfig(UserEmployeeService employeeService, BCryptPasswordEncoder bCryptPasswordEncoder) {
         this.employeeService = employeeService;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }

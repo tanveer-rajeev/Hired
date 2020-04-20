@@ -5,8 +5,7 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface EmployeeRepository extends CrudRepository<TextileEmployee,Integer> {
-
-     TextileEmployee findByUserId(String userId);
-     TextileEmployee findByEmail(String email);
+public interface TextileEmployeeRepository extends CrudRepository<TextileEmployee,Integer> {
+    TextileEmployee findByEmail(String email);
+    TextileEmployee findByUserId(String userId);
 }

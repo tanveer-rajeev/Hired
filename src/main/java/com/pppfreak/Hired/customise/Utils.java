@@ -5,7 +5,7 @@ import org.springframework.stereotype.Component;
 import java.security.SecureRandom;
 import java.util.Random;
 @Component
-public class Custom {
+public class Utils {
     private Random random = new SecureRandom();
     private  String ALPHABET="0123456789qwertyuiopasdflkjghzxcvmnbQPWOEIRUTYLAKSJDFHGMNBVXZC";
 

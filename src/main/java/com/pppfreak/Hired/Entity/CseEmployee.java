@@ -4,17 +4,14 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
-
+@Entity(name = "cseEmployee")
 public class CseEmployee {
 
-
+    @Id
+    @GeneratedValue
     private Integer id;
 
     private String name;
-
-    private String email;
-
-    private String encrypted_Password;
 
     private String university;
 
@@ -29,6 +26,7 @@ public class CseEmployee {
     private String expected_Job_Position;
 
     private String resumeURL;
+
 
     public Integer getId() {
         return id;
@@ -46,21 +44,6 @@ public class CseEmployee {
         this.name = name;
     }
 
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getEncrypted_Password() {
-        return encrypted_Password;
-    }
-
-    public void setEncrypted_Password(String encrypted_Password) {
-        this.encrypted_Password = encrypted_Password;
-    }
 
     public String getUniversity() {
         return university;

@@ -1,5 +1,6 @@
 package com.pppfreak.Hired.controller;
 
+import com.pppfreak.Hired.form.request.MasterForm;
 import com.pppfreak.Hired.form.request.UserEmployeeRequestForm;
 import com.pppfreak.Hired.response.EmployeeRegistrationResponse;
 import com.pppfreak.Hired.response.EmployeeResponse;
@@ -30,16 +31,20 @@ public class EmployeeController {
     }
 
 
-    @PostMapping("/registration")
-    public String registrationEmployee(
-            @RequestBody UserEmployeeRequestForm userEmployeeRequestForm) {
-        EmployeeRegistrationResponse employeeRegistrationResponse=userEmployeeService.register(userEmployeeRequestForm);
-        String department = employeeRegistrationResponse.getDept();
-        String profileFormURI = ServletUriComponentsBuilder.fromCurrentContextPath()
-                             .path("/profile")
-                             .path(department)
-                             .toUriString();
-        return profileFormURI;
+    @PostMapping("/signUp")
+    public EmployeeRegistrationResponse registrationEmployee(@RequestBody UserEmployeeRequestForm userEmployeeRequestForm) {
+
+        return userEmployeeService.register(userEmployeeRequestForm);
+
+    }
+
+    @PostMapping(path = "/profile/{dept}", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
+    public EmployeeResponse addEmployee(@RequestBody MasterForm employee , @PathVariable String dept) {
+
+        // dept wise employee get a  form
+
+        return employeeService.addEmployee(employee);
+
     }
 
     @GetMapping
@@ -55,15 +60,6 @@ public class EmployeeController {
         return employeeService.getEmployeeByUserId(userId);
     }
 
-
-    @PostMapping(path = "/profile/{dept}",consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-    public EmployeeResponse addEmployee(@RequestBody TextileEmployeeRequestForm employee,@PathVariable String dept) {
-
-        // dept wise employee get a  form
-
-        return employeeService.addEmployee(employee);
-
-    }
 
     @PutMapping
     @PreAuthorize("hasAuthority('employee:write')")

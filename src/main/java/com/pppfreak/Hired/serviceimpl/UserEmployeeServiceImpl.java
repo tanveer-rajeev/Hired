@@ -1,14 +1,14 @@
 package com.pppfreak.Hired.serviceimpl;
 
 import com.pppfreak.Hired.Entity.UserEmployee;
-import com.pppfreak.Hired.customise.Custom;
+import com.pppfreak.Hired.customise.Utils;
 import com.pppfreak.Hired.form.request.UserEmployeeRequestForm;
 import com.pppfreak.Hired.repository.UserEmployeeRepository;
 import com.pppfreak.Hired.response.EmployeeRegistrationResponse;
+import com.pppfreak.Hired.security.UserEntity;
 import com.pppfreak.Hired.service.UserEmployeeService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -19,53 +19,63 @@ import static com.pppfreak.Hired.security.ApplicationUserRole.EMPLOYEE;
 @Service
 public class UserEmployeeServiceImpl implements UserEmployeeService {
 
-    private UserEmployeeRepository userEmployeeRepository;
-    private BCryptPasswordEncoder bCryptPasswordEncoder;
-    private Custom custom;
+    private final UserEmployeeRepository userEmployeeRepository;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final Utils utils;
+    private final ModelMapper modelMapper;
+
     @Autowired
     public UserEmployeeServiceImpl(UserEmployeeRepository userEmployeeRepository ,
-                                   BCryptPasswordEncoder bCryptPasswordEncoder , Custom custom) {
+                                   BCryptPasswordEncoder bCryptPasswordEncoder , Utils utils ,
+                                   ModelMapper modelMapper) {
         this.userEmployeeRepository = userEmployeeRepository;
         this.bCryptPasswordEncoder  = bCryptPasswordEncoder;
-        this.custom                 = custom;
+        this.utils                  = utils;
+        this.modelMapper            = modelMapper;
     }
 
     @Override
     public UserEmployee getUserByEmail(String email) {
-        UserEmployee employee= userEmployeeRepository.findByEmail(email);
-        if(employee==null){
-            throw new UsernameNotFoundException("User not found  "+email);
+        UserEmployee employee = userEmployeeRepository.findByEmail(email);
+        if (employee == null) {
+            throw new UsernameNotFoundException("User not found  " + email);
         }
         return employee;
     }
 
     @Override
     public UserEmployee getUserByUserId(String userId) {
-        UserEmployee employee= userEmployeeRepository.findByUserId(userId);
-        if(employee==null){
-            throw new UsernameNotFoundException("User not found  "+userId);
+        UserEmployee employee = userEmployeeRepository.findByUserId(userId);
+        if (employee == null) {
+            throw new UsernameNotFoundException("User not found  " + userId);
         }
         return employee;
     }
 
     @Override
     public EmployeeRegistrationResponse register(UserEmployeeRequestForm employeeRequestForm) {
-        ModelMapper mapper = new ModelMapper();
-        UserEmployee employee = mapper.map(employeeRequestForm,UserEmployee.class);
+
+        if (userEmployeeRepository.findByEmail(employeeRequestForm.getEmail()) != null) {
+            throw new RuntimeException("Record already exist ");
+        }
+
+
+        UserEmployee employee = modelMapper.map(employeeRequestForm , UserEmployee.class);
         employee.setEncryptedPassword(bCryptPasswordEncoder.encode(employeeRequestForm.getPassword()));
-        employee.setUserId(custom.generatedCustomUserId());
+        employee.setUserId(utils.generatedCustomUserId());
         userEmployeeRepository.save(employee);
-        return  mapper.map(employee, EmployeeRegistrationResponse.class);
+        return modelMapper.map(employee , EmployeeRegistrationResponse.class);
 
     }
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         UserEmployee userEmployee = userEmployeeRepository.findByEmail(email);
-        if(userEmployee ==null){
-            throw new UsernameNotFoundException("User not available  "+email);
+        if (userEmployee == null) {
+            throw new UsernameNotFoundException("User not available  " + email);
         }
-        return new User(userEmployee.getEmail(), userEmployee.getEncryptedPassword(), EMPLOYEE.getGrantedAuthorities());
+        return new UserEntity(userEmployee.getEmail() , userEmployee.getEncryptedPassword() ,
+                EMPLOYEE.getGrantedAuthorities() , true , true , true , true);
     }
 
 }

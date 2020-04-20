@@ -1,5 +1,7 @@
 package com.pppfreak.Hired;
 
+import com.pppfreak.Hired.service.UserEmployeeService;
+import com.pppfreak.Hired.serviceimpl.UserEmployeeServiceImpl;
 import com.pppfreak.Hired.upload.StorageProperties;
 import org.modelmapper.ModelMapper;
 import org.springframework.boot.SpringApplication;
@@ -30,4 +32,6 @@ public class HiredApplication {
 	public ModelMapper modelMapper(){
 		return new ModelMapper();
 	}
+
+
 }

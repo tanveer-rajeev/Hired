@@ -1,6 +1,6 @@
 package com.pppfreak.Hired.controller;
 
-import com.pppfreak.Hired.repository.EmployeeRepository;
+import com.pppfreak.Hired.repository.TextileEmployeeRepository;
 import com.pppfreak.Hired.Entity.TextileEmployee;
 import com.pppfreak.Hired.upload.StorageService;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
@@ -21,10 +21,10 @@ import java.util.Objects;
 public class FileUploadController {
 
     private final StorageService storageService;
-    private final EmployeeRepository employeeRepository;
+    private final TextileEmployeeRepository employeeRepository;
 
     @Autowired
-    public FileUploadController(StorageService storageService , EmployeeRepository employeeRepository) {
+    public FileUploadController(StorageService storageService , TextileEmployeeRepository employeeRepository) {
         this.storageService = storageService;
         this.employeeRepository = employeeRepository;
     }

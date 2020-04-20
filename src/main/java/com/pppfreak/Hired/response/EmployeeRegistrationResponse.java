@@ -3,14 +3,16 @@ package com.pppfreak.Hired.response;
 public class EmployeeRegistrationResponse {
 
     private String email;
-    private String dept;
+    private String password;
+    private String department;
 
-    public EmployeeRegistrationResponse() {
+
+    public String getPassword() {
+        return password;
     }
 
-    public EmployeeRegistrationResponse(String email , String dept) {
-        this.email = email;
-        this.dept  = dept;
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public String getEmail() {
@@ -21,11 +23,11 @@ public class EmployeeRegistrationResponse {
         this.email = email;
     }
 
-    public String getDept() {
-        return dept;
+    public String getDepartment() {
+        return department;
     }
 
-    public void setDept(String dept) {
-        this.dept = dept;
+    public void setDepartment(String department) {
+        this.department = department;
     }
 }

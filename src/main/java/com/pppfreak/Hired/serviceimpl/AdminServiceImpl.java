@@ -1,6 +1,6 @@
 package com.pppfreak.Hired.serviceimpl;
 
-import com.pppfreak.Hired.customise.Custom;
+import com.pppfreak.Hired.customise.Utils;
 import com.pppfreak.Hired.repository.AdminRepository;
 import com.pppfreak.Hired.Entity.Admin;
 import com.pppfreak.Hired.response.AdminResponse;
@@ -20,14 +20,14 @@ public class AdminServiceImpl implements AdminService {
 
     private ModelMapper modelMapper;
 
-    private Custom custom;
+    private Utils utils;
 
     private BCryptPasswordEncoder bCryptPasswordEncoder;
     @Autowired
-    public AdminServiceImpl(AdminRepository adminRepository , ModelMapper modelMapper , Custom custom , BCryptPasswordEncoder bCryptPasswordEncoder) {
-        this.adminRepository = adminRepository;
-        this.modelMapper = modelMapper;
-        this.custom = custom;
+    public AdminServiceImpl(AdminRepository adminRepository , ModelMapper modelMapper , Utils utils , BCryptPasswordEncoder bCryptPasswordEncoder) {
+        this.adminRepository       = adminRepository;
+        this.modelMapper           = modelMapper;
+        this.utils                 = utils;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
@@ -59,7 +59,7 @@ public class AdminServiceImpl implements AdminService {
 
         Admin theAdmin = modelMapper.map(admin , Admin.class);
 
-        theAdmin.setUserId(custom.generatedCustomUserId());
+        theAdmin.setUserId(utils.generatedCustomUserId());
         theAdmin.setEncryptedPassword(bCryptPasswordEncoder.encode(admin.getPassword()));
         adminRepository.save(theAdmin);
 

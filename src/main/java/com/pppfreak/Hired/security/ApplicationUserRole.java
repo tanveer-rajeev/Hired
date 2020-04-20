@@ -3,6 +3,7 @@ package com.pppfreak.Hired.security;
 import com.google.common.collect.Sets;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -24,11 +25,11 @@ public enum ApplicationUserRole {
         return roles;
     }
 
-    public Set<SimpleGrantedAuthority> getGrantedAuthorities(){
-        Set<SimpleGrantedAuthority> simpleGrantedAuthority =
+    public List<SimpleGrantedAuthority> getGrantedAuthorities(){
+        List<SimpleGrantedAuthority> simpleGrantedAuthority =
                 getRoles().stream()
                           .map(role -> new SimpleGrantedAuthority(role.getPermission()))
-                          .collect(Collectors.toSet());
+                          .collect(Collectors.toList());
         simpleGrantedAuthority.add(new SimpleGrantedAuthority("ROLE_"+this.name()));
         return simpleGrantedAuthority;
     }

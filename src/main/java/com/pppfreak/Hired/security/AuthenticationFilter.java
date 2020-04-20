@@ -5,6 +5,7 @@ import com.pppfreak.Hired.Entity.TextileEmployee;
 import com.pppfreak.Hired.Entity.UserEmployee;
 import com.pppfreak.Hired.SpringApplicationContext;
 import com.pppfreak.Hired.form.request.LoginRequest;
+import com.pppfreak.Hired.form.request.UserEmployeeRequestForm;
 import com.pppfreak.Hired.service.EmployeeService;
 import com.pppfreak.Hired.service.UserEmployeeService;
 import io.jsonwebtoken.Jwts;
@@ -27,9 +28,6 @@ import java.util.Date;
 public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
     private AuthenticationManager authenticationManager;
-
-    @Autowired
-    EmployeeService employeeService;
 
     public AuthenticationFilter(AuthenticationManager authenticationManager) {
         this.authenticationManager = authenticationManager;
@@ -57,7 +55,7 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult)
         {
 
-        String userEmail = ((User)authResult.getPrincipal()).getUsername();
+        String userEmail = ((UserEntity)authResult.getPrincipal()).getUsername();
         String token = Jwts.builder().setSubject(userEmail).claim("authorities",authResult.getAuthorities())
                                      .setIssuedAt(new Date(System.currentTimeMillis()))
                                      .setExpiration(new Date(System.currentTimeMillis()+SecurityConstrants.EXPERATION_TIME))
