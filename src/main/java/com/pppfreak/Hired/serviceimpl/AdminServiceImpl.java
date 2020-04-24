@@ -59,7 +59,7 @@ public class AdminServiceImpl implements AdminService {
 
         Admin theAdmin = modelMapper.map(admin , Admin.class);
 
-        theAdmin.setUserId(utils.generatedCustomUserId());
+        theAdmin.setUserId("adminslkdfoierjjffjk");
         theAdmin.setEncryptedPassword(bCryptPasswordEncoder.encode(admin.getPassword()));
         adminRepository.save(theAdmin);
 

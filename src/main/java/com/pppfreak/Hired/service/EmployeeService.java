@@ -1,25 +1,18 @@
 package com.pppfreak.Hired.service;
 
-import com.pppfreak.Hired.Entity.TextileEmployee;
-import com.pppfreak.Hired.form.request.MasterForm;
+import com.pppfreak.Hired.Entity.Employee;
+import com.pppfreak.Hired.form.request.EmployeeRequestForm;
 import com.pppfreak.Hired.response.EmployeeResponse;
+import org.springframework.security.core.userdetails.UserDetailsService;
 
 import java.util.List;
 
-public interface EmployeeService {
+public interface EmployeeService extends UserDetailsService {
 
-
-    TextileEmployee getEmployeeByUserId(String userId);
-
-    List<TextileEmployee> getAllEmployee();
-
-    EmployeeResponse addEmployee(MasterForm employee);
-
-    void updateEmployee(TextileEmployee textileEmployee);
-
-    void deleteEmployee(Integer id);
-
-    void deleteEmployeeExperience(Integer employeeId , Integer experienceId);
-
-    TextileEmployee getEmployee(String email);
+     Employee getUserByEmail(String  email);
+     Employee getUserByUserId(String userId);
+     EmployeeResponse signUp(EmployeeRequestForm employee);
+     List<Employee>  getALlEmployee();
+     EmployeeResponse updateEmployee(EmployeeRequestForm employeeRequestForm,String id);
+     String deleteEmployee(String id);
 }

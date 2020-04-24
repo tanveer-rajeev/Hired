@@ -25,8 +25,18 @@ public class CseEmployee {
 
     private String expected_Job_Position;
 
+    private String available_For_Job;
+
     private String resumeURL;
 
+
+    public String getAvailable_For_Job() {
+        return available_For_Job;
+    }
+
+    public void setAvailable_For_Job(String available_For_Job) {
+        this.available_For_Job = available_For_Job;
+    }
 
     public Integer getId() {
         return id;

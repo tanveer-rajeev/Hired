@@ -9,7 +9,7 @@ import java.nio.file.Path;
 public interface StorageService {
 
     void init();
-    void storeFile(MultipartFile file) throws IOException;
+    void storeFile(MultipartFile file);
     Path load(String fileName);
     Resource loadAsResource(String fileName);
     void deleteAll();

@@ -1,12 +1,12 @@
 package com.pppfreak.Hired.controller;
 
-import com.pppfreak.Hired.repository.TextileEmployeeRepository;
-import com.pppfreak.Hired.Entity.TextileEmployee;
+import com.pppfreak.Hired.Entity.Employee;
+import com.pppfreak.Hired.security.LoggedInUserDetails;
 import com.pppfreak.Hired.upload.StorageService;
+import com.pppfreak.Hired.upload.UploadHelper;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -15,61 +15,50 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.MalformedURLException;
 import java.util.Objects;
 
 @RestController
 public class FileUploadController {
 
     private final StorageService storageService;
-    private final TextileEmployeeRepository employeeRepository;
+    private final UploadHelper uploadHelper;
 
     @Autowired
-    public FileUploadController(StorageService storageService , TextileEmployeeRepository employeeRepository) {
+    public FileUploadController(StorageService storageService , UploadHelper uploadHelper) {
         this.storageService = storageService;
-        this.employeeRepository = employeeRepository;
+        this.uploadHelper   = uploadHelper;
     }
 
+
     @PostMapping("/upload/{id}")
-    public String uploadFile(@RequestParam("file") MultipartFile file,@PathVariable String id) {
-        //storageService.deleteAll();
+    public String uploadFile(@RequestParam("file") MultipartFile file , @PathVariable Integer id) throws IOException {
+        storageService.deleteAll();
         storageService.init();
+        storageService.storeFile(file);
+        String fileName = StringUtils.cleanPath(Objects.requireNonNull(file.getOriginalFilename()));
+        String viewResumeURI = ServletUriComponentsBuilder.
+                fromCurrentContextPath().path("/getFile/").path(fileName).toUriString();
+        Employee employee = LoggedInUserDetails.getUserEntity();
 
-        try {
-            storageService.storeFile(file);
-            String fileName= StringUtils.cleanPath(Objects.requireNonNull(file.getOriginalFilename()));
-            String viewResumeURI= ServletUriComponentsBuilder.
-                                  fromCurrentContextPath()
-                                  .path("/getFile/")
-                                  .path(fileName)
-                                  .toUriString();
-
-            TextileEmployee textileEmployee = employeeRepository.findByUserId(id);
-
-            if (textileEmployee ==null){
-                throw new RuntimeException("Employee not found "+id);
-            }
-            textileEmployee.setResumeURL(viewResumeURI);
-            employeeRepository.save(textileEmployee);
-            return viewResumeURI;
-
-        } catch (IOException e) {
-            throw new RuntimeException("File not found "+file.getOriginalFilename());
-        }
+       // uploadHelper.saveEmployeeWithResumeURL(employee.getDepartment() , viewResumeURI , id);
+        return viewResumeURI;
     }
 
     @GetMapping("/getFile/{fileName}")
-    @PreAuthorize("hasAuthority('employee:read')")
-    public void viewFile(@PathVariable String fileName, HttpServletResponse response){
+    public void getResumeUri(@PathVariable String fileName , HttpServletResponse response) throws
+            MalformedURLException {
+
         Resource resource = storageService.loadAsResource(fileName);
 
         try {
+
             InputStream inputStream = resource.getInputStream();
             IOUtils.copy(inputStream,response.getOutputStream());
-            response.setHeader("Content-Disposition","inline; filename=Accepted.pdf");
+            response.setHeader("Content-Disposition", "inline; filename=Accepted.pdf");
 
-
-        } catch (IOException e) {
-            throw new RuntimeException("File not found "+fileName);
+        } catch (IOException ex) {
+            throw new RuntimeException("IOError writing file to output stream");
         }
     }
 

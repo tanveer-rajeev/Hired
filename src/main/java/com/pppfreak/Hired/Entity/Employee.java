@@ -4,8 +4,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
-@Entity(name = "userEmployee")
-public class UserEmployee {
+@Entity(name = "employee")
+public class Employee {
 
     @Id
     @GeneratedValue
@@ -13,7 +13,7 @@ public class UserEmployee {
     private String userId;
     private String email;
     private String encryptedPassword;
-    private String department;
+
 
     public Integer getId() {
         return id;
@@ -47,11 +47,4 @@ public class UserEmployee {
         this.encryptedPassword = encryptedPassword;
     }
 
-    public String getDepartment() {
-        return department;
-    }
-
-    public void setDepartment(String department) {
-        this.department = department;
-    }
 }

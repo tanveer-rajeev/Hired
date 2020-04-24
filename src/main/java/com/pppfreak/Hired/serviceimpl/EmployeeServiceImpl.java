@@ -1,115 +1,112 @@
 package com.pppfreak.Hired.serviceimpl;
 
-import com.pppfreak.Hired.Entity.UserEmployee;
-import com.pppfreak.Hired.Entity.TextileEmployee;
-import com.pppfreak.Hired.form.request.MasterForm;
-import com.pppfreak.Hired.helper.CseEmployeeServiceHelper;
-import com.pppfreak.Hired.helper.EmployeeType;
-import com.pppfreak.Hired.helper.TextileEmployeeServiceHelper;
+import com.pppfreak.Hired.Entity.Employee;
+import com.pppfreak.Hired.customise.MassageConstant;
+import com.pppfreak.Hired.customise.Utils;
+import com.pppfreak.Hired.form.request.EmployeeRequestForm;
+import com.pppfreak.Hired.repository.EmployeeRepository;
 import com.pppfreak.Hired.response.EmployeeResponse;
-import com.pppfreak.Hired.security.LoggedInUserDetails;
+import com.pppfreak.Hired.security.UserEntity;
 import com.pppfreak.Hired.service.EmployeeService;
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
-@Component
+import static com.pppfreak.Hired.security.ApplicationUserRole.EMPLOYEE;
+
+@Service
 public class EmployeeServiceImpl implements EmployeeService {
 
-
-    private final CseEmployeeServiceHelper cseEmployeeServiceHelper;
-
-    private final TextileEmployeeServiceHelper textileEmployeeServiceHelper;
+    private final EmployeeRepository employeeRepository;
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final Utils utils;
+    private final ModelMapper modelMapper;
 
     @Autowired
-    public EmployeeServiceImpl(CseEmployeeServiceHelper cseEmployeeServiceHelper ,
-                               TextileEmployeeServiceHelper textileEmployeeServiceHelper) {
-
-        this.cseEmployeeServiceHelper = cseEmployeeServiceHelper;
-        this.textileEmployeeServiceHelper = textileEmployeeServiceHelper;
+    public EmployeeServiceImpl(EmployeeRepository employeeRepository ,
+                               BCryptPasswordEncoder bCryptPasswordEncoder , Utils utils ,
+                               ModelMapper modelMapper) {
+        this.employeeRepository    = employeeRepository;
+        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+        this.utils                 = utils;
+        this.modelMapper           = modelMapper;
     }
 
     @Override
-    public EmployeeResponse addEmployee(MasterForm masterForm)  {
-
-        UserEmployee employee = LoggedInUserDetails.getUserEntity();
-        String department = employee.getDepartment();
-        System.out.println(department);
-        if(EmployeeType.CSE.getDepartment().equals(department)){
-            return cseEmployeeServiceHelper.assignCseEmployee(masterForm.getCseEmployeeRequestForm());
-
-        }else if(EmployeeType.TEXTILE.getDepartment().equals(department)){
-
-            return textileEmployeeServiceHelper.assignTextileEmployee(masterForm.getTextileEmployeeRequestForm());
+    public Employee getUserByEmail(String email) {
+        Employee employee = employeeRepository.findByEmail(email);
+        if (employee == null) {
+            throw new UsernameNotFoundException("User not found  " + email);
         }
-
-        return new EmployeeResponse();
-
+        return employee;
     }
 
     @Override
-    public TextileEmployee getEmployeeByUserId(String userId) {
-//        TextileEmployee textileEmployee = employeeRepository.findByUserId(userId);
-//
-//        if(textileEmployee ==null){
-//            throw new RuntimeException("Emplopee Not Found "+userId);
+    public Employee getUserByUserId(String userId) {
+
+//        if (employee == null) {
+//            throw new UsernameNotFoundException("User not found  " + userId);
 //        }
-//        return textileEmployee;
-        return null;
+        return  employeeRepository.findByUserId(userId);
     }
 
     @Override
-    public List<TextileEmployee> getAllEmployee() {
-//        List<TextileEmployee> textileEmployee = new ArrayList<>();
-//                employeeRepository
-//                        .findAll().forEach(textileEmployee::add);
-//                return textileEmployee;
-        return null;
-    }
+    public EmployeeResponse signUp(EmployeeRequestForm employeeRequestForm) {
 
+        if (employeeRepository.findByEmail(employeeRequestForm.getEmail()) != null) {
+            throw new RuntimeException("Record already exist ");
+        }
+        EmployeeResponse employeeResponse = modelMapper.map(employeeRequestForm,EmployeeResponse.class);
+        Employee employee = modelMapper.map(employeeRequestForm , Employee.class);
+        employee.setEncryptedPassword(bCryptPasswordEncoder.encode(employeeRequestForm.getPassword()));
+        employee.setUserId(utils.generatedCustomUserId());
+        employeeRepository.save(employee);
+        return employeeResponse;
 
-
-
-    @Override
-    public void updateEmployee(TextileEmployee textileEmployee) {
-        //employeeRepository.save(textileEmployee);
-    }
-
-    @Override
-    public void deleteEmployee(Integer id) {
-//        Optional<TextileEmployee> employee = employeeRepository.findById(id);
-//        if(!employee.isPresent()){
-//            throw  new RuntimeException("Employee not found "+id);
-//        }
-//        employeeRepository.deleteById(id);
     }
 
     @Override
-    public void deleteEmployeeExperience(Integer employeeId,Integer experienceId) {
-
-//        Optional<TextileEmployee> employee = employeeRepository.findById(employeeId);
-//
-//        Experience experience = experienceService.getExperience(experienceId);
-//
-//        if(!employee.isPresent()){
-//            throw  new RuntimeException("Employee not found "+employeeId);
-//        }
-//        if(!experience
-//                .getId()
-//                .equals(experienceId)){
-//            throw  new RuntimeException("Experience not present in employee profile "+experienceId);
-//        }
-//
-//        experienceService.deleteExperience(experienceId);
+    public List<Employee> getALlEmployee() {
+        return (List<Employee>) employeeRepository.findAll();
     }
 
     @Override
-    public TextileEmployee getEmployee(String email) {
-//        return  employeeRepository.findByEmail(email);
-        return null;
+    public EmployeeResponse updateEmployee(EmployeeRequestForm employeeRequestForm,String id) {
+        Optional<Employee> checkDuplicateEmail =
+                Optional.ofNullable(employeeRepository.findByEmail(employeeRequestForm.getEmail()));
+        if(checkDuplicateEmail.isPresent()){
+            throw new RuntimeException("Record already exist "+employeeRequestForm.getEmail());
+        }
+        Employee employee = getUserByUserId(id);
+        employee.setEmail(employeeRequestForm.getEmail());
+        employee.setEncryptedPassword(bCryptPasswordEncoder.encode(employeeRequestForm.getPassword()));
+        employeeRepository.save(employee);
+
+        return modelMapper.map(employee,EmployeeResponse.class);
+
     }
 
+    @Override
+    public String deleteEmployee(String userId) {
+        Employee employee = getUserByUserId(userId);
+        employeeRepository.delete(employee);
+        return MassageConstant.SUCCESS.toString();
+    }
 
+    @Override
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        Employee employee = employeeRepository.findByEmail(email);
+        if (employee == null) {
+            throw new UsernameNotFoundException("User not available  " + email);
+        }
+        return new UserEntity(employee.getEmail() , employee.getEncryptedPassword() ,
+                EMPLOYEE.getGrantedAuthorities() , true , true , true , true);
+    }
 
 }

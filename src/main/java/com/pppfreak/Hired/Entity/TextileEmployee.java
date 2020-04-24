@@ -3,77 +3,37 @@ package com.pppfreak.Hired.Entity;
 import javax.persistence.*;
 import java.util.List;
 
-@Entity(name = "employee")
+@Entity(name = "textile_employee")
 public class TextileEmployee {
 
     @Id
     @GeneratedValue
     private Integer id;
 
-    @Column(nullable = false,length = 40)
-    private String  userId;
-
     @Column(nullable = false, length = 30)
     private String name;
 
-    @Column(nullable = false, length = 50)
-    private String email;
-
-    @Column(nullable = false, length = 250)
-    private String encryptedPassword;
-
     @Column(nullable = false, length = 30)
     private String university;
-
-    @Column(nullable = false, length = 30)
-    private String department;
 
     @Column(nullable = false, length = 2)
     private Integer year_of_experience;
 
     @Column(nullable = false, length = 30)
-    private String expected_Job_Role;
-
-    private String resumeURL;
+    private String expected_Job_Position;
 
     @Column(nullable = false, length = 5)
     private boolean available_For_Job;
 
-    @OneToMany(cascade = CascadeType.ALL)
-    @JoinColumn(name = "office_experience_id")
-    List<Experience> experienceList;
+    private String resumeURL;
 
 
-    public String getUserId() {
-        return userId;
+    public String getExpected_Job_Position() {
+        return expected_Job_Position;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getEncryptedPassword() {
-        return encryptedPassword;
-    }
-
-    public void setEncryptedPassword(String encryptedPassword) {
-        this.encryptedPassword = encryptedPassword;
-    }
-
-    public String getExpected_Job_Role() {
-        return expected_Job_Role;
-    }
-
-    public void setExpected_Job_Role(String expected_Job_Role) {
-        this.expected_Job_Role = expected_Job_Role;
+    public void setExpected_Job_Position(String expected_Job_Position) {
+        this.expected_Job_Position = expected_Job_Position;
     }
 
     public boolean isAvailable_For_Job() {
@@ -90,14 +50,6 @@ public class TextileEmployee {
 
     public void setResumeURL(String resumeURL) {
         this.resumeURL = resumeURL;
-    }
-
-    public List<Experience> getExperienceList() {
-        return experienceList;
-    }
-
-    public void setExperienceList(List<Experience> experienceList) {
-        this.experienceList = experienceList;
     }
 
     public Integer getId() {
@@ -124,13 +76,6 @@ public class TextileEmployee {
         this.university = university;
     }
 
-    public String getDepartment() {
-        return department;
-    }
-
-    public void setDepartment(String department) {
-        this.department = department;
-    }
 
     public Integer getYear_of_experience() {
         return year_of_experience;
@@ -146,9 +91,7 @@ public class TextileEmployee {
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", university='" + university + '\'' +
-                ", department='" + department + '\'' +
                 ", year_of_experience=" + year_of_experience +
-                ", experienceList=" + experienceList +
                 '}';
     }
 }
