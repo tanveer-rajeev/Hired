@@ -13,7 +13,7 @@ public interface CseEmployeeService {
 
     List<CseEmployee> getAllEmployee();
 
-    CseEmployeeResponse addCseEmployee(CseEmployeeRequestForm employee);
+    CseEmployeeResponse addCseEmployee(CseEmployeeRequestForm employee,Integer employeeId);
 
 
 }

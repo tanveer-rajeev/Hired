@@ -1,4 +1,4 @@
-package com.pppfreak.Hired.helper;
+package com.pppfreak.Hired.serviceimpl;
 
 import com.pppfreak.Hired.Entity.TextileEmployee;
 import com.pppfreak.Hired.customise.MassageConstant;
@@ -13,13 +13,13 @@ import org.springframework.stereotype.Service;
 import java.util.Optional;
 
 @Service
-public class TextileEmployeeServiceHelper {
+public class TextileEmployeeServiceImpl {
 
     private final ModelMapper modelMapper;
     private final TextileEmployeeRepository textileEmployeeRepository;
 
     @Autowired
-    public TextileEmployeeServiceHelper(ModelMapper modelMapper , TextileEmployeeRepository textileEmployeeRepository) {
+    public TextileEmployeeServiceImpl(ModelMapper modelMapper , TextileEmployeeRepository textileEmployeeRepository) {
         this.modelMapper            = modelMapper;
         this.textileEmployeeRepository  = textileEmployeeRepository;
 

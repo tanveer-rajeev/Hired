@@ -6,9 +6,11 @@ import com.pppfreak.Hired.response.EmployeeResponse;
 import com.pppfreak.Hired.service.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/employees")
@@ -18,19 +20,26 @@ public class EmployeeController {
     private final EmployeeService employeeService;
 
     @Autowired
+
     public EmployeeController(EmployeeService employeeService) {
         this.employeeService = employeeService;
     }
 
     @GetMapping
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public List<Employee> getALlEmployee(){
         return employeeService.getALlEmployee();
     }
 
-    @GetMapping(value = "/{userId}",produces = MediaType.APPLICATION_JSON_VALUE)
-    public Employee getEmployeeByUserId(String userId){
+    @GetMapping(path = "/{userId}",produces = MediaType.APPLICATION_JSON_VALUE)
+    public EmployeeResponse getEmployeeByUserId(@PathVariable String userId){
         return employeeService.getUserByUserId(userId);
     }
+
+//    @GetMapping(path = "/{userId}",produces = MediaType.APPLICATION_JSON_VALUE)
+//    public Employee getEmployeeById(@PathVariable Integer userId){
+//        return employeeService.getEmployeeById(userId);
+//    }
 
     @PostMapping("/signUp")
     public EmployeeResponse signUp(@RequestBody EmployeeRequestForm employeeRequestForm) {
@@ -43,7 +52,7 @@ public class EmployeeController {
     }
 
     @DeleteMapping("/{userId}")
-    public String deleteEmployeeByUserId(String userId){
+    public String deleteEmployeeByUserId(@PathVariable String userId){
         return employeeService.deleteEmployee(userId);
     }
 

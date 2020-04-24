@@ -14,7 +14,7 @@ public class LoggedInUserDetails {
         String userEmail = authentication.getName();
 
         EmployeeService employeeService =
-                (EmployeeService) SpringApplicationContext.getBean("userEmployeeServiceImpl");
+                (EmployeeService) SpringApplicationContext.getBean("employeeServiceImpl");
         return employeeService.getUserByEmail(userEmail);
 
     }

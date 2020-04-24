@@ -1,32 +1,27 @@
 package com.pppfreak.Hired.upload;
 
-import com.pppfreak.Hired.customise.MassageConstant;
-import com.pppfreak.Hired.helper.CseEmployeeServiceImpl;
-import com.pppfreak.Hired.helper.EmployeeType;
-import com.pppfreak.Hired.helper.TextileEmployeeServiceHelper;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.pppfreak.Hired.Entity.CseEmployee;
+import com.pppfreak.Hired.repository.CseEmployeeRepository;
 import org.springframework.stereotype.Component;
+
+import java.util.Optional;
 
 @Component
 public class UploadHelper {
-    private final CseEmployeeServiceImpl cseEmployeeServiceImplHelper;
-    private final TextileEmployeeServiceHelper textileEmployeeServiceHelper;
-    @Autowired
-    public UploadHelper(CseEmployeeServiceImpl cseEmployeeServiceImplHelper ,
-                        TextileEmployeeServiceHelper textileEmployeeServiceHelper) {
-        this.cseEmployeeServiceImplHelper = cseEmployeeServiceImplHelper;
-        this.textileEmployeeServiceHelper = textileEmployeeServiceHelper;
+
+    private final CseEmployeeRepository cseEmployeeRepository;
+
+    public UploadHelper(CseEmployeeRepository cseEmployeeRepository) {
+        this.cseEmployeeRepository = cseEmployeeRepository;
     }
 
-    public  String saveEmployeeWithResumeURL(String department,String resumeUrl,Integer id){
-        if (EmployeeType.CSE.getDepartment().equals(department)){
-           return cseEmployeeServiceImplHelper.setResumeUrl(resumeUrl,id);
+    public void saveEmployeeWithResumeURL(String resumeUrl , Integer id) {
 
-        }
-        if(EmployeeType.TEXTILE.getDepartment().equals(department)){
-            return textileEmployeeServiceHelper.setResumeUrl(resumeUrl,id);
-        }
-        return MassageConstant.FAILED_TO_UPLOAD.toString();
+        Optional<CseEmployee> temp = cseEmployeeRepository.findById(id);
+        CseEmployee cseEmployee = temp.get();
+        cseEmployee.setResumeURL(resumeUrl);
+        cseEmployeeRepository.save(cseEmployee);
+        //return MassageConstant.FAILED_TO_UPLOAD.toString();
     }
 
 }

@@ -19,6 +19,7 @@ import java.net.MalformedURLException;
 import java.util.Objects;
 
 @RestController
+@RequestMapping("/upload")
 public class FileUploadController {
 
     private final StorageService storageService;
@@ -31,21 +32,20 @@ public class FileUploadController {
     }
 
 
-    @PostMapping("/upload/{id}")
+    @PostMapping("/{id}")
     public String uploadFile(@RequestParam("file") MultipartFile file , @PathVariable Integer id) throws IOException {
         storageService.deleteAll();
         storageService.init();
         storageService.storeFile(file);
         String fileName = StringUtils.cleanPath(Objects.requireNonNull(file.getOriginalFilename()));
         String viewResumeURI = ServletUriComponentsBuilder.
-                fromCurrentContextPath().path("/getFile/").path(fileName).toUriString();
-        Employee employee = LoggedInUserDetails.getUserEntity();
+                fromCurrentContextPath().path("/upload/").path(fileName).toUriString();
 
-       // uploadHelper.saveEmployeeWithResumeURL(employee.getDepartment() , viewResumeURI , id);
+       uploadHelper.saveEmployeeWithResumeURL(viewResumeURI , id);
         return viewResumeURI;
     }
 
-    @GetMapping("/getFile/{fileName}")
+    @GetMapping("/{fileName}")
     public void getResumeUri(@PathVariable String fileName , HttpServletResponse response) throws
             MalformedURLException {
 

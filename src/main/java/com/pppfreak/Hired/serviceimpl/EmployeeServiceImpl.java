@@ -29,13 +29,20 @@ public class EmployeeServiceImpl implements EmployeeService {
     private final ModelMapper modelMapper;
 
     @Autowired
-    public EmployeeServiceImpl(EmployeeRepository employeeRepository ,
-                               BCryptPasswordEncoder bCryptPasswordEncoder , Utils utils ,
-                               ModelMapper modelMapper) {
+    public EmployeeServiceImpl(EmployeeRepository employeeRepository , BCryptPasswordEncoder bCryptPasswordEncoder ,
+                               Utils utils , ModelMapper modelMapper) {
         this.employeeRepository    = employeeRepository;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
         this.utils                 = utils;
         this.modelMapper           = modelMapper;
+    }
+
+    @Override
+    public Employee getEmployeeById(Integer id) {
+
+      Optional<Employee> employee= employeeRepository.findById(id);
+      return  employee.get();
+
     }
 
     @Override
@@ -48,12 +55,18 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public Employee getUserByUserId(String userId) {
+    public EmployeeResponse getUserByUserId(String userId) {
 
-//        if (employee == null) {
-//            throw new UsernameNotFoundException("User not found  " + userId);
-//        }
-        return  employeeRepository.findByUserId(userId);
+        Optional<Employee> employee = Optional.ofNullable(employeeRepository.findByUserId(userId));
+
+        Employee theEmployee = null;
+        if (employee.isPresent()) {
+            theEmployee = employee.get();
+        } else {
+            throw new UsernameNotFoundException("User not found  " + userId);
+        }
+
+        return modelMapper.map(theEmployee , EmployeeResponse.class);
     }
 
     @Override
@@ -62,7 +75,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         if (employeeRepository.findByEmail(employeeRequestForm.getEmail()) != null) {
             throw new RuntimeException("Record already exist ");
         }
-        EmployeeResponse employeeResponse = modelMapper.map(employeeRequestForm,EmployeeResponse.class);
+        EmployeeResponse employeeResponse = modelMapper.map(employeeRequestForm , EmployeeResponse.class);
         Employee employee = modelMapper.map(employeeRequestForm , Employee.class);
         employee.setEncryptedPassword(bCryptPasswordEncoder.encode(employeeRequestForm.getPassword()));
         employee.setUserId(utils.generatedCustomUserId());
@@ -77,25 +90,31 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public EmployeeResponse updateEmployee(EmployeeRequestForm employeeRequestForm,String id) {
+    public EmployeeResponse updateEmployee(EmployeeRequestForm employeeRequestForm , String id) {
         Optional<Employee> checkDuplicateEmail =
                 Optional.ofNullable(employeeRepository.findByEmail(employeeRequestForm.getEmail()));
-        if(checkDuplicateEmail.isPresent()){
-            throw new RuntimeException("Record already exist "+employeeRequestForm.getEmail());
+        if (checkDuplicateEmail.isPresent()) {
+            throw new RuntimeException("Record already exist " + employeeRequestForm.getEmail());
         }
-        Employee employee = getUserByUserId(id);
+        Employee employee = employeeRepository.findByUserId(id);
         employee.setEmail(employeeRequestForm.getEmail());
         employee.setEncryptedPassword(bCryptPasswordEncoder.encode(employeeRequestForm.getPassword()));
         employeeRepository.save(employee);
 
-        return modelMapper.map(employee,EmployeeResponse.class);
+        return modelMapper.map(employee , EmployeeResponse.class);
 
     }
 
     @Override
     public String deleteEmployee(String userId) {
-        Employee employee = getUserByUserId(userId);
+        Employee employee = employeeRepository.findByUserId(userId);
         employeeRepository.delete(employee);
+        return MassageConstant.SUCCESS.toString();
+    }
+
+    @Override
+    public String deleteEmployeeById(Integer id) {
+        employeeRepository.deleteById(id);
         return MassageConstant.SUCCESS.toString();
     }
 
@@ -105,8 +124,8 @@ public class EmployeeServiceImpl implements EmployeeService {
         if (employee == null) {
             throw new UsernameNotFoundException("User not available  " + email);
         }
-        return new UserEntity(employee.getEmail() , employee.getEncryptedPassword() ,
-                EMPLOYEE.getGrantedAuthorities() , true , true , true , true);
+        return new UserEntity(employee.getEmail() , employee.getEncryptedPassword() , EMPLOYEE.getGrantedAuthorities() ,
+                true , true , true , true);
     }
 
 }

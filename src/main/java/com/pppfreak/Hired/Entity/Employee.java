@@ -3,6 +3,7 @@ package com.pppfreak.Hired.Entity;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.criteria.CriteriaBuilder;
 
 @Entity(name = "employee")
 public class Employee {
@@ -14,6 +15,15 @@ public class Employee {
     private String email;
     private String encryptedPassword;
 
+    public Employee() {
+    }
+
+    public Employee(Integer id, String userId , String email , String encryptedPassword) {
+        this.id               =id;
+        this.userId            = userId;
+        this.email             = email;
+        this.encryptedPassword = encryptedPassword;
+    }
 
     public Integer getId() {
         return id;

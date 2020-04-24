@@ -15,9 +15,9 @@ public class CseEmployeeRequestForm {
     private String job_Experience;
 
     private String expected_Job_Position;
+
     private String available_For_Job;
 
-   // private String resumeURL;
 
     public String getAvailable_For_Job() {
         return available_For_Job;
@@ -27,13 +27,6 @@ public class CseEmployeeRequestForm {
         this.available_For_Job = available_For_Job;
     }
 
-//    public String getResumeURL() {
-//        return resumeURL;
-//    }
-//
-//    public void setResumeURL(String resumeURL) {
-//        this.resumeURL = resumeURL;
-//    }
 
     public String getName() {
         return name;

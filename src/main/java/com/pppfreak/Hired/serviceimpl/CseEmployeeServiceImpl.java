@@ -1,12 +1,14 @@
-package com.pppfreak.Hired.helper;
+package com.pppfreak.Hired.serviceimpl;
 
 import com.pppfreak.Hired.Entity.CseEmployee;
+import com.pppfreak.Hired.Entity.Employee;
 import com.pppfreak.Hired.customise.MassageConstant;
 import com.pppfreak.Hired.form.request.CseEmployeeRequestForm;
 
 import com.pppfreak.Hired.repository.CseEmployeeRepository;
 import com.pppfreak.Hired.response.CseEmployeeResponse;
 import com.pppfreak.Hired.response.TextileEmployeeResponse;
+import com.pppfreak.Hired.security.LoggedInUserDetails;
 import com.pppfreak.Hired.service.CseEmployeeService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,10 +31,8 @@ public class CseEmployeeServiceImpl implements CseEmployeeService {
         this.cseEmployeeRepository  = cseEmployeeRepository;
     }
 
-    public TextileEmployeeResponse assignCseEmployee(CseEmployeeRequestForm cseEmployeeRequestForm){
-        CseEmployee cseEmployee = modelMapper.map(cseEmployeeRequestForm,CseEmployee.class);
-        cseEmployeeRepository.save(cseEmployee);
-        return modelMapper.map(cseEmployee, TextileEmployeeResponse.class);
+    public Employee loggedInEmployee(){
+        return LoggedInUserDetails.getUserEntity();
     }
 
     public String setResumeUrl(String viewResumeURI , Integer id) {
@@ -62,14 +62,29 @@ public class CseEmployeeServiceImpl implements CseEmployeeService {
 
     @Override
     public List<CseEmployee> getAllEmployee() {
-        return null;
+
+        return (List<CseEmployee>) cseEmployeeRepository.findAll();
     }
 
     @Override
-    public CseEmployeeResponse addCseEmployee(CseEmployeeRequestForm employee) {
-        return null;
+    public CseEmployeeResponse addCseEmployee(CseEmployeeRequestForm tempEmployee,Integer employeeId) {
+
+        CseEmployee cseEmployee = modelMapper.map(tempEmployee,CseEmployee.class);
+        Employee employee = loggedInEmployee();
+        if(employee.getId().equals(employeeId)){
+            cseEmployee.setEmployee(new Employee(employeeId,"","",""));
+        }else{
+            throw new RuntimeException("Id not found "+employeeId);
+        }
+
+        cseEmployeeRepository.save(cseEmployee);
+        return modelMapper.map(cseEmployee,CseEmployeeResponse.class);
     }
 
 
+    public CseEmployee getCseEmployeeById(Integer id){
+        Optional<CseEmployee> employeeRepositoryById = cseEmployeeRepository.findById(id);
+        return employeeRepositoryById.get();
+    }
 
 }

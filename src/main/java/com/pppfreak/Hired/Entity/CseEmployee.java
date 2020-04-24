@@ -1,8 +1,6 @@
 package com.pppfreak.Hired.Entity;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity(name = "cseEmployee")
 public class CseEmployee {
@@ -11,24 +9,62 @@ public class CseEmployee {
     @GeneratedValue
     private Integer id;
 
+    @Column(nullable = false)
     private String name;
 
+    @Column(nullable = false)
     private String university;
 
+    @Column(nullable = false)
     private String major_ProgrammingLanguage;
 
+    @Column(nullable = false)
     private String contest_Achievement;
 
+    @Column(nullable = false)
     private String specialised_Technology;
 
+    @Column(nullable = false)
     private String job_Experience;
 
+    @Column(nullable = false)
     private String expected_Job_Position;
 
+    @Column(nullable = false)
     private String available_For_Job;
 
     private String resumeURL;
 
+    @ManyToOne(cascade = CascadeType.MERGE)
+    @JoinColumn(name = "employee_id")
+    private Employee employee;
+
+    public CseEmployee() {
+    }
+
+    public CseEmployee(Integer id , String name , String university , String major_ProgrammingLanguage ,
+                       String contest_Achievement , String specialised_Technology , String job_Experience ,
+                       String expected_Job_Position , String available_For_Job , String resumeURL , Integer employee_id) {
+        this.id                        = id;
+        this.name                      = name;
+        this.university                = university;
+        this.major_ProgrammingLanguage = major_ProgrammingLanguage;
+        this.contest_Achievement       = contest_Achievement;
+        this.specialised_Technology    = specialised_Technology;
+        this.job_Experience            = job_Experience;
+        this.expected_Job_Position     = expected_Job_Position;
+        this.available_For_Job         = available_For_Job;
+        this.resumeURL                 = resumeURL;
+        this.employee                  = new Employee(employee_id, "" , "" , "");
+    }
+
+    public Employee getEmployee() {
+        return employee;
+    }
+
+    public void setEmployee(Employee employee) {
+        this.employee = employee;
+    }
 
     public String getAvailable_For_Job() {
         return available_For_Job;

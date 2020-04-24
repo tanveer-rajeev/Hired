@@ -1,7 +1,6 @@
 package com.pppfreak.Hired.Entity;
 
 import javax.persistence.*;
-import java.util.List;
 
 @Entity(name = "textile_employee")
 public class TextileEmployee {
@@ -19,6 +18,9 @@ public class TextileEmployee {
     @Column(nullable = false, length = 2)
     private Integer year_of_experience;
 
+    @Column(nullable = false, length = 2)
+    private String expertiseField;
+
     @Column(nullable = false, length = 30)
     private String expected_Job_Position;
 
@@ -26,7 +28,36 @@ public class TextileEmployee {
     private boolean available_For_Job;
 
     private String resumeURL;
+    @ManyToOne(cascade = CascadeType.MERGE)
+    @JoinColumn(name = "employee_id")
+    private Employee employee;
 
+    public TextileEmployee(String name , String university , Integer year_of_experience , String expected_Job_Position ,
+                           boolean available_For_Job , String resumeURL , Integer employee_id) {
+        this.name                  = name;
+        this.university            = university;
+        this.year_of_experience    = year_of_experience;
+        this.expected_Job_Position = expected_Job_Position;
+        this.available_For_Job     = available_For_Job;
+        this.resumeURL             = resumeURL;
+        this.employee              = new Employee(employee_id, "" , "" , "");
+    }
+
+    public String getExpertiseField() {
+        return expertiseField;
+    }
+
+    public void setExpertiseField(String expertiseField) {
+        this.expertiseField = expertiseField;
+    }
+
+    public Employee getEmployee() {
+        return employee;
+    }
+
+    public void setEmployee(Employee employee) {
+        this.employee = employee;
+    }
 
     public String getExpected_Job_Position() {
         return expected_Job_Position;
