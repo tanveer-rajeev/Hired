@@ -1,9 +1,10 @@
 package com.pppfreak.Hired.repository;
 
-import com.pppfreak.Hired.Entity.TextileEmployee;
+import com.pppfreak.Hired.Entity.JobField;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface TextileEmployeeRepository extends CrudRepository<TextileEmployee,Integer> {
+public interface JobFieldRepository extends CrudRepository<JobField,Integer> {
+    JobField findByField(String role);
 }

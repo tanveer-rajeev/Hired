@@ -26,7 +26,7 @@ public class EmployeeController {
     }
 
     @GetMapping
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    //@PreAuthorize("hasRole('ROLE_ADMIN')")
     public List<Employee> getALlEmployee(){
         return employeeService.getALlEmployee();
     }
@@ -36,10 +36,6 @@ public class EmployeeController {
         return employeeService.getUserByUserId(userId);
     }
 
-//    @GetMapping(path = "/{userId}",produces = MediaType.APPLICATION_JSON_VALUE)
-//    public Employee getEmployeeById(@PathVariable Integer userId){
-//        return employeeService.getEmployeeById(userId);
-//    }
 
     @PostMapping("/signUp")
     public EmployeeResponse signUp(@RequestBody EmployeeRequestForm employeeRequestForm) {
@@ -56,10 +52,5 @@ public class EmployeeController {
         return employeeService.deleteEmployee(userId);
     }
 
-//    @GetMapping("/{dept}")
-//    @PreAuthorize("hasAuthority('employee:read')")
-//    public List getAllEmployee(@PathVariable String department) {
-//        return cseEmployeeService.getAllEmployee();
-//    }
 
 }

@@ -1,7 +1,6 @@
 package com.pppfreak.Hired.controller;
 
-import com.pppfreak.Hired.Entity.Employee;
-import com.pppfreak.Hired.security.LoggedInUserDetails;
+
 import com.pppfreak.Hired.upload.StorageService;
 import com.pppfreak.Hired.upload.UploadHelper;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
@@ -34,14 +33,14 @@ public class FileUploadController {
 
     @PostMapping("/{id}")
     public String uploadFile(@RequestParam("file") MultipartFile file , @PathVariable Integer id) throws IOException {
-        storageService.deleteAll();
+
         storageService.init();
         storageService.storeFile(file);
         String fileName = StringUtils.cleanPath(Objects.requireNonNull(file.getOriginalFilename()));
         String viewResumeURI = ServletUriComponentsBuilder.
                 fromCurrentContextPath().path("/upload/").path(fileName).toUriString();
 
-       uploadHelper.saveEmployeeWithResumeURL(viewResumeURI , id);
+        uploadHelper.setCseEmployeeResumeLink(viewResumeURI , id);
         return viewResumeURI;
     }
 

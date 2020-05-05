@@ -4,33 +4,48 @@ import com.pppfreak.Hired.Entity.CseEmployee;
 import com.pppfreak.Hired.form.request.CseEmployeeRequestForm;
 import com.pppfreak.Hired.response.CseEmployeeResponse;
 import com.pppfreak.Hired.service.CseEmployeeService;
-import com.sun.javafx.css.CssError;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
-@RequestMapping("/cseEmployee")
+@RequestMapping("/cseEmployees")
 public class CseEmployeeController {
 
     private final CseEmployeeService cseEmployeeService;
-    private final ModelMapper modelMapper;
+
+
     @Autowired
-    public CseEmployeeController(CseEmployeeService cseEmployeeService , ModelMapper modelMapper) {
+    public CseEmployeeController(CseEmployeeService cseEmployeeService ) {
         this.cseEmployeeService = cseEmployeeService;
-        this.modelMapper        = modelMapper;
     }
 
     @GetMapping
-    public List<CseEmployee> getAllEmployee(){
-        return cseEmployeeService.getAllEmployee();
+    public List<CseEmployee> getAllCseEmployee(){
+        return cseEmployeeService.getAllCseEmployee();
     }
 
-    @PostMapping("/{employeeId}")
-    public CseEmployeeResponse addCseEmployee(@RequestBody CseEmployeeRequestForm cseEmployeeRequestForm
-                                              ,@PathVariable Integer employeeId){
-      return   cseEmployeeService.addCseEmployee(cseEmployeeRequestForm,employeeId);
+    @GetMapping("/{id}")
+    public Optional<CseEmployee> getCseEmployeeById(@PathVariable Integer id){
+        return cseEmployeeService.getCseEmployeeById(id);
     }
+    @PostMapping
+    public CseEmployeeResponse addCseEmployee(@RequestBody CseEmployeeRequestForm cseEmployeeRequestForm){
+      return   cseEmployeeService.addCseEmployee(cseEmployeeRequestForm);
+    }
+
+    @PutMapping("/{id}")
+    public void updateCseEmployee(@RequestBody CseEmployeeRequestForm cseEmployeeRequestForm,@PathVariable Integer id){
+         cseEmployeeService.updateCseEmployee(cseEmployeeRequestForm,id);
+    }
+
+    @DeleteMapping("/{id}")
+    public void deleteCseEmployee(@PathVariable Integer id){
+        cseEmployeeService.deleteCseEmployee(id);
+    }
+
+
+
 }

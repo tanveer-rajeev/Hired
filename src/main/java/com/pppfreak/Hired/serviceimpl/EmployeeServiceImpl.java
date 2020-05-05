@@ -1,10 +1,14 @@
 package com.pppfreak.Hired.serviceimpl;
 
 import com.pppfreak.Hired.Entity.Employee;
+import com.pppfreak.Hired.Entity.JobCategory;
+import com.pppfreak.Hired.Entity.JobField;
 import com.pppfreak.Hired.customise.MassageConstant;
 import com.pppfreak.Hired.customise.Utils;
 import com.pppfreak.Hired.form.request.EmployeeRequestForm;
 import com.pppfreak.Hired.repository.EmployeeRepository;
+import com.pppfreak.Hired.repository.JobCategoryRepository;
+import com.pppfreak.Hired.repository.JobFieldRepository;
 import com.pppfreak.Hired.response.EmployeeResponse;
 import com.pppfreak.Hired.security.UserEntity;
 import com.pppfreak.Hired.service.EmployeeService;
@@ -24,14 +28,16 @@ import static com.pppfreak.Hired.security.ApplicationUserRole.EMPLOYEE;
 public class EmployeeServiceImpl implements EmployeeService {
 
     private final EmployeeRepository employeeRepository;
+    private final JobCategoryRepository jobCategoryRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final Utils utils;
     private final ModelMapper modelMapper;
 
     @Autowired
-    public EmployeeServiceImpl(EmployeeRepository employeeRepository , BCryptPasswordEncoder bCryptPasswordEncoder ,
-                               Utils utils , ModelMapper modelMapper) {
+    public EmployeeServiceImpl(EmployeeRepository employeeRepository , JobCategoryRepository jobCategoryRepository ,
+                               BCryptPasswordEncoder bCryptPasswordEncoder , Utils utils , ModelMapper modelMapper) {
         this.employeeRepository    = employeeRepository;
+        this.jobCategoryRepository = jobCategoryRepository;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
         this.utils                 = utils;
         this.modelMapper           = modelMapper;
@@ -77,8 +83,13 @@ public class EmployeeServiceImpl implements EmployeeService {
         }
         EmployeeResponse employeeResponse = modelMapper.map(employeeRequestForm , EmployeeResponse.class);
         Employee employee = modelMapper.map(employeeRequestForm , Employee.class);
+
+        JobCategory jobCategory = jobCategoryRepository.findByCategory(employee.getJobCategory().getCategory());
+        employee.setJobCategory(new JobCategory(jobCategory.getId(),""));
+
         employee.setEncryptedPassword(bCryptPasswordEncoder.encode(employeeRequestForm.getPassword()));
         employee.setUserId(utils.generatedCustomUserId());
+
         employeeRepository.save(employee);
         return employeeResponse;
 

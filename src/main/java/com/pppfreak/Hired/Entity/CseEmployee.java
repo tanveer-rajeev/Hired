@@ -1,63 +1,76 @@
 package com.pppfreak.Hired.Entity;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import org.hibernate.annotations.Cascade;
+
 import javax.persistence.*;
+import java.io.Serializable;
+import java.util.Set;
 
 @Entity(name = "cseEmployee")
-public class CseEmployee {
+public class CseEmployee implements Serializable {
 
     @Id
     @GeneratedValue
     private Integer id;
 
-    @Column(nullable = false)
     private String name;
 
-    @Column(nullable = false)
-    private String university;
+    @ManyToOne(cascade = CascadeType.MERGE)
+    @JoinColumn(name = "universityId")
+    private UniversityBsc universityBsc;
 
-    @Column(nullable = false)
-    private String major_ProgrammingLanguage;
+    @ManyToOne(cascade = CascadeType.MERGE)
+    @JoinColumn(name = "jobFieldId",referencedColumnName = "id")
+    private JobField jobField;
 
-    @Column(nullable = false)
-    private String contest_Achievement;
+    @Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE})
+    @ManyToMany
+    @JoinTable(name = "cseEmployee_expertSkill",
+               joinColumns = @JoinColumn(name = "cseEmployee_id", referencedColumnName = "id"),
+               inverseJoinColumns = @JoinColumn(name = "expertSkill_id", referencedColumnName = "id"))
+    private Set<ExpertSkill> expertSkills;
 
-    @Column(nullable = false)
-    private String specialised_Technology;
+    @Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE})
+    @ManyToMany
+    @JoinTable(name = "cseEmployee_secondarySkill",
+               joinColumns = @JoinColumn(name = "cseEmployee_id", referencedColumnName = "id"),
+               inverseJoinColumns = @JoinColumn(name = "secondarySkill_id", referencedColumnName = "id"))
+    private Set<SecondarySkill> secondarySkills;
 
-    @Column(nullable = false)
-    private String job_Experience;
-
-    @Column(nullable = false)
-    private String expected_Job_Position;
-
-    @Column(nullable = false)
-    private String available_For_Job;
+    private String yearOfExperience;
 
     private String resumeURL;
 
-    @ManyToOne(cascade = CascadeType.MERGE)
-    @JoinColumn(name = "employee_id")
+    @ManyToOne
+    @JoinColumn(name = "employeeId",referencedColumnName = "id")
     private Employee employee;
 
-    public CseEmployee() {
+    public UniversityBsc getUniversityBsc() {
+        return universityBsc;
     }
 
-    public CseEmployee(Integer id , String name , String university , String major_ProgrammingLanguage ,
-                       String contest_Achievement , String specialised_Technology , String job_Experience ,
-                       String expected_Job_Position , String available_For_Job , String resumeURL , Integer employee_id) {
-        this.id                        = id;
-        this.name                      = name;
-        this.university                = university;
-        this.major_ProgrammingLanguage = major_ProgrammingLanguage;
-        this.contest_Achievement       = contest_Achievement;
-        this.specialised_Technology    = specialised_Technology;
-        this.job_Experience            = job_Experience;
-        this.expected_Job_Position     = expected_Job_Position;
-        this.available_For_Job         = available_For_Job;
-        this.resumeURL                 = resumeURL;
-        this.employee                  = new Employee(employee_id, "" , "" , "");
+    public void setUniversityBsc(UniversityBsc universityBsc) {
+        this.universityBsc = universityBsc;
     }
 
+    public String getYearOfExperience() {
+        return yearOfExperience;
+    }
+
+    public void setYearOfExperience(String yearOfExperience) {
+        this.yearOfExperience = yearOfExperience;
+    }
+
+    public String getResumeURL() {
+        return resumeURL;
+    }
+
+    public void setResumeURL(String resumeURL) {
+        this.resumeURL = resumeURL;
+    }
+
+    @JsonBackReference
     public Employee getEmployee() {
         return employee;
     }
@@ -66,12 +79,30 @@ public class CseEmployee {
         this.employee = employee;
     }
 
-    public String getAvailable_For_Job() {
-        return available_For_Job;
+    public Set<SecondarySkill> getSecondarySkills() {
+        return secondarySkills;
     }
 
-    public void setAvailable_For_Job(String available_For_Job) {
-        this.available_For_Job = available_For_Job;
+    public Set<ExpertSkill> getExpertSkills() {
+        return expertSkills;
+    }
+
+    public JobField getJobField() {
+        return jobField;
+    }
+
+    public void setSecondarySkills(Set<SecondarySkill> secondarySkills) {
+        this.secondarySkills = secondarySkills;
+    }
+
+
+    public void setExpertSkills(Set<ExpertSkill> expertSkills) {
+        this.expertSkills = expertSkills;
+    }
+
+
+    public void setJobField(JobField jobField) {
+        this.jobField = jobField;
     }
 
     public Integer getId() {
@@ -91,59 +122,4 @@ public class CseEmployee {
     }
 
 
-    public String getUniversity() {
-        return university;
-    }
-
-    public void setUniversity(String university) {
-        this.university = university;
-    }
-
-    public String getMajor_ProgrammingLanguage() {
-        return major_ProgrammingLanguage;
-    }
-
-    public void setMajor_ProgrammingLanguage(String major_ProgrammingLanguage) {
-        this.major_ProgrammingLanguage = major_ProgrammingLanguage;
-    }
-
-    public String getContest_Achievement() {
-        return contest_Achievement;
-    }
-
-    public void setContest_Achievement(String contest_Achievement) {
-        this.contest_Achievement = contest_Achievement;
-    }
-
-    public String getSpecialised_Technology() {
-        return specialised_Technology;
-    }
-
-    public void setSpecialised_Technology(String specialised_Technology) {
-        this.specialised_Technology = specialised_Technology;
-    }
-
-    public String getJob_Experience() {
-        return job_Experience;
-    }
-
-    public void setJob_Experience(String job_Experience) {
-        this.job_Experience = job_Experience;
-    }
-
-    public String getExpected_Job_Position() {
-        return expected_Job_Position;
-    }
-
-    public void setExpected_Job_Position(String expected_Job_Position) {
-        this.expected_Job_Position = expected_Job_Position;
-    }
-
-    public String getResumeURL() {
-        return resumeURL;
-    }
-
-    public void setResumeURL(String resumeURL) {
-        this.resumeURL = resumeURL;
-    }
 }

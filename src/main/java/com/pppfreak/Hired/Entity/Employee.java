@@ -1,9 +1,9 @@
 package com.pppfreak.Hired.Entity;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.criteria.CriteriaBuilder;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
+import javax.persistence.*;
+import java.util.List;
 
 @Entity(name = "employee")
 public class Employee {
@@ -11,26 +11,23 @@ public class Employee {
     @Id
     @GeneratedValue
     private Integer id;
-    private String userId;
     private String email;
     private String encryptedPassword;
+    private String userId;
 
-    public Employee() {
+    @ManyToOne(cascade = CascadeType.MERGE)
+    @JoinColumn(name = "jobCategory_id")
+    private JobCategory jobCategory;
+
+    @OneToMany(mappedBy = "employee")
+    private List<CseEmployee> cseEmployeeList;
+
+    public List<CseEmployee> getCseEmployeeList() {
+        return cseEmployeeList;
     }
 
-    public Employee(Integer id, String userId , String email , String encryptedPassword) {
-        this.id               =id;
-        this.userId            = userId;
-        this.email             = email;
-        this.encryptedPassword = encryptedPassword;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
+    public void setCseEmployeeList(List<CseEmployee> cseEmployeeList) {
+        this.cseEmployeeList = cseEmployeeList;
     }
 
     public String getUserId() {
@@ -39,6 +36,22 @@ public class Employee {
 
     public void setUserId(String userId) {
         this.userId = userId;
+    }
+
+    public JobCategory getJobCategory() {
+        return jobCategory;
+    }
+
+    public void setJobCategory(JobCategory jobCategory) {
+        this.jobCategory = jobCategory;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getEmail() {

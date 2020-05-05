@@ -5,15 +5,19 @@ import com.pppfreak.Hired.form.request.CseEmployeeRequestForm;
 import com.pppfreak.Hired.response.CseEmployeeResponse;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface CseEmployeeService {
 
 
-    CseEmployee getEmployeeByUserId(String userId);
+    List<CseEmployee> getAllCseEmployee();
 
-    List<CseEmployee> getAllEmployee();
+    CseEmployeeResponse addCseEmployee(CseEmployeeRequestForm employee);
 
-    CseEmployeeResponse addCseEmployee(CseEmployeeRequestForm employee,Integer employeeId);
+    CseEmployeeResponse updateCseEmployee(CseEmployeeRequestForm employee,Integer id);
 
+    String deleteCseEmployee(Integer id);
+
+    Optional<CseEmployee> getCseEmployeeById(Integer id);
 
 }

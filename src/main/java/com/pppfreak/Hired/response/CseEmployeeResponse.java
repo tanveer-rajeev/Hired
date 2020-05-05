@@ -1,43 +1,23 @@
 package com.pppfreak.Hired.response;
 
-import com.pppfreak.Hired.Entity.Employee;
+import com.pppfreak.Hired.Entity.*;
+
+import java.util.Set;
 
 public class CseEmployeeResponse {
-
     private String name;
 
     private String university;
 
-    private String major_ProgrammingLanguage;
+    private UniversityBsc universityBsc;
 
-    private String contest_Achievement;
+    private JobField jobField;
 
-    private String specialised_Technology;
+    private Set<ExpertSkill> expertSkills;
 
-    private String job_Experience;
+    private Set<SecondarySkill> secondarySkills;
 
-    private String expected_Job_Position;
-
-    private String available_For_Job;
-
-    private Employee employee;
-
-    public Employee getEmployee() {
-        return employee;
-    }
-
-    public void setEmployee(Employee employee) {
-        this.employee = employee;
-    }
-
-    public String getAvailable_For_Job() {
-        return available_For_Job;
-    }
-
-    public void setAvailable_For_Job(String available_For_Job) {
-        this.available_For_Job = available_For_Job;
-    }
-
+    private String yearOfExperience;
 
     public String getName() {
         return name;
@@ -47,7 +27,6 @@ public class CseEmployeeResponse {
         this.name = name;
     }
 
-
     public String getUniversity() {
         return university;
     }
@@ -56,43 +35,43 @@ public class CseEmployeeResponse {
         this.university = university;
     }
 
-    public String getMajor_ProgrammingLanguage() {
-        return major_ProgrammingLanguage;
+    public UniversityBsc getUniversityBsc() {
+        return universityBsc;
     }
 
-    public void setMajor_ProgrammingLanguage(String major_ProgrammingLanguage) {
-        this.major_ProgrammingLanguage = major_ProgrammingLanguage;
+    public void setUniversityBsc(UniversityBsc universityBsc) {
+        this.universityBsc = universityBsc;
     }
 
-    public String getContest_Achievement() {
-        return contest_Achievement;
+    public JobField getJobField() {
+        return jobField;
     }
 
-    public void setContest_Achievement(String contest_Achievement) {
-        this.contest_Achievement = contest_Achievement;
+    public void setJobField(JobField jobField) {
+        this.jobField = jobField;
     }
 
-    public String getSpecialised_Technology() {
-        return specialised_Technology;
+    public Set<ExpertSkill> getExpertSkills() {
+        return expertSkills;
     }
 
-    public void setSpecialised_Technology(String specialised_Technology) {
-        this.specialised_Technology = specialised_Technology;
+    public void setExpertSkills(Set<ExpertSkill> expertSkills) {
+        this.expertSkills = expertSkills;
     }
 
-    public String getJob_Experience() {
-        return job_Experience;
+    public Set<SecondarySkill> getSecondarySkills() {
+        return secondarySkills;
     }
 
-    public void setJob_Experience(String job_Experience) {
-        this.job_Experience = job_Experience;
+    public void setSecondarySkills(Set<SecondarySkill> secondarySkills) {
+        this.secondarySkills = secondarySkills;
     }
 
-    public String getExpected_Job_Position() {
-        return expected_Job_Position;
+    public String getYearOfExperience() {
+        return yearOfExperience;
     }
 
-    public void setExpected_Job_Position(String expected_Job_Position) {
-        this.expected_Job_Position = expected_Job_Position;
+    public void setYearOfExperience(String yearOfExperience) {
+        this.yearOfExperience = yearOfExperience;
     }
 }

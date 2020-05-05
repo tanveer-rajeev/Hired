@@ -3,11 +3,12 @@ package com.pppfreak.Hired.customise;
 
 public enum  EmployeeType {
 
-    CSE("cse"),
-    IT("it"),
-    TEXTILE("textile"),
-    CIVIL("civil"),
-    EEE("eee");
+    CSE("Computer Engineering"),
+    IT("Information Technology"),
+
+    TEXTILE("Textile Engineering"),
+    CIVIL("Civil engineering"),
+    EEE("Electrical and Electronics Engineering");
      private final String department;
 
     EmployeeType(String department) {
