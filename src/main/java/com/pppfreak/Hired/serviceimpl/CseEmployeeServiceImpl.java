@@ -53,7 +53,11 @@ public class CseEmployeeServiceImpl implements CseEmployeeService {
         CseEmployee cseEmployee = modelMapper.map(requestForm,CseEmployee.class);
         Employee employee = loggedInEmployee();
         cseEmployee.setEmployee(employee);
-
+        if(requestForm.getAvailableForJob().equals("yes")){
+            cseEmployee.setAvailableForJob(true);
+        }else{
+            cseEmployee.setAvailableForJob(false);
+        }
         UniversityBsc universityBsc = universityBscRepository.findByUniversityName(
                                        requestForm.getUniversityBsc().getUniversityName()
         );
@@ -89,9 +93,15 @@ public class CseEmployeeServiceImpl implements CseEmployeeService {
 
         Optional<CseEmployee>  byIdCseEmployee= cseEmployeeRepository.findById(id);
         CseEmployee cseEmployee =byIdCseEmployee.get();
+
         Employee employee = loggedInEmployee();
         cseEmployee.setEmployee(employee);
 
+        if(requestForm.getAvailableForJob().equals("yes")){
+            cseEmployee.setAvailableForJob(true);
+        }else{
+            cseEmployee.setAvailableForJob(false);
+        }
         UniversityBsc universityBsc = universityBscRepository.findByUniversityName(
                 requestForm.getUniversityBsc().getUniversityName()
         );

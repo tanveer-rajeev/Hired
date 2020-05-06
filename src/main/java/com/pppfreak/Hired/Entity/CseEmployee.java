@@ -40,11 +40,21 @@ public class CseEmployee implements Serializable {
 
     private String yearOfExperience;
 
+    private boolean availableForJob;
+
     private String resumeURL;
 
     @ManyToOne
     @JoinColumn(name = "employeeId",referencedColumnName = "id")
     private Employee employee;
+
+    public boolean isAvailableForJob() {
+        return availableForJob;
+    }
+
+    public void setAvailableForJob(boolean availableForJob) {
+        this.availableForJob = availableForJob;
+    }
 
     public UniversityBsc getUniversityBsc() {
         return universityBsc;

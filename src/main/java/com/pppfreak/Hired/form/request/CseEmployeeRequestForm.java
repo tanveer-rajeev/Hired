@@ -21,6 +21,16 @@ public class CseEmployeeRequestForm {
 
     private String yearOfExperience;
 
+    private String  availableForJob;
+
+    public String getAvailableForJob() {
+        return availableForJob;
+    }
+
+    public void setAvailableForJob(String availableForJob) {
+        this.availableForJob = availableForJob;
+    }
+
     public String getName() {
         return name;
     }

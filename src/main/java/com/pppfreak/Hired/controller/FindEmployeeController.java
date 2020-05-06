@@ -37,34 +37,52 @@ public class FindEmployeeController {
 
     @GetMapping("expertSkill/{skill}")
     public Set<CseEmployee> findByExpertSkill(@PathVariable String skill){
-        ExpertSkill expertSkill = expertSkillRepository.findBySkill(skill);
-        return expertSkill.getCseEmployeeSet();
+        return expertSkillRepository.findBySkill(skill)
+                .getCseEmployeeSet()
+                .stream()
+                .filter(CseEmployee::isAvailableForJob)
+                .collect(Collectors.toSet());
     }
 
     @GetMapping("secondarySkill/{skill}")
     public Set<CseEmployee> findBySecondarySkill(@PathVariable String skill){
-        return secondarySkillRepository.findBySkill(skill).getCseEmployees();
+        return secondarySkillRepository.findBySkill(skill)
+                .getCseEmployees()
+                .stream()
+                .filter(CseEmployee::isAvailableForJob)
+                .collect(Collectors.toSet());
 
     }
 
     @GetMapping("jobField/{field}")
     public List<CseEmployee> findByJobField(@PathVariable String field){
-        return jobFieldRepository.findByField(field).getCseEmployees();
+      return jobFieldRepository.findByField(field)
+              .getCseEmployees()
+              .stream()
+              .filter(CseEmployee::isAvailableForJob)
+              .collect(Collectors.toList());
     }
 
     @GetMapping("universityBsc/{university}")
     public Set<CseEmployee> findByUniversityBsc(@PathVariable String university){
-        return universityBscRepository.findByUniversityName(university).getCseEmployee();
+        return universityBscRepository.findByUniversityName(university)
+                .getCseEmployee()
+                .stream()
+                .filter(CseEmployee::isAvailableForJob)
+                .collect(Collectors.toSet());
     }
 
     @GetMapping("jobCategory/{category}")
     public List<CseEmployee> findByJobCategory(@PathVariable String category){
         JobCategory jobCategory=jobCategoryRepository.findByCategory(category);
-        List<Employee> employee = jobCategory.getEmployees();
 
-        return employee.stream()
+        return jobCategory.getEmployees().stream()
                 .map(Employee::getCseEmployeeList)
                 .collect(Collectors.toList())
-                .get(0);
+                .get(0).stream()
+                .filter(CseEmployee::isAvailableForJob)
+                .collect(Collectors.toList());
+
+
     }
 }
