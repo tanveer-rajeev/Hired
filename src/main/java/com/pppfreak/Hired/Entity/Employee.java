@@ -1,12 +1,15 @@
 package com.pppfreak.Hired.Entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.*;
 
 import javax.persistence.*;
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity(name = "employee")
-public class Employee {
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
+public class Employee implements Observer, Serializable {
 
     @Id
     @GeneratedValue
@@ -15,12 +18,69 @@ public class Employee {
     private String encryptedPassword;
     private String userId;
 
+    @Enumerated
+    EmployeeType employeeType;
+
+
     @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "jobCategory_id")
     private JobCategory jobCategory;
 
+
     @OneToMany(mappedBy = "employee")
     private List<CseEmployee> cseEmployeeList;
+
+    @ManyToMany
+    @JoinTable(name = "employeesJobApplyList", joinColumns = @JoinColumn(name = "employeeId"),
+               inverseJoinColumns = @JoinColumn(name = "applyFormId"))
+    private List<JobApplyForm> jobApplyForm;
+
+    @ManyToMany
+    @JoinTable(name = "notifiedCompany", joinColumns = @JoinColumn(name = "employeeId"),
+               inverseJoinColumns = @JoinColumn(name = "companyProfileId"))
+    private List<CompanyProfile> notification;
+
+    @ManyToMany
+    @JoinTable(name = "subscribedCompanies", joinColumns = @JoinColumn(name = "employeeId"),
+               inverseJoinColumns = @JoinColumn(name = "companyProfileId"))
+    private List<CompanyProfile> subscribedCompanies;
+
+
+    public List<CompanyProfile> getNotification() {
+        return notification;
+    }
+
+    public List<CompanyProfile> getSubscribedCompanies() {
+        return subscribedCompanies;
+    }
+
+    public List<JobApplyForm> getJobApplyForm() {
+        return jobApplyForm;
+    }
+
+    public JobCategory getJobCategory() {
+        return jobCategory;
+    }
+
+    public void setSubscribedCompanies(List<CompanyProfile> subscribedCompanies) {
+        this.subscribedCompanies = subscribedCompanies;
+    }
+
+    public void setNotification(List<CompanyProfile> notification) {
+        this.notification = notification;
+    }
+
+    public void setJobApplyForm(List<JobApplyForm> jobApplyForm) {
+        this.jobApplyForm = jobApplyForm;
+    }
+
+    public EmployeeType getEmployeeType() {
+        return employeeType;
+    }
+
+    public void setEmployeeType(EmployeeType employeeType) {
+        this.employeeType = employeeType;
+    }
 
     public List<CseEmployee> getCseEmployeeList() {
         return cseEmployeeList;
@@ -38,9 +98,6 @@ public class Employee {
         this.userId = userId;
     }
 
-    public JobCategory getJobCategory() {
-        return jobCategory;
-    }
 
     public void setJobCategory(JobCategory jobCategory) {
         this.jobCategory = jobCategory;
@@ -70,4 +127,11 @@ public class Employee {
         this.encryptedPassword = encryptedPassword;
     }
 
+    @Override
+    public void update(CompanyProfile companyProfile) {
+        if (notification == null) {
+            notification = new ArrayList<>();
+        }
+        notification.add(companyProfile);
+    }
 }

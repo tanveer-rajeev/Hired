@@ -1,19 +1,20 @@
 package com.pppfreak.Hired.Entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.*;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Set;
 
 @Entity(name = "university")
-public class UniversityBsc {
+public class UniversityBsc implements Serializable {
 
     @Id
     @GeneratedValue
     private Integer id;
 
     private String universityName;
-
+    @JsonIgnore
     @OneToMany(mappedBy = "universityBsc")
     private Set<CseEmployee> cseEmployee;
 

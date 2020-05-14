@@ -17,10 +17,6 @@ public class HiredApplication {
 		SpringApplication.run(HiredApplication.class, args);
 	}
 
-	@Bean
-	public BCryptPasswordEncoder bCryptPasswordEncoder(){
-		return new BCryptPasswordEncoder();
-	}
 
 	@Bean
 	public SpringApplicationContext springApplicationContext(){
@@ -32,5 +28,9 @@ public class HiredApplication {
 		return new ModelMapper();
 	}
 
-
+	@Bean
+	public BCryptPasswordEncoder bCryptPasswordEncoder(){
+		return new BCryptPasswordEncoder();
+	}
 }
+

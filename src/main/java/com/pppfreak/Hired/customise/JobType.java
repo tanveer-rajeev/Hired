@@ -1,7 +1,7 @@
 package com.pppfreak.Hired.customise;
 
 
-public enum  EmployeeType {
+public enum JobType {
 
     CSE("Computer Engineering"),
     IT("Information Technology"),
@@ -11,7 +11,7 @@ public enum  EmployeeType {
     EEE("Electrical and Electronics Engineering");
      private final String department;
 
-    EmployeeType(String department) {
+    JobType(String department) {
         this.department = department;
     }
 

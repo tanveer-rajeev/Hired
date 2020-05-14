@@ -1,28 +1,26 @@
 package com.pppfreak.Hired.serviceimpl;
 
-import com.pppfreak.Hired.Entity.Employee;
-import com.pppfreak.Hired.Entity.JobCategory;
-import com.pppfreak.Hired.Entity.JobField;
+import com.pppfreak.Hired.Entity.*;
 import com.pppfreak.Hired.customise.MassageConstant;
 import com.pppfreak.Hired.customise.Utils;
 import com.pppfreak.Hired.form.request.EmployeeRequestForm;
+import com.pppfreak.Hired.repository.CompanyProfileRepository;
 import com.pppfreak.Hired.repository.EmployeeRepository;
 import com.pppfreak.Hired.repository.JobCategoryRepository;
-import com.pppfreak.Hired.repository.JobFieldRepository;
 import com.pppfreak.Hired.response.EmployeeResponse;
-import com.pppfreak.Hired.security.UserEntity;
 import com.pppfreak.Hired.service.EmployeeService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-
-import static com.pppfreak.Hired.security.ApplicationUserRole.EMPLOYEE;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
@@ -32,15 +30,18 @@ public class EmployeeServiceImpl implements EmployeeService {
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final Utils utils;
     private final ModelMapper modelMapper;
-
+    private final CompanyProfileRepository companyProfileRepository;
     @Autowired
-    public EmployeeServiceImpl(EmployeeRepository employeeRepository , JobCategoryRepository jobCategoryRepository ,
-                               BCryptPasswordEncoder bCryptPasswordEncoder , Utils utils , ModelMapper modelMapper) {
+    public EmployeeServiceImpl( EmployeeRepository employeeRepository ,
+                               JobCategoryRepository jobCategoryRepository ,
+                               BCryptPasswordEncoder bCryptPasswordEncoder , Utils utils , ModelMapper modelMapper ,
+                               CompanyProfileRepository companyProfileRepository) {
         this.employeeRepository    = employeeRepository;
         this.jobCategoryRepository = jobCategoryRepository;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
         this.utils                 = utils;
         this.modelMapper           = modelMapper;
+        this.companyProfileRepository = companyProfileRepository;
     }
 
     @Override
@@ -89,7 +90,8 @@ public class EmployeeServiceImpl implements EmployeeService {
 
         employee.setEncryptedPassword(bCryptPasswordEncoder.encode(employeeRequestForm.getPassword()));
         employee.setUserId(utils.generatedCustomUserId());
-
+        
+        employee.setEmployeeType(EmployeeType.EMPLOYEE);
         employeeRepository.save(employee);
         return employeeResponse;
 
@@ -130,13 +132,25 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        Employee employee = employeeRepository.findByEmail(email);
-        if (employee == null) {
-            throw new UsernameNotFoundException("User not available  " + email);
-        }
-        return new UserEntity(employee.getEmail() , employee.getEncryptedPassword() , EMPLOYEE.getGrantedAuthorities() ,
-                true , true , true , true);
+    public List<CseEmployee> getCseEmployeeByEmployeeUserId(String userId) {
+
+        return employeeRepository.findByUserId(userId).getCseEmployeeList();
+    }
+
+    @Override
+    public void subscribeCompany( Integer companyId,  Integer employeeId){
+        Optional<Employee> emp = employeeRepository.findById(employeeId);
+        Employee employee = emp.get();
+
+        Optional<CompanyProfile> tempCompany = companyProfileRepository.findById(companyId);
+        CompanyProfile company =  tempCompany.get();
+        company.registerObserver(employee);    // company get employee subscriber
+
+        // employee get company subscription
+        List<CompanyProfile> companies = new ArrayList<>();
+        companies.add(company);
+        employee.setSubscribedCompanies(companies);
+        employeeRepository.save(employee);
     }
 
 }

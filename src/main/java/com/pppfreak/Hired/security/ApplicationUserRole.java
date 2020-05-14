@@ -12,7 +12,8 @@ import static com.pppfreak.Hired.security.ApplicationUserPermission.*;
 
 public enum ApplicationUserRole {
     EMPLOYEE(Sets.newHashSet(EMPLOYEE_WRITE,EMPLOYEE_READ)),
-    ADMIN(Sets.newHashSet(EMPLOYEE_WRITE, EMPLOYEE_READ));
+    ADMIN(Sets.newHashSet(EMPLOYEE_READ,COMPANY_READ)),
+    COMPANY(Sets.newHashSet(COMPANY_READ,COMPANY_WRITE));
 
     private final Set<ApplicationUserPermission> roles;
 

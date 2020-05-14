@@ -22,7 +22,7 @@ import java.util.Date;
 
 public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
-    private AuthenticationManager authenticationManager;
+    private final AuthenticationManager authenticationManager;
 
     public AuthenticationFilter(AuthenticationManager authenticationManager) {
         this.authenticationManager = authenticationManager;
@@ -47,21 +47,25 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
     }
 
     @Override
-    protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult)
+    protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response,
+                                            FilterChain chain, Authentication authResult)
         {
 
         String userEmail = ((UserEntity)authResult.getPrincipal()).getUsername();
-        String token = Jwts.builder().setSubject(userEmail).claim("authorities",authResult.getAuthorities())
+        String token = Jwts.builder().setSubject(userEmail)
+                                     .claim("authorities",authResult.getAuthorities())
                                      .setIssuedAt(new Date(System.currentTimeMillis()))
                                      .setExpiration(new Date(System.currentTimeMillis()+SecurityConstrants.EXPERATION_TIME))
                                      .signWith(SignatureAlgorithm.HS512,SecurityConstrants.SECRET_TOKEN)
                                      .compact();
 
-        EmployeeService employeeService =
-                    (EmployeeService) SpringApplicationContext.getBean("employeeServiceImpl");
-        Employee employee = employeeService.getUserByEmail(userEmail);
-
         response.addHeader(SecurityConstrants.HEADER_STRING,SecurityConstrants.TOKEN_PREFIX+token);
-        response.addHeader("UserId", employee.getUserId());
+
+            System.out.println(request.getRequestURL());
+//        EmployeeService employeeService =
+//                    (EmployeeService) SpringApplicationContext.getBean("employeeServiceImpl");
+//        Employee employee = employeeService.getUserByEmail(userEmail);
+//
+//     response.addHeader("UserId", employee.getUserId());
     }
 }

@@ -1,15 +1,13 @@
 package com.pppfreak.Hired.Entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.*;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
+import java.io.Serializable;
 import java.util.List;
 
 @Entity(name = "jobField")
-public class JobField {
+public class JobField implements Serializable {
 
     @Id
     @GeneratedValue
@@ -17,6 +15,7 @@ public class JobField {
 
     private String field;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "jobField")
     private List<CseEmployee> cseEmployees;
 
@@ -44,7 +43,6 @@ public class JobField {
         this.field = field;
     }
 
-    @JsonBackReference
     public List<CseEmployee> getCseEmployees() {
         return cseEmployees;
     }

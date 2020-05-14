@@ -1,13 +1,12 @@
 package com.pppfreak.Hired.Entity;
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.ManyToMany;
+import com.fasterxml.jackson.annotation.*;
+
+import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Set;
 
 @Entity(name = "secondarySkill")
-public class SecondarySkill {
+public class SecondarySkill implements Serializable {
 
     @Id
     @GeneratedValue
@@ -15,6 +14,7 @@ public class SecondarySkill {
 
     private String skill;
 
+    @JsonIgnore
     @ManyToMany(mappedBy = "secondarySkills")
     private Set<CseEmployee> cseEmployees;
 
@@ -25,7 +25,7 @@ public class SecondarySkill {
         this.id    = id;
         this.skill = skill;
     }
-    @JsonBackReference
+
     public Set<CseEmployee> getCseEmployees() {
         return cseEmployees;
     }

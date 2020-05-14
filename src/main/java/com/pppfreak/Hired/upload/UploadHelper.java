@@ -1,12 +1,9 @@
 package com.pppfreak.Hired.upload;
 
 import com.pppfreak.Hired.Entity.CseEmployee;
-import com.pppfreak.Hired.Entity.Employee;
 
-import com.pppfreak.Hired.customise.EmployeeType;
 import com.pppfreak.Hired.repository.CseEmployeeRepository;
 
-import com.pppfreak.Hired.security.LoggedInUserDetails;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;

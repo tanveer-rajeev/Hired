@@ -1,5 +1,7 @@
 package com.pppfreak.Hired.controller;
 
+import com.pppfreak.Hired.Entity.CompanyProfile;
+import com.pppfreak.Hired.Entity.CseEmployee;
 import com.pppfreak.Hired.Entity.Employee;
 import com.pppfreak.Hired.form.request.EmployeeRequestForm;
 import com.pppfreak.Hired.response.EmployeeResponse;
@@ -9,6 +11,7 @@ import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -20,13 +23,12 @@ public class EmployeeController {
     private final EmployeeService employeeService;
 
     @Autowired
-
     public EmployeeController(EmployeeService employeeService) {
         this.employeeService = employeeService;
     }
 
     @GetMapping
-    //@PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public List<Employee> getALlEmployee(){
         return employeeService.getALlEmployee();
     }
@@ -36,6 +38,10 @@ public class EmployeeController {
         return employeeService.getUserByUserId(userId);
     }
 
+    @GetMapping("cseEmployees/{userId}")
+    public List<CseEmployee> getAllCseEmployee(@PathVariable String userId){
+        return employeeService.getCseEmployeeByEmployeeUserId(userId);
+    }
 
     @PostMapping("/signUp")
     public EmployeeResponse signUp(@RequestBody EmployeeRequestForm employeeRequestForm) {
@@ -52,5 +58,8 @@ public class EmployeeController {
         return employeeService.deleteEmployee(userId);
     }
 
-
+    @PostMapping("subscribe/{companyId}/employee/{employeeId}")
+    public void subscribeCompany(@PathVariable Integer companyId,@PathVariable Integer employeeId){
+        employeeService.subscribeCompany(companyId,employeeId);
+    }
 }

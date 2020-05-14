@@ -1,18 +1,21 @@
 package com.pppfreak.Hired.Entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.*;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Set;
 
 @Entity(name = "expertSkill")
-public class ExpertSkill {
+//@JsonIdentityInfo(generator= ObjectIdGenerators.PropertyGenerator.class, property="id")
+public class ExpertSkill implements Serializable {
 
     @Id
     @GeneratedValue
     private Integer id;
     private String skill;
 
+    @JsonIgnore
     @ManyToMany(mappedBy = "expertSkills")
     private Set<CseEmployee> cseEmployeeSet;
 
@@ -23,7 +26,7 @@ public class ExpertSkill {
         this.id    = id;
         this.skill = skill;
     }
-    @JsonBackReference
+
     public Set<CseEmployee> getCseEmployeeSet() {
         return cseEmployeeSet;
     }

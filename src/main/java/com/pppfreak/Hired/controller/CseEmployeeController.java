@@ -5,6 +5,7 @@ import com.pppfreak.Hired.form.request.CseEmployeeRequestForm;
 import com.pppfreak.Hired.response.CseEmployeeResponse;
 import com.pppfreak.Hired.service.CseEmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -15,8 +16,6 @@ import java.util.Optional;
 public class CseEmployeeController {
 
     private final CseEmployeeService cseEmployeeService;
-
-
     @Autowired
     public CseEmployeeController(CseEmployeeService cseEmployeeService ) {
         this.cseEmployeeService = cseEmployeeService;
@@ -31,7 +30,8 @@ public class CseEmployeeController {
     public Optional<CseEmployee> getCseEmployeeById(@PathVariable Integer id){
         return cseEmployeeService.getCseEmployeeById(id);
     }
-    @PostMapping
+
+    @PostMapping(consumes = {MediaType.APPLICATION_JSON_VALUE},produces = {MediaType.APPLICATION_JSON_VALUE})
     public CseEmployeeResponse addCseEmployee(@RequestBody CseEmployeeRequestForm cseEmployeeRequestForm){
       return   cseEmployeeService.addCseEmployee(cseEmployeeRequestForm);
     }

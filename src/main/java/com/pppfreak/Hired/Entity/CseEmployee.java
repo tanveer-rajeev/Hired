@@ -1,6 +1,6 @@
 package com.pppfreak.Hired.Entity;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.*;
 import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
@@ -8,6 +8,7 @@ import java.io.Serializable;
 import java.util.Set;
 
 @Entity(name = "cseEmployee")
+@JsonIdentityInfo(generator= ObjectIdGenerators.PropertyGenerator.class, property="id")
 public class CseEmployee implements Serializable {
 
     @Id
@@ -16,22 +17,22 @@ public class CseEmployee implements Serializable {
 
     private String name;
 
-    @ManyToOne(cascade = CascadeType.MERGE)
+    @ManyToOne
     @JoinColumn(name = "universityId")
     private UniversityBsc universityBsc;
 
-    @ManyToOne(cascade = CascadeType.MERGE)
-    @JoinColumn(name = "jobFieldId",referencedColumnName = "id")
+    @ManyToOne
+    @JoinColumn(name = "jobFieldId", referencedColumnName = "id")
     private JobField jobField;
 
-    @Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE})
+     //@Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE})
     @ManyToMany
     @JoinTable(name = "cseEmployee_expertSkill",
                joinColumns = @JoinColumn(name = "cseEmployee_id", referencedColumnName = "id"),
                inverseJoinColumns = @JoinColumn(name = "expertSkill_id", referencedColumnName = "id"))
     private Set<ExpertSkill> expertSkills;
 
-    @Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE})
+     //@Cascade({org.hibernate.annotations.CascadeType.SAVE_UPDATE})
     @ManyToMany
     @JoinTable(name = "cseEmployee_secondarySkill",
                joinColumns = @JoinColumn(name = "cseEmployee_id", referencedColumnName = "id"),
@@ -44,8 +45,10 @@ public class CseEmployee implements Serializable {
 
     private String resumeURL;
 
+
+    @JsonIgnore
     @ManyToOne
-    @JoinColumn(name = "employeeId",referencedColumnName = "id")
+    @JoinColumn(name = "employeeId", referencedColumnName = "id")
     private Employee employee;
 
     public boolean isAvailableForJob() {
@@ -64,6 +67,22 @@ public class CseEmployee implements Serializable {
         this.universityBsc = universityBsc;
     }
 
+    public void setEmployee(Employee employee) {
+        this.employee = employee;
+    }
+
+    public void setSecondarySkills(Set<SecondarySkill> secondarySkills) {
+        this.secondarySkills = secondarySkills;
+    }
+
+    public void setExpertSkills(Set<ExpertSkill> expertSkills) {
+        this.expertSkills = expertSkills;
+    }
+
+    public void setJobField(JobField jobField) {
+        this.jobField = jobField;
+    }
+
     public String getYearOfExperience() {
         return yearOfExperience;
     }
@@ -80,13 +99,8 @@ public class CseEmployee implements Serializable {
         this.resumeURL = resumeURL;
     }
 
-    @JsonBackReference
     public Employee getEmployee() {
         return employee;
-    }
-
-    public void setEmployee(Employee employee) {
-        this.employee = employee;
     }
 
     public Set<SecondarySkill> getSecondarySkills() {
@@ -101,19 +115,6 @@ public class CseEmployee implements Serializable {
         return jobField;
     }
 
-    public void setSecondarySkills(Set<SecondarySkill> secondarySkills) {
-        this.secondarySkills = secondarySkills;
-    }
-
-
-    public void setExpertSkills(Set<ExpertSkill> expertSkills) {
-        this.expertSkills = expertSkills;
-    }
-
-
-    public void setJobField(JobField jobField) {
-        this.jobField = jobField;
-    }
 
     public Integer getId() {
         return id;

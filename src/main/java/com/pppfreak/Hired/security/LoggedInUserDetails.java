@@ -10,7 +10,6 @@ public class LoggedInUserDetails {
 
     public static Employee getUserEntity() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        //  String userEmail = ((UserEntity)authentication.getPrincipal()).getUsername();
         String userEmail = authentication.getName();
 
         EmployeeService employeeService =
