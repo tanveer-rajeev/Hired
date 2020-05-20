@@ -1,7 +1,10 @@
 package com.pppfreak.Hired.Entity;
 
+import lombok.Data;
+
 import javax.persistence.*;
 
+@Data
 @Entity(name = "admin")
 public class Admin {
     @Id
@@ -13,35 +16,4 @@ public class Admin {
     @Enumerated
     private EmployeeType employeeType;
 
-    public EmployeeType getEmployeeType() {
-        return employeeType;
-    }
-
-    public void setEmployeeType(EmployeeType employeeType) {
-        this.employeeType = employeeType;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getEncryptedPassword() {
-        return encryptedPassword;
-    }
-
-    public void setEncryptedPassword(String encryptedPassword) {
-        this.encryptedPassword = encryptedPassword;
-    }
 }

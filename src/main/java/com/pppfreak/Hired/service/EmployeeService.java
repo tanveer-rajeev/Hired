@@ -2,13 +2,13 @@ package com.pppfreak.Hired.service;
 
 import com.pppfreak.Hired.Entity.CseEmployee;
 import com.pppfreak.Hired.Entity.Employee;
+import com.pppfreak.Hired.Entity.JobCircular;
 import com.pppfreak.Hired.form.request.EmployeeRequestForm;
 import com.pppfreak.Hired.response.EmployeeResponse;
-import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 
-import javax.persistence.criteria.CriteriaBuilder;
 import java.util.List;
-import java.util.Optional;
 
 public interface EmployeeService {
 
@@ -18,8 +18,10 @@ public interface EmployeeService {
      EmployeeResponse signUp(EmployeeRequestForm employee);
      List<Employee>  getALlEmployee();
      EmployeeResponse updateEmployee(EmployeeRequestForm employeeRequestForm,String id);
-     String deleteEmployee(String id);
-     String deleteEmployeeById(Integer id);
-     void subscribeCompany( Integer id,  Integer companyId)   ;
+     String deleteEmployeeByUserId(String userId);
+     String deleteEmployeeById(Integer employeeId);
+
      List<CseEmployee> getCseEmployeeByEmployeeUserId(String userId);
+     List<JobCircular> getAppliedJobCircular(Integer employeeId);
+     String deleteJobApplyForm(Integer id);
 }

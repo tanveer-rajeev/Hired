@@ -10,6 +10,7 @@ import com.pppfreak.Hired.security.LoggedInUserDetails;
 import com.pppfreak.Hired.service.CseEmployeeService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
@@ -53,11 +54,11 @@ public class CseEmployeeServiceImpl implements CseEmployeeService {
         CseEmployee cseEmployee = modelMapper.map(requestForm,CseEmployee.class);
         Employee employee = loggedInEmployee();
         cseEmployee.setEmployee(employee);
-        if(requestForm.getAvailableForJob().equals("yes")){
-            cseEmployee.setAvailableForJob(true);
-        }else{
-            cseEmployee.setAvailableForJob(false);
-        }
+
+        cseEmployee.setAvailableForJob(requestForm
+                                               .getAvailableForJob()
+                                               .equals("yes"));
+
         UniversityBsc universityBsc = universityBscRepository.findByUniversityName(
                                        requestForm.getUniversityBsc().getUniversityName()
         );
@@ -91,17 +92,12 @@ public class CseEmployeeServiceImpl implements CseEmployeeService {
     @Override
     public CseEmployeeResponse updateCseEmployee(CseEmployeeRequestForm requestForm,Integer id) {
 
-        Optional<CseEmployee>  byIdCseEmployee= cseEmployeeRepository.findById(id);
-        CseEmployee cseEmployee =byIdCseEmployee.get();
+        CseEmployee cseEmployee =cseEmployeeRepository.findById(id).stream()
+                                  .filter(cseEmployee1 -> cseEmployee1.getId().equals(id))
+                                  .findFirst()
+                                  .orElseThrow(NullPointerException::new);
+        modelMapper.map(requestForm,cseEmployee);
 
-        Employee employee = loggedInEmployee();
-        cseEmployee.setEmployee(employee);
-
-        if(requestForm.getAvailableForJob().equals("yes")){
-            cseEmployee.setAvailableForJob(true);
-        }else{
-            cseEmployee.setAvailableForJob(false);
-        }
         UniversityBsc universityBsc = universityBscRepository.findByUniversityName(
                 requestForm.getUniversityBsc().getUniversityName()
         );
@@ -115,7 +111,7 @@ public class CseEmployeeServiceImpl implements CseEmployeeService {
 
         for (ExpertSkill p : expertSkills) {
             p = expertSkillRepository.findBySkill(p.getSkill());
-            temp.add(new ExpertSkill(p.getId() , ""));
+            temp.add(p);
 
         }
         Set<SecondarySkill> secondarySkills = requestForm.getSecondarySkills();
@@ -123,7 +119,7 @@ public class CseEmployeeServiceImpl implements CseEmployeeService {
 
         for (SecondarySkill s : secondarySkills) {
             s = secondarySkillRepository.findBySkill(s.getSkill());
-            secondSkill.add(new SecondarySkill(s.getId() , ""));
+            secondSkill.add(s);
         }
         cseEmployee.setSecondarySkills(secondSkill);
         cseEmployee.setExpertSkills(temp);

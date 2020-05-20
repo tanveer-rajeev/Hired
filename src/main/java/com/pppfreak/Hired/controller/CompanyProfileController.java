@@ -1,13 +1,12 @@
 package com.pppfreak.Hired.controller;
 
-import com.pppfreak.Hired.Entity.CompanyProfile;
-import com.pppfreak.Hired.Entity.JobApplyForm;
-import com.pppfreak.Hired.Entity.JobCircular;
+import com.pppfreak.Hired.Entity.*;
 import com.pppfreak.Hired.form.request.CompanyProfileModel;
 import com.pppfreak.Hired.service.CompanyProfileService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 
 @RestController
 @RequestMapping("/companies")
@@ -21,20 +20,54 @@ public class CompanyProfileController {
     }
 
 
-    @PostMapping("job/{jobId}/employee/{employeeId}")
-    public void jobApply(@RequestBody JobApplyForm form , @PathVariable Integer jobId ,
-                         @PathVariable Integer employeeId) {
-        companyProfileService.jobApply(form,jobId,employeeId);
+    @GetMapping("/{id}")
+    public ResponseEntity<CompanyProfile> getCompanyProfileById(@PathVariable Integer id){
+
+        return ResponseEntity.ok().body(companyProfileService.getCompanyProfileById(id));
     }
 
-    @PostMapping("{companyId}/jobCategory/{jobCategoryId}/job")
-    public void createJob(@RequestBody JobCircular job,@PathVariable Integer jobCategoryId,@PathVariable Integer companyId){
-       companyProfileService.createJob(job,jobCategoryId,companyId);
+    @GetMapping("name/{name}")
+    public ResponseEntity<CompanyProfile> getCompanyProfileByName(@PathVariable String name){
+
+        return ResponseEntity.ok().body(companyProfileService.getCompanyProfileByName(name));
     }
+    @GetMapping("email/{email}")
+    public ResponseEntity<CompanyProfile> getCompanyProfileByEmail(@PathVariable String email){
+
+        return ResponseEntity.ok().body(companyProfileService.getCompanyProfileByEmail(email));
+    }
+
 
     @PostMapping
-    public void addCompanyProfile(@RequestBody CompanyProfileModel companyProfileModel){
-        companyProfileService.addCompanyProfile(companyProfileModel);
+    public ResponseEntity<CompanyProfile> addCompanyProfile(@RequestBody CompanyProfileModel companyProfileModel){
+        return ResponseEntity.ok()
+                .body(companyProfileService
+                        .addCompanyProfile(companyProfileModel));
     }
 
+    @PostMapping("/jobTitle")
+    public ResponseEntity<CompanyJobTitle> addJobTitle(@RequestBody  CompanyJobTitle companyJobTitle){
+        return ResponseEntity.ok()
+                .body(companyProfileService
+                        .createJobTitle(companyJobTitle));
+    }
+
+    @PostMapping("subscribe/{companyId}/employee/{employeeId}")
+    public ResponseEntity<HttpStatus> subscribeCompany(@PathVariable Integer companyId,@PathVariable Integer employeeId){
+        companyProfileService.subscribeCompany(companyId,employeeId);
+        return ResponseEntity.ok(HttpStatus.ACCEPTED);
+    }
+
+
+    @PostMapping("/unsubscribe/{companyId}/{employeeId}")
+    public ResponseEntity<HttpStatus> unsubscribe(@PathVariable Integer companyId,@PathVariable Integer employeeId){
+        companyProfileService.unsubscribeCompany(companyId,employeeId);
+        return ResponseEntity.ok(HttpStatus.ACCEPTED);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<CompanyProfile> updateCompanyProfile(@RequestBody CompanyProfileModel companyProfileModel,
+                                                               @PathVariable Integer id){
+        return ResponseEntity.ok().body(companyProfileService.updateCompanyProfile(companyProfileModel,id));
+    }
 }

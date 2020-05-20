@@ -1,8 +1,8 @@
 package com.pppfreak.Hired.controller;
 
-import com.pppfreak.Hired.Entity.CompanyProfile;
 import com.pppfreak.Hired.Entity.CseEmployee;
 import com.pppfreak.Hired.Entity.Employee;
+import com.pppfreak.Hired.Entity.JobCircular;
 import com.pppfreak.Hired.form.request.EmployeeRequestForm;
 import com.pppfreak.Hired.response.EmployeeResponse;
 import com.pppfreak.Hired.service.EmployeeService;
@@ -11,9 +11,7 @@ import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequestMapping("/employees")
@@ -55,11 +53,11 @@ public class EmployeeController {
 
     @DeleteMapping("/{userId}")
     public String deleteEmployeeByUserId(@PathVariable String userId){
-        return employeeService.deleteEmployee(userId);
+        return employeeService.deleteEmployeeByUserId(userId);
     }
 
-    @PostMapping("subscribe/{companyId}/employee/{employeeId}")
-    public void subscribeCompany(@PathVariable Integer companyId,@PathVariable Integer employeeId){
-        employeeService.subscribeCompany(companyId,employeeId);
+    @GetMapping("appliedJobs/{employeeId}")
+    public List<JobCircular> getAllAppliedJobs(@PathVariable Integer employeeId){
+     return    employeeService.getAppliedJobCircular(employeeId);
     }
 }

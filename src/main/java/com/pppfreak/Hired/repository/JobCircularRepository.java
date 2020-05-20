@@ -4,7 +4,9 @@ import com.pppfreak.Hired.Entity.JobCircular;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface JobCircularRepository extends CrudRepository<JobCircular,Integer> {
-    JobCircular findByJobTitle(String title);
+    List<JobCircular> findByJobLocation(String location);
 }

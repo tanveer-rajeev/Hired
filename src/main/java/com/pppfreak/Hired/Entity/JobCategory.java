@@ -16,7 +16,7 @@ public class JobCategory implements Serializable {
     @OneToMany(mappedBy = "jobCategory")
     private List<Employee> employees;
 
-  @JsonIgnore
+    @JsonIgnore
     @OneToMany(mappedBy = "jobCategory")
     private List<JobCircular> jobCirculars;
 

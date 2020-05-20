@@ -5,22 +5,21 @@ import com.pppfreak.Hired.customise.MassageConstant;
 import com.pppfreak.Hired.customise.Utils;
 import com.pppfreak.Hired.form.request.EmployeeRequestForm;
 import com.pppfreak.Hired.repository.CompanyProfileRepository;
+import com.pppfreak.Hired.repository.JobApplyRepository;
 import com.pppfreak.Hired.repository.EmployeeRepository;
 import com.pppfreak.Hired.repository.JobCategoryRepository;
 import com.pppfreak.Hired.response.EmployeeResponse;
 import com.pppfreak.Hired.service.EmployeeService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
@@ -31,24 +30,27 @@ public class EmployeeServiceImpl implements EmployeeService {
     private final Utils utils;
     private final ModelMapper modelMapper;
     private final CompanyProfileRepository companyProfileRepository;
+    private final JobApplyRepository jobApplyRepository;
     @Autowired
-    public EmployeeServiceImpl( EmployeeRepository employeeRepository ,
-                               JobCategoryRepository jobCategoryRepository ,
+    public EmployeeServiceImpl(EmployeeRepository employeeRepository , JobCategoryRepository jobCategoryRepository ,
                                BCryptPasswordEncoder bCryptPasswordEncoder , Utils utils , ModelMapper modelMapper ,
-                               CompanyProfileRepository companyProfileRepository) {
-        this.employeeRepository    = employeeRepository;
-        this.jobCategoryRepository = jobCategoryRepository;
-        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
-        this.utils                 = utils;
-        this.modelMapper           = modelMapper;
+                               CompanyProfileRepository companyProfileRepository ,
+                               JobApplyRepository jobApplyRepository) {
+        this.employeeRepository       = employeeRepository;
+        this.jobCategoryRepository    = jobCategoryRepository;
+        this.bCryptPasswordEncoder    = bCryptPasswordEncoder;
+        this.utils                    = utils;
+        this.modelMapper              = modelMapper;
         this.companyProfileRepository = companyProfileRepository;
+        this.jobApplyRepository       = jobApplyRepository;
     }
 
     @Override
     public Employee getEmployeeById(Integer id) {
 
-      Optional<Employee> employee= employeeRepository.findById(id);
-      return  employee.get();
+
+      return  employeeRepository.findById(id).stream().filter(employee -> employee.getId().equals(id))
+                                .findFirst().orElseThrow(NullPointerException::new);
 
     }
 
@@ -62,18 +64,16 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
+    public String deleteJobApplyForm(Integer id) {
+        jobApplyRepository.deleteById(id);
+        return MassageConstant.SUCCESS.name();
+    }
+    @Override
     public EmployeeResponse getUserByUserId(String userId) {
 
-        Optional<Employee> employee = Optional.ofNullable(employeeRepository.findByUserId(userId));
+        Employee employee =employeeRepository.findByUserId(userId);
 
-        Employee theEmployee = null;
-        if (employee.isPresent()) {
-            theEmployee = employee.get();
-        } else {
-            throw new UsernameNotFoundException("User not found  " + userId);
-        }
-
-        return modelMapper.map(theEmployee , EmployeeResponse.class);
+        return modelMapper.map(employee , EmployeeResponse.class);
     }
 
     @Override
@@ -119,15 +119,15 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public String deleteEmployee(String userId) {
+    public String deleteEmployeeByUserId(String userId) {
         Employee employee = employeeRepository.findByUserId(userId);
         employeeRepository.delete(employee);
         return MassageConstant.SUCCESS.toString();
     }
 
     @Override
-    public String deleteEmployeeById(Integer id) {
-        employeeRepository.deleteById(id);
+    public String deleteEmployeeById(Integer employeeId) {
+        employeeRepository.deleteById(employeeId);
         return MassageConstant.SUCCESS.toString();
     }
 
@@ -138,19 +138,20 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public void subscribeCompany( Integer companyId,  Integer employeeId){
-        Optional<Employee> emp = employeeRepository.findById(employeeId);
-        Employee employee = emp.get();
+    public List<JobCircular> getAppliedJobCircular(Integer employeeId) {
 
-        Optional<CompanyProfile> tempCompany = companyProfileRepository.findById(companyId);
-        CompanyProfile company =  tempCompany.get();
-        company.registerObserver(employee);    // company get employee subscriber
+        Employee employee = employeeRepository.findById(employeeId).stream()
+                           .filter(employee1 -> employee1.getId().equals(employeeId))
+                           .findFirst()
+                           .orElseThrow(() -> new UsernameNotFoundException("employee not found "+employeeId));
 
-        // employee get company subscription
-        List<CompanyProfile> companies = new ArrayList<>();
-        companies.add(company);
-        employee.setSubscribedCompanies(companies);
-        employeeRepository.save(employee);
+        return employee.getJobApplyForm()
+                                    .stream()
+                                    .map(JobApplyForm::getJobCircular)
+                                    .collect(Collectors.toList());
+
     }
+
+
 
 }

@@ -7,7 +7,6 @@ import java.io.Serializable;
 import java.util.Set;
 
 @Entity(name = "expertSkill")
-//@JsonIdentityInfo(generator= ObjectIdGenerators.PropertyGenerator.class, property="id")
 public class ExpertSkill implements Serializable {
 
     @Id
