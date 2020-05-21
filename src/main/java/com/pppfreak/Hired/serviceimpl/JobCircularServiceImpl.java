@@ -24,14 +24,13 @@ public class JobCircularServiceImpl implements JobCircularService {
     private final JobCircularRepository jobCircularRepository;
     private final JobApplyRepository jobApplyRepository;
     private final EmployeeRepository employeeRepository;
-    private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final JobCategoryRepository jobCategoryRepository;
     private final CompanyJobTitleRepository companyJobTitleRepository;
 
     @Autowired
     public JobCircularServiceImpl(CompanyProfileRepository companyProfileRepository , ModelMapper modelMapper ,
                                   JobCircularRepository jobCircularRepository , JobApplyRepository jobApplyRepository ,
-                                  EmployeeRepository employeeRepository , BCryptPasswordEncoder bCryptPasswordEncoder ,
+                                  EmployeeRepository employeeRepository  ,
                                   JobCategoryRepository jobCategoryRepository ,
                                   CompanyJobTitleRepository companyJobTitleRepository) {
         this.companyProfileRepository  = companyProfileRepository;
@@ -39,7 +38,6 @@ public class JobCircularServiceImpl implements JobCircularService {
         this.jobCircularRepository     = jobCircularRepository;
         this.jobApplyRepository        = jobApplyRepository;
         this.employeeRepository        = employeeRepository;
-        this.bCryptPasswordEncoder     = bCryptPasswordEncoder;
         this.jobCategoryRepository     = jobCategoryRepository;
         this.companyJobTitleRepository = companyJobTitleRepository;
     }
@@ -138,11 +136,10 @@ public class JobCircularServiceImpl implements JobCircularService {
         JobCircular job = jobCircularRepository
                 .findById(jobId)
                 .stream()
-                .filter(jobCircular -> jobCircular
-                        .getId()
-                        .equals(jobId))
+                .filter(jobCircular -> jobCircular.getId().equals(jobId))
                 .findFirst()
                 .orElseThrow(NullPointerException::new);
+
         modelMapper.map(jobCircularForm , job);
         CompanyProfile companyById = companyProfileRepository
                 .findById(companyId)

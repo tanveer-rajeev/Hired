@@ -2,7 +2,7 @@ package com.pppfreak.Hired.controller;
 
 
 import com.pppfreak.Hired.upload.StorageService;
-import com.pppfreak.Hired.upload.UploadHelper;
+import com.pppfreak.Hired.upload.CseEmployeeUploadService;
 import org.apache.tomcat.util.http.fileupload.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
@@ -22,16 +22,16 @@ import java.util.Objects;
 public class FileUploadController {
 
     private final StorageService storageService;
-    private final UploadHelper uploadHelper;
+    private final CseEmployeeUploadService cseEmployeeUploadService;
 
     @Autowired
-    public FileUploadController(StorageService storageService , UploadHelper uploadHelper) {
-        this.storageService = storageService;
-        this.uploadHelper   = uploadHelper;
+    public FileUploadController(StorageService storageService , CseEmployeeUploadService cseEmployeeUploadService) {
+        this.storageService           = storageService;
+        this.cseEmployeeUploadService = cseEmployeeUploadService;
     }
 
 
-    @PostMapping("/{id}")
+    @PostMapping("cseEmployee/{id}")
     public String uploadFile(@RequestParam("file") MultipartFile file , @PathVariable Integer id) throws IOException {
 
         storageService.init();
@@ -40,7 +40,7 @@ public class FileUploadController {
         String viewResumeURI = ServletUriComponentsBuilder.
                 fromCurrentContextPath().path("/upload/").path(fileName).toUriString();
 
-        uploadHelper.setCseEmployeeResumeLink(viewResumeURI , id);
+        cseEmployeeUploadService.setResumeLink(viewResumeURI , id);
         return viewResumeURI;
     }
 

@@ -22,27 +22,20 @@ public class CompanyProfileServiceImpl implements CompanyProfileService {
 
     private final CompanyProfileRepository companyProfileRepository;
     private final ModelMapper modelMapper;
-    private final JobCircularRepository jobCircularRepository;
-    private final JobApplyRepository jobApplyRepository;
     private final EmployeeRepository employeeRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
-    private final JobCategoryRepository jobCategoryRepository;
     private final CompanyJobTitleRepository companyJobTitleRepository;
 
     @Autowired
     public CompanyProfileServiceImpl(CompanyProfileRepository companyProfileRepository , ModelMapper modelMapper ,
-                                     JobCircularRepository jobCircularRepository , JobApplyRepository jobApplyRepository ,
                                      EmployeeRepository employeeRepository ,
                                      BCryptPasswordEncoder bCryptPasswordEncoder ,
-                                     JobCategoryRepository jobCategoryRepository ,
+
                                      CompanyJobTitleRepository companyJobTitleRepository) {
         this.companyProfileRepository = companyProfileRepository;
         this.modelMapper              = modelMapper;
-        this.jobCircularRepository = jobCircularRepository;
-        this.jobApplyRepository    = jobApplyRepository;
         this.employeeRepository    = employeeRepository;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
-        this.jobCategoryRepository = jobCategoryRepository;
         this.companyJobTitleRepository = companyJobTitleRepository;
     }
 
@@ -74,6 +67,9 @@ public class CompanyProfileServiceImpl implements CompanyProfileService {
 
     @Override
     public CompanyProfile addCompanyProfile(CompanyProfileModel companyProfileModel) {
+        if(companyProfileRepository.findByEmail(companyProfileModel.getEmail())!=null){
+            throw new RuntimeException("company already exist ");
+        }
        CompanyProfile companyProfile = modelMapper.map(companyProfileModel , CompanyProfile.class);
        companyProfile.setEncryptedPassword(bCryptPasswordEncoder.encode(companyProfileModel.getPassword()));
        companyProfileRepository.save(companyProfile);
