@@ -16,9 +16,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -138,7 +136,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public List<JobCircular> getAppliedJobCircular(Integer employeeId) {
+    public Set<JobCircular> getAppliedJobCircular(Integer employeeId) {
 
         Employee employee = employeeRepository.findById(employeeId).stream()
                            .filter(employee1 -> employee1.getId().equals(employeeId))
@@ -148,7 +146,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         return employee.getJobApplyForm()
                                     .stream()
                                     .map(JobApplyForm::getJobCircular)
-                                    .collect(Collectors.toList());
+                                    .collect(Collectors.toSet());
 
     }
 

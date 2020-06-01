@@ -5,6 +5,7 @@ import lombok.Data;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
+import java.util.Set;
 
 @Data
 @Entity(name = "jobApplyForm")
@@ -21,7 +22,7 @@ public class JobApplyForm implements Serializable {
     private List<Employee> employees;
 
     @JsonIgnore
-    @OneToOne
+    @ManyToOne
     @JoinColumn(name = "jobCircularId")
     private JobCircular jobCircular;
 

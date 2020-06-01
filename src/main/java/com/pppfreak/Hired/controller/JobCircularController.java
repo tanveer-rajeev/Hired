@@ -1,6 +1,7 @@
 package com.pppfreak.Hired.controller;
 
 import com.pppfreak.Hired.Entity.JobApplyForm;
+import com.pppfreak.Hired.Entity.JobCircular;
 import com.pppfreak.Hired.form.request.JobCircularForm;
 import com.pppfreak.Hired.response.JobCircularResponse;
 import com.pppfreak.Hired.service.JobCircularService;
@@ -19,6 +20,13 @@ public class JobCircularController {
     public JobCircularController(JobCircularService jobCircularService) {
         this.jobCircularService = jobCircularService;
     }
+
+    @GetMapping("/{id}")
+    public JobCircular getJobCircularById(@PathVariable Integer id){
+
+        return jobCircularService.getJobCircularById(id);
+    }
+
     @PostMapping("job/{jobId}/employee/{employeeId}")
     public ResponseEntity<JobApplyForm> jobApply(@RequestBody JobApplyForm form , @PathVariable Integer jobId ,
                                    @PathVariable Integer employeeId) {

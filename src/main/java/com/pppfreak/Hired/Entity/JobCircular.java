@@ -1,12 +1,17 @@
 package com.pppfreak.Hired.Entity;
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.Data;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Set;
+
 @Data
 @Entity(name = "jobCircular")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class JobCircular implements Serializable {
 
     @Id
@@ -24,8 +29,8 @@ public class JobCircular implements Serializable {
     private CompanyProfile companyProfile;
 
     @JsonIgnore
-    @OneToOne(mappedBy = "jobCircular")
-    private JobApplyForm jobApplyForm;
+    @OneToMany(mappedBy = "jobCircular")
+    private Set<JobApplyForm> jobApplyForms;
 
     @JsonIgnore
     @ManyToOne

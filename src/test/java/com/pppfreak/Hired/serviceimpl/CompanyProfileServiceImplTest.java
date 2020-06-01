@@ -35,7 +35,7 @@ class CompanyProfileServiceImplTest {
     CompanyJobTitleRepository companyJobTitleRepository;
 
     CompanyProfile companyProfile;
-    String encryptedPassword = "encryptedPassword";
+    CompanyProfileModel companyProfileModel;
 
     @BeforeEach
     final void setUp(){
@@ -43,20 +43,28 @@ class CompanyProfileServiceImplTest {
         companyProfile = new CompanyProfile();
 
         companyProfile.setEmail("company@gmail.com");
-        companyProfile.setEncryptedPassword(encryptedPassword);
+        companyProfile.setEncryptedPassword("encryptedPassword");
         companyProfile.setCompanyName("google");
         companyProfile.setAddress("usa");
         companyProfile.setCompanyActivities("create a search engine ");
         companyProfile.setCompanyWebsiteLink("google.com");
+
+         companyProfileModel = new CompanyProfileModel();
+        companyProfileModel.setEmail("company@gmail.com");
+        companyProfileModel.setPassword("encryptedPassword");
+        companyProfileModel.setCompanyName("google");
+        companyProfileModel.setAddress("usa");
+        companyProfileModel.setCompanyActivities("create a search engine ");
+        companyProfileModel.setCompanyWebsiteLink("google.com");
     }
     @Test
     final void addCompanyProfile() {
 
         when(companyProfileRepository.findByEmail(anyString())).thenReturn(null);
-        when(bCryptPasswordEncoder.encode(anyString())).thenReturn(encryptedPassword);
+        when(bCryptPasswordEncoder.encode(anyString())).thenReturn("encryptedPassword");
         when(companyProfileRepository.save(any(CompanyProfile.class))).thenReturn(companyProfile);
 
-        CompanyProfileModel companyProfileModel = new CompanyProfileModel();
+
         CompanyProfile returnValue = companyProfileService.addCompanyProfile(companyProfileModel);
         assertNotNull(returnValue);
         assertEquals(this.companyProfile.getCompanyName(), returnValue.getCompanyName());

@@ -71,6 +71,7 @@ public class CompanyProfileServiceImpl implements CompanyProfileService {
             throw new RuntimeException("company already exist ");
         }
        CompanyProfile companyProfile = modelMapper.map(companyProfileModel , CompanyProfile.class);
+
        companyProfile.setEncryptedPassword(bCryptPasswordEncoder.encode(companyProfileModel.getPassword()));
        companyProfileRepository.save(companyProfile);
        return companyProfile;

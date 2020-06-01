@@ -15,7 +15,9 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class JobCircularServiceImpl implements JobCircularService {
@@ -44,15 +46,14 @@ public class JobCircularServiceImpl implements JobCircularService {
 
     @Override
     public ResponseEntity<JobApplyForm> jobApply(JobApplyForm form , Integer jobId , Integer employeeId) {
-
-        JobCircular temp = jobCircularRepository
+        JobCircular temp_jobCircular=jobCircularRepository
                 .findById(jobId)
                 .stream()
                 .filter(jobCircular -> jobCircular.getId().equals(jobId))
                 .filter(JobCircular::isEnable)
                 .findFirst()
-                .orElseThrow(()->new NullPointerException("Job circular date has been expired"));
-        form.setJobCircular(temp);
+                .orElseThrow(NullPointerException::new);
+        form.setJobCircular(temp_jobCircular);
 
         Employee employeeById = employeeRepository
                 .findById(employeeId)
@@ -183,6 +184,18 @@ public class JobCircularServiceImpl implements JobCircularService {
         return ResponseEntity
                 .ok()
                 .body(HttpStatus.ACCEPTED);
+    }
+
+    @Override
+    public JobCircular getJobCircularById(Integer jobId) {
+        return jobCircularRepository
+                .findById(jobId)
+                .stream()
+                .filter(jobCircular -> jobCircular
+                        .getId()
+                        .equals(jobId))
+                .findFirst()
+                .orElseThrow(RuntimeException::new);
     }
 
 

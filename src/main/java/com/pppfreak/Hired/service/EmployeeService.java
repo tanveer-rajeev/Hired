@@ -5,10 +5,10 @@ import com.pppfreak.Hired.Entity.Employee;
 import com.pppfreak.Hired.Entity.JobCircular;
 import com.pppfreak.Hired.form.request.EmployeeRequestForm;
 import com.pppfreak.Hired.response.EmployeeResponse;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 
 import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 
 public interface EmployeeService {
 
@@ -22,6 +22,6 @@ public interface EmployeeService {
      String deleteEmployeeById(Integer employeeId);
 
      List<CseEmployee> getCseEmployeeByEmployeeUserId(String userId);
-     List<JobCircular> getAppliedJobCircular(Integer employeeId);
+     Set<JobCircular> getAppliedJobCircular(Integer employeeId);
      String deleteJobApplyForm(Integer id);
 }
