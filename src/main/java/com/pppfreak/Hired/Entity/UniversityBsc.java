@@ -1,11 +1,12 @@
 package com.pppfreak.Hired.Entity;
 
 import com.fasterxml.jackson.annotation.*;
+import lombok.Data;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Set;
-
+@Data
 @Entity(name = "university")
 public class UniversityBsc implements Serializable {
 
@@ -23,23 +24,4 @@ public class UniversityBsc implements Serializable {
         return cseEmployee;
     }
 
-    public void setCseEmployee(Set<CseEmployee> cseEmployee) {
-        this.cseEmployee = cseEmployee;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getUniversityName() {
-        return universityName;
-    }
-
-    public void setUniversityName(String universityName) {
-        this.universityName = universityName;
-    }
 }

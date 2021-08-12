@@ -1,10 +1,11 @@
 package com.pppfreak.Hired.Entity;
 import com.fasterxml.jackson.annotation.*;
+import lombok.Data;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Set;
-
+@Data
 @Entity(name = "secondarySkill")
 public class SecondarySkill implements Serializable {
 
@@ -18,36 +19,6 @@ public class SecondarySkill implements Serializable {
     @ManyToMany(mappedBy = "secondarySkills")
     private Set<CseEmployee> cseEmployees;
 
-    public SecondarySkill() {
-    }
 
-    public SecondarySkill(Integer id , String skill) {
-        this.id    = id;
-        this.skill = skill;
-    }
-
-    public Set<CseEmployee> getCseEmployees() {
-        return cseEmployees;
-    }
-
-    public void setCseEmployees(Set<CseEmployee> cseEmployees) {
-        this.cseEmployees = cseEmployees;
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
-    public String getSkill() {
-        return skill;
-    }
-
-    public void setSkill(String skill) {
-        this.skill = skill;
-    }
 }
 
