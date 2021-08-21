@@ -1,5 +1,5 @@
 # Hired
-Project Hired gives API based service.<br/>
+## Project Hired gives API based service.<br/>
 - There have two roles employee and company. An employee will create a profile along with a resume and the company will also create a profile.<br/>
 - An employee can find out the company by job category and subscribe it.so when a company will create a job opening or some features update 
 then the employee will be notified.Observer pattern used  here for notification service.<br/>
