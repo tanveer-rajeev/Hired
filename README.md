@@ -48,6 +48,14 @@ mvn spring-boot:run
     }
    }
    ```
+   >Default log in url provieded by spring security
+   ```
+   localhost:8080/login
+   ```
+   
+   > After login, the Json Web Token will be created into the "Authorization" header section.
+   > Then after each request must carry this token otherwise  403 forbidden error will be given.
+   
    > API endpoint for creating portfolio into CSE department
    ```
    localhost:8080/api/cseEmployees
