@@ -54,7 +54,7 @@ mvn spring-boot:run
    ```
    
    > After login, the Json Web Token will be created into the "Authorization" header section.
-   > Then after each request must carry this token otherwise  403 forbidden error will be given.
+   > Then after each GET request must carry this token otherwise  403 forbidden error will showed.
    
    > API endpoint for creating portfolio into CSE department
    ```
