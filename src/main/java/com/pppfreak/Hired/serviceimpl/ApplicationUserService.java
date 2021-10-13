@@ -46,6 +46,5 @@ public class ApplicationUserService implements UserDetailsService {
         return new UserEntity(employee.getEmail() , employee.getEncryptedPassword() ,
                 ApplicationUserRole.EMPLOYEE.getGrantedAuthorities() , true , true , true , true);
 
-
     }
 }

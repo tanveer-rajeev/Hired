@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Set;
 
 @RestController
-@RequestMapping("/employees")
+@RequestMapping("api/employees")
 public class EmployeeController {
     //   hasRole('ROLE_') hasAnyRole('ROLE_') hasAuthority('permission') hasAnyAuthority('permission')
 
@@ -27,11 +27,12 @@ public class EmployeeController {
     }
 
     @GetMapping
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+//    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public List<Employee> getALlEmployee(){
         return employeeService.getALlEmployee();
     }
 
+    @PreAuthorize("hasRole('ROLE_EMPLOYEE')")
     @GetMapping(path = "/{userId}",produces = MediaType.APPLICATION_JSON_VALUE)
     public EmployeeResponse getEmployeeByUserId(@PathVariable String userId){
         return employeeService.getUserByUserId(userId);

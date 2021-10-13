@@ -72,7 +72,7 @@ public class CseEmployeeServiceImpl implements CseEmployeeService {
 
         for (ExpertSkill p : expertSkills) {
             p = expertSkillRepository.findBySkill(p.getSkill());
-            temp.add(new ExpertSkill(p.getId() , ""));
+            temp.add(p);
 
         }
         Set<SecondarySkill> secondarySkills = requestForm.getSecondarySkills();
@@ -80,7 +80,7 @@ public class CseEmployeeServiceImpl implements CseEmployeeService {
 
         for (SecondarySkill s : secondarySkills) {
             s = secondarySkillRepository.findBySkill(s.getSkill());
-            secondSkill.add(new SecondarySkill(s.getId() , ""));
+            secondSkill.add(s);
         }
         cseEmployee.setSecondarySkills(secondSkill);
         cseEmployee.setExpertSkills(temp);

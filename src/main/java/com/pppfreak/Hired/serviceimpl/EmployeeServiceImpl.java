@@ -84,7 +84,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         Employee employee = modelMapper.map(employeeRequestForm , Employee.class);
 
         JobCategory jobCategory = jobCategoryRepository.findByCategory(employee.getJobCategory().getCategory());
-        employee.setJobCategory(new JobCategory(jobCategory.getId(),""));
+        employee.setJobCategory(jobCategory);
 
         employee.setEncryptedPassword(bCryptPasswordEncoder.encode(employeeRequestForm.getPassword()));
         employee.setUserId(utils.generatedCustomUserId());

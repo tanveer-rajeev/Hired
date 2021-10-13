@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/cseEmployees")
+@RequestMapping("api/cseEmployees")
 public class CseEmployeeController {
 
     private final CseEmployeeService cseEmployeeService;

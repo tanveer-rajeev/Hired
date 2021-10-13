@@ -61,11 +61,5 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
         response.addHeader(SecurityConstrants.HEADER_STRING,SecurityConstrants.TOKEN_PREFIX+token);
 
-            System.out.println(request.getRequestURL());
-//        EmployeeService employeeService =
-//                    (EmployeeService) SpringApplicationContext.getBean("employeeServiceImpl");
-//        Employee employee = employeeService.getUserByEmail(userEmail);
-//
-//     response.addHeader("UserId", employee.getUserId());
     }
 }

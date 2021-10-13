@@ -22,13 +22,11 @@ public class Employee implements Observer, Serializable {
     @Enumerated
     EmployeeType employeeType;
 
-
     @ManyToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "jobCategory_id")
     private JobCategory jobCategory;
 
-
-    @OneToMany(mappedBy = "employee")
+    @OneToMany(mappedBy = "employee",orphanRemoval = true)
     private List<CseEmployee> cseEmployeeList;
 
     @ManyToMany

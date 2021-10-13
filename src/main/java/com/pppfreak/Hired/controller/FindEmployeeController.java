@@ -13,7 +13,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/findBy")
+@RequestMapping("api/search/findBy")
 public class FindEmployeeController {
 
     private final ExpertSkillRepository expertSkillRepository;

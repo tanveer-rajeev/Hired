@@ -18,7 +18,7 @@ import java.net.MalformedURLException;
 import java.util.Objects;
 
 @RestController
-@RequestMapping("/upload")
+@RequestMapping("api/resume/upload")
 public class FileUploadController {
 
     private final StorageService storageService;
