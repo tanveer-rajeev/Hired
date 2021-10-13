@@ -82,13 +82,21 @@ mvn spring-boot:run
   	"yearOfExperience":"2 year 1 month"
   }
     ```
+    > Api endpoint for upload resume (PDF file)
+    Post Request must be contains with param type File that controller handle as a Multipartfile 
+    ```
+    
+    ```
     > APIs for a job search in several ways
     ```
-    localhost:8080/api/jobs/findByJobCategory
-    localhost:8080/api/jobs/findByLocation
-    localhost:8080/api/jobs/skillKeyword
+    localhost:8080/api/search/jobs/findByJobCategory
+    localhost:8080/api/search/jobs/findByLocation
+    localhost:8080/api/search/jobs/findByExpertSkill
+    localhost:8080/api/search/jobs/findBySecondarySkill
+    localhost:8080/api/search/jobs/company/{companyId}/job/{jobId}
     ```
-    > Employee subscribes a company and apply a job by employee id and company id.
+    > This 2 API endpoints for an employee subscribe to a company and apply for a job by employee id and company id.
+    > Observer pattern has used for subscription  relationship between employee and company
     ```
     Post Request for subscription
     localhost:8080/api/employees/subscribe/3/employeeId/2
@@ -115,6 +123,7 @@ mvn spring-boot:run
   > API for post a job circular.
    > Subscriber will get notification 
   ```
+  localhost:8080/api/jobs/{companyId}/createJob
   {
 	"jobCategory":{
 		"category":"java developer"
@@ -135,4 +144,12 @@ mvn spring-boot:run
 	"enable":true
   }
   ```
-    
+  > Post request for diactivate a job circular 
+  ```
+  localhost:8080/api/companies/diactivate/{jobId}
+  ```
+  > Post request for unsubscribe an employee
+  ```
+  localhost:8080/api/companies//unsubscribe/{companyId}/{employeeId}
+  ```
+
