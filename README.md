@@ -99,11 +99,11 @@ mvn spring-boot:run
     > Observer pattern has used for subscription  relationship between employee and company
     ```
     Post Request for subscription
-    localhost:8080/api/employees/subscribe/3/employeeId/2
+    localhost:8080/api/employees/subscribe/{companyId}/{employeeId}
     ```
     ```
     Post request for apply a job
-    localhost:8080/api/employees/27/jobApply/jobId/40
+    localhost:8080/api/employees/{employeeId}/jobApply/{jobId}
     ```
 - Company APIs
    ```
