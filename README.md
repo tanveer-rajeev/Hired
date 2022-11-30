@@ -44,7 +44,7 @@ mvn spring-boot:run
 
 - Admin APIs endpoints
   ```
-  localhost:8080/api/jobCategories
+  /api/jobCategories
   ```
   Request Body
   ```
@@ -54,7 +54,7 @@ mvn spring-boot:run
   ```
 - Employee APIs endpoints
    ```
-   localhost:8080/api/employees/signUp 
+   /api/employees/signUp 
    ```
   Request Body
    ```
@@ -68,7 +68,7 @@ mvn spring-boot:run
    ```
   > Default log in url provieded by spring security
    ```
-   localhost:8080/login
+   /login
    ```
 
   > After login, the Json Web Token will be created into the "Authorization" header section.
@@ -76,7 +76,7 @@ mvn spring-boot:run
 
   > API endpoint for creating portfolio into CSE department
    ```
-   localhost:8080/api/cseEmployees
+   /api/cseEmployees
    ```
   Request Body
    ```
@@ -107,25 +107,25 @@ mvn spring-boot:run
     ```
   > APIs for a job search in several ways
     ```
-    localhost:8080/api/search/jobs/findByJobCategory
-    localhost:8080/api/search/jobs/findByLocation
-    localhost:8080/api/search/jobs/findByExpertSkill
-    localhost:8080/api/search/jobs/findBySecondarySkill
-    localhost:8080/api/search/jobs/company/{companyId}/job/{jobId}
+    /api/search/jobs/findByJobCategory
+    /api/search/jobs/findByLocation
+    /api/search/jobs/findByExpertSkill
+    /api/search/jobs/findBySecondarySkill
+    /api/search/jobs/company/{companyId}/job/{jobId}
     ```
   > This 2 API endpoints for an employee subscribe to a company and apply for a job by employee id and company id.
   > Observer pattern has used for subscription  relationship between employee and company
     ```
     Post Request for subscription
-    localhost:8080/api/employees/subscribe/3/employeeId/2
+    /api/employees/subscribe/{companyId}/{employeeId}
     ```
     ```
     Post request for apply a job
-    localhost:8080/api/employees/27/jobApply/jobId/40
+    /api/employees/{employeeId}/jobApply/{jobId}
     ```
 - Company APIs
    ```
-   localhost:8080/api/companies
+   /api/companies
    ```
   Request Body
    ```
@@ -141,7 +141,7 @@ mvn spring-boot:run
   > API for post a job circular.
   > Subscriber will get notification
   ```
-  localhost:8080/api/jobs/{companyId}/createJob
+  /api/jobs/{companyId}/createJob
   {
 	"jobCategory":{
 		"category":"java developer"
@@ -164,10 +164,10 @@ mvn spring-boot:run
   ```
   > Post request for diactivate a job circular
   ```
-  localhost:8080/api/companies/diactivate/{jobId}
+  /api/companies/diactivate/{jobId}
   ```
   > Post request for unsubscribe an employee
   ```
-  localhost:8080/api/companies//unsubscribe/{companyId}/{employeeId}
+  /api/companies//unsubscribe/{companyId}/{employeeId}
   ```
 
