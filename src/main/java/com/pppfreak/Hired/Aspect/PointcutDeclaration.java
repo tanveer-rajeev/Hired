@@ -17,6 +17,7 @@ import java.util.logging.Logger;
 @EnableAspectJAutoProxy
 public class PointcutDeclaration {
 
+    // master branch
     private Logger logger = Logger.getLogger(getClass().getName());
     //execution(* pppfreak.Experiment.Controller.EmployeeServiceImpl.(..))
 //
