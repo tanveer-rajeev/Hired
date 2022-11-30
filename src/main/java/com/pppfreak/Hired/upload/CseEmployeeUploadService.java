@@ -19,9 +19,9 @@ public class CseEmployeeUploadService implements UploadService {
     }
 
     @Override
-    public void setResumeLink(String resumeLink , Integer id) {
+    public void setResumeLink(String resumeLink, Integer id) {
         CseEmployee cseEmployee = cseEmployeeRepository.findById(id).stream().filter(cseEmployee1 -> cseEmployee1.getId().equals(id))
-                                            .findFirst().orElseThrow(NullPointerException::new);
+                .findFirst().orElseThrow(NullPointerException::new);
         cseEmployee.setResumeURL(resumeLink);
         cseEmployeeRepository.save(cseEmployee);
     }

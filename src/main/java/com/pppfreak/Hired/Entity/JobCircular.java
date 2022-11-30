@@ -1,4 +1,5 @@
 package com.pppfreak.Hired.Entity;
+
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -39,14 +40,14 @@ public class JobCircular implements Serializable {
 
     private Integer vacancy;
     private String jobResponsibility;
-    private String  employmentStatus;
+    private String employmentStatus;
     private String educationRequirements;
     private String experienceRequirements;
     private String additionalRequirements;
     private String jobLocation;
     private Integer salary;
     private String compensationOtherBenefits;
-    @JsonFormat(pattern = "yyyy-MM-dd",shape = JsonFormat.Shape.STRING)
+    @JsonFormat(pattern = "yyyy-MM-dd", shape = JsonFormat.Shape.STRING)
     private String applicationDeadline;
     private boolean enable;
 

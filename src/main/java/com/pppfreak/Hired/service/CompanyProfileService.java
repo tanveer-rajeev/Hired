@@ -13,12 +13,19 @@ import java.util.Optional;
 
 public interface CompanyProfileService {
     CompanyProfile getCompanyProfileByName(String name);
+
     CompanyProfile getCompanyProfileByEmail(String email);
+
     CompanyJobTitle createJobTitle(CompanyJobTitle companyJobTitle);
-   CompanyProfile getCompanyProfileById(Integer id);
+
+    CompanyProfile getCompanyProfileById(Integer id);
+
     CompanyProfile addCompanyProfile(CompanyProfileModel companyProfileModel);
-    ResponseEntity<HttpStatus> subscribeCompany( Integer id,  Integer companyId);
+
+    ResponseEntity<HttpStatus> subscribeCompany(Integer id, Integer companyId);
+
     ResponseEntity<HttpStatus> unsubscribeCompany(Integer companyId, Integer employeeId);
-    CompanyProfile updateCompanyProfile(CompanyProfileModel companyProfileModel,Integer companyId);
+
+    CompanyProfile updateCompanyProfile(CompanyProfileModel companyProfileModel, Integer companyId);
 
 }

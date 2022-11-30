@@ -11,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+
 import java.util.Optional;
 
 @Service
@@ -18,8 +19,9 @@ public class AdminServiceImpl implements AdminService {
     private final AdminRepository adminRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
     private final ModelMapper modelMapper;
+
     @Autowired
-    public AdminServiceImpl(AdminRepository adminRepository , BCryptPasswordEncoder bCryptPasswordEncoder ,
+    public AdminServiceImpl(AdminRepository adminRepository, BCryptPasswordEncoder bCryptPasswordEncoder,
                             ModelMapper modelMapper) {
         this.adminRepository = adminRepository;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
@@ -29,7 +31,7 @@ public class AdminServiceImpl implements AdminService {
     @Override
     public Admin addAdmin(AdminRequestForm requestForm) {
 
-        Admin admin = modelMapper.map(requestForm,Admin.class);
+        Admin admin = modelMapper.map(requestForm, Admin.class);
         admin.setEncryptedPassword(bCryptPasswordEncoder.encode(requestForm.getPassword()));
         adminRepository.save(admin);
         return admin;

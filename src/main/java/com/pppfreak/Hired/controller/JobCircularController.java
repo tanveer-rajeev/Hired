@@ -22,38 +22,38 @@ public class JobCircularController {
     }
 
     @GetMapping("/{id}")
-    public JobCircular getJobCircularById(@PathVariable Integer id){
+    public JobCircular getJobCircularById(@PathVariable Integer id) {
 
         return jobCircularService.getJobCircularById(id);
     }
 
     @PostMapping("job/{jobId}/employee/{employeeId}")
-    public ResponseEntity<JobApplyForm> jobApply(@RequestBody JobApplyForm form , @PathVariable Integer jobId ,
-                                   @PathVariable Integer employeeId) {
-        return jobCircularService.jobApply(form,jobId,employeeId);
+    public ResponseEntity<JobApplyForm> jobApply(@RequestBody JobApplyForm form, @PathVariable Integer jobId,
+                                                 @PathVariable Integer employeeId) {
+        return jobCircularService.jobApply(form, jobId, employeeId);
 
     }
 
     @PostMapping("/{companyId}/createJob")
     public ResponseEntity<HttpStatus> createJob(@RequestBody JobCircularForm job,
-                                                @PathVariable Integer companyId){
-        return  jobCircularService.createJob(job, companyId);
+                                                @PathVariable Integer companyId) {
+        return jobCircularService.createJob(job, companyId);
 
     }
 
     @PutMapping("/company/{companyId}/job/{jobId}")
     public ResponseEntity<JobCircularResponse> updateJob(@RequestBody JobCircularForm jobCircularForm, @PathVariable Integer companyId
-                                               , @PathVariable Integer jobId){
-        return jobCircularService.updateJobCircular(jobCircularForm,jobId,companyId);
+            , @PathVariable Integer jobId) {
+        return jobCircularService.updateJobCircular(jobCircularForm, jobId, companyId);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<HttpStatus> deleteJobCircular(@PathVariable Integer id){
-         return jobCircularService.deleteJobCircular(id);
+    public ResponseEntity<HttpStatus> deleteJobCircular(@PathVariable Integer id) {
+        return jobCircularService.deleteJobCircular(id);
     }
 
     @PostMapping("disable/{jobId}")
-    public ResponseEntity<JobCircularResponse> disableJobCircular(@PathVariable Integer jobId){
+    public ResponseEntity<JobCircularResponse> disableJobCircular(@PathVariable Integer jobId) {
         return jobCircularService.disableJobCircular(jobId);
     }
 }

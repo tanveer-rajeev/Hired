@@ -5,6 +5,6 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface UniversityBscRepository extends CrudRepository<UniversityBsc,Integer> {
+public interface UniversityBscRepository extends CrudRepository<UniversityBsc, Integer> {
     UniversityBsc findByUniversityName(String universityName);
 }

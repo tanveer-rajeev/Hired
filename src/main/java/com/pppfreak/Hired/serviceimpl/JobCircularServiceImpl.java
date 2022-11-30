@@ -30,23 +30,23 @@ public class JobCircularServiceImpl implements JobCircularService {
     private final CompanyJobTitleRepository companyJobTitleRepository;
 
     @Autowired
-    public JobCircularServiceImpl(CompanyProfileRepository companyProfileRepository , ModelMapper modelMapper ,
-                                  JobCircularRepository jobCircularRepository , JobApplyRepository jobApplyRepository ,
-                                  EmployeeRepository employeeRepository  ,
-                                  JobCategoryRepository jobCategoryRepository ,
+    public JobCircularServiceImpl(CompanyProfileRepository companyProfileRepository, ModelMapper modelMapper,
+                                  JobCircularRepository jobCircularRepository, JobApplyRepository jobApplyRepository,
+                                  EmployeeRepository employeeRepository,
+                                  JobCategoryRepository jobCategoryRepository,
                                   CompanyJobTitleRepository companyJobTitleRepository) {
-        this.companyProfileRepository  = companyProfileRepository;
-        this.modelMapper               = modelMapper;
-        this.jobCircularRepository     = jobCircularRepository;
-        this.jobApplyRepository        = jobApplyRepository;
-        this.employeeRepository        = employeeRepository;
-        this.jobCategoryRepository     = jobCategoryRepository;
+        this.companyProfileRepository = companyProfileRepository;
+        this.modelMapper = modelMapper;
+        this.jobCircularRepository = jobCircularRepository;
+        this.jobApplyRepository = jobApplyRepository;
+        this.employeeRepository = employeeRepository;
+        this.jobCategoryRepository = jobCategoryRepository;
         this.companyJobTitleRepository = companyJobTitleRepository;
     }
 
     @Override
-    public ResponseEntity<JobApplyForm> jobApply(JobApplyForm form , Integer jobId , Integer employeeId) {
-        JobCircular temp_jobCircular=jobCircularRepository
+    public ResponseEntity<JobApplyForm> jobApply(JobApplyForm form, Integer jobId, Integer employeeId) {
+        JobCircular temp_jobCircular = jobCircularRepository
                 .findById(jobId)
                 .stream()
                 .filter(jobCircular -> jobCircular.getId().equals(jobId))
@@ -70,7 +70,7 @@ public class JobCircularServiceImpl implements JobCircularService {
     }
 
     @Override
-    public ResponseEntity<HttpStatus> createJob(JobCircularForm jobCircularForm , Integer companyId) {
+    public ResponseEntity<HttpStatus> createJob(JobCircularForm jobCircularForm, Integer companyId) {
 
         CompanyProfile companyById = companyProfileRepository
                 .findById(companyId)
@@ -82,14 +82,14 @@ public class JobCircularServiceImpl implements JobCircularService {
                 .orElseThrow(() -> new NullPointerException("company not found " + companyId));
 
         JobCategory jobCategory = jobCategoryRepository.findByCategory(jobCircularForm
-                                                                               .getJobCategory()
-                                                                               .getCategory());
+                .getJobCategory()
+                .getCategory());
 
         CompanyJobTitle companyJobTitle = companyJobTitleRepository.findByJobTitle(jobCircularForm
-                                                                                           .getCompanyJobTitle()
-                                                                                           .getJobTitle());
+                .getCompanyJobTitle()
+                .getJobTitle());
 
-        JobCircular job = modelMapper.map(jobCircularForm , JobCircular.class);
+        JobCircular job = modelMapper.map(jobCircularForm, JobCircular.class);
         job.setJobCategory(jobCategory);
         job.setCompanyProfile(companyById);
         job.setCompanyJobTitle(companyJobTitle);
@@ -127,11 +127,11 @@ public class JobCircularServiceImpl implements JobCircularService {
             job.setEnable(false);
         }
         jobCircularRepository.save(job);
-        return ResponseEntity.ok().body(modelMapper.map(job,JobCircularResponse.class));
+        return ResponseEntity.ok().body(modelMapper.map(job, JobCircularResponse.class));
     }
 
     @Override
-    public ResponseEntity<JobCircularResponse> updateJobCircular(JobCircularForm jobCircularForm , Integer jobId ,
+    public ResponseEntity<JobCircularResponse> updateJobCircular(JobCircularForm jobCircularForm, Integer jobId,
                                                                  Integer companyId) {
 
         JobCircular job = jobCircularRepository
@@ -141,7 +141,7 @@ public class JobCircularServiceImpl implements JobCircularService {
                 .findFirst()
                 .orElseThrow(NullPointerException::new);
 
-        modelMapper.map(jobCircularForm , job);
+        modelMapper.map(jobCircularForm, job);
         CompanyProfile companyById = companyProfileRepository
                 .findById(companyId)
                 .stream()
@@ -152,12 +152,12 @@ public class JobCircularServiceImpl implements JobCircularService {
                 .orElseThrow(() -> new NullPointerException("company not found " + companyId));
 
         JobCategory jobCategory = jobCategoryRepository.findByCategory(jobCircularForm
-                                                                               .getJobCategory()
-                                                                               .getCategory());
+                .getJobCategory()
+                .getCategory());
 
         CompanyJobTitle companyJobTitle = companyJobTitleRepository.findByJobTitle(jobCircularForm
-                                                                                           .getCompanyJobTitle()
-                                                                                           .getJobTitle());
+                .getCompanyJobTitle()
+                .getJobTitle());
 
 
         job.setJobCategory(jobCategory);
@@ -168,7 +168,7 @@ public class JobCircularServiceImpl implements JobCircularService {
         jobCircularRepository.save(job);
         return ResponseEntity
                 .ok()
-                .body(modelMapper.map(job , JobCircularResponse.class));
+                .body(modelMapper.map(job, JobCircularResponse.class));
     }
 
     @Override

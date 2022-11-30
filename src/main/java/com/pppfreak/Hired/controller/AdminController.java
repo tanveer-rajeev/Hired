@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/admin")
+@RequestMapping("api/admin")
 public class AdminController {
 
     private final AdminService adminService;
@@ -17,13 +17,13 @@ public class AdminController {
         this.adminService = adminService;
     }
 
-   @PostMapping
-    public Admin addAdmin(@RequestBody AdminRequestForm admin){
+    @PostMapping
+    public Admin addAdmin(@RequestBody AdminRequestForm admin) {
         return adminService.addAdmin(admin);
     }
 
     @GetMapping("/{id}")
-    public Admin getAdmin(@PathVariable Integer id){
+    public Admin getAdmin(@PathVariable Integer id) {
         return adminService.getAdmin(id);
     }
 

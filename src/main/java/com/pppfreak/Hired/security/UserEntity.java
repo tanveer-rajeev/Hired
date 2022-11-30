@@ -16,16 +16,17 @@ public class UserEntity implements UserDetails {
     private final boolean accountNonLocked;
     private final boolean credentialsNonExpired;
     private final boolean enabled;
-    public UserEntity(String userName ,String password , List<? extends GrantedAuthority> authorities ,
-                      boolean accountNonExpired , boolean accountNonLocked , boolean credentialsNonExpired ,
+
+    public UserEntity(String userName, String password, List<? extends GrantedAuthority> authorities,
+                      boolean accountNonExpired, boolean accountNonLocked, boolean credentialsNonExpired,
                       boolean enabled) {
-        this.userName              = userName;
-        this.authorities           = authorities;
-        this.password              = password;
-        this.accountNonExpired     = accountNonExpired;
-        this.accountNonLocked      = accountNonLocked;
+        this.userName = userName;
+        this.authorities = authorities;
+        this.password = password;
+        this.accountNonExpired = accountNonExpired;
+        this.accountNonLocked = accountNonLocked;
         this.credentialsNonExpired = credentialsNonExpired;
-        this.enabled               = enabled;
+        this.enabled = enabled;
     }
 
 

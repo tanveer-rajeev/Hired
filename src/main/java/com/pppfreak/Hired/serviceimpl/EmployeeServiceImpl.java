@@ -29,26 +29,27 @@ public class EmployeeServiceImpl implements EmployeeService {
     private final ModelMapper modelMapper;
     private final CompanyProfileRepository companyProfileRepository;
     private final JobApplyRepository jobApplyRepository;
+
     @Autowired
-    public EmployeeServiceImpl(EmployeeRepository employeeRepository , JobCategoryRepository jobCategoryRepository ,
-                               BCryptPasswordEncoder bCryptPasswordEncoder , Utils utils , ModelMapper modelMapper ,
-                               CompanyProfileRepository companyProfileRepository ,
+    public EmployeeServiceImpl(EmployeeRepository employeeRepository, JobCategoryRepository jobCategoryRepository,
+                               BCryptPasswordEncoder bCryptPasswordEncoder, Utils utils, ModelMapper modelMapper,
+                               CompanyProfileRepository companyProfileRepository,
                                JobApplyRepository jobApplyRepository) {
-        this.employeeRepository       = employeeRepository;
-        this.jobCategoryRepository    = jobCategoryRepository;
-        this.bCryptPasswordEncoder    = bCryptPasswordEncoder;
-        this.utils                    = utils;
-        this.modelMapper              = modelMapper;
+        this.employeeRepository = employeeRepository;
+        this.jobCategoryRepository = jobCategoryRepository;
+        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+        this.utils = utils;
+        this.modelMapper = modelMapper;
         this.companyProfileRepository = companyProfileRepository;
-        this.jobApplyRepository       = jobApplyRepository;
+        this.jobApplyRepository = jobApplyRepository;
     }
 
     @Override
     public Employee getEmployeeById(Integer id) {
 
 
-      return  employeeRepository.findById(id).stream().filter(employee -> employee.getId().equals(id))
-                                .findFirst().orElseThrow(NullPointerException::new);
+        return employeeRepository.findById(id).stream().filter(employee -> employee.getId().equals(id))
+                .findFirst().orElseThrow(NullPointerException::new);
 
     }
 
@@ -66,12 +67,13 @@ public class EmployeeServiceImpl implements EmployeeService {
         jobApplyRepository.deleteById(id);
         return MassageConstant.SUCCESS.name();
     }
+
     @Override
     public EmployeeResponse getUserByUserId(String userId) {
 
-        Employee employee =employeeRepository.findByUserId(userId);
+        Employee employee = employeeRepository.findByUserId(userId);
 
-        return modelMapper.map(employee , EmployeeResponse.class);
+        return modelMapper.map(employee, EmployeeResponse.class);
     }
 
     @Override
@@ -80,15 +82,15 @@ public class EmployeeServiceImpl implements EmployeeService {
         if (employeeRepository.findByEmail(employeeRequestForm.getEmail()) != null) {
             throw new RuntimeException("Record already exist ");
         }
-        EmployeeResponse employeeResponse = modelMapper.map(employeeRequestForm , EmployeeResponse.class);
-        Employee employee = modelMapper.map(employeeRequestForm , Employee.class);
+        EmployeeResponse employeeResponse = modelMapper.map(employeeRequestForm, EmployeeResponse.class);
+        Employee employee = modelMapper.map(employeeRequestForm, Employee.class);
 
         JobCategory jobCategory = jobCategoryRepository.findByCategory(employee.getJobCategory().getCategory());
         employee.setJobCategory(jobCategory);
 
         employee.setEncryptedPassword(bCryptPasswordEncoder.encode(employeeRequestForm.getPassword()));
         employee.setUserId(utils.generatedCustomUserId());
-        
+
         employee.setEmployeeType(EmployeeType.EMPLOYEE);
         employeeRepository.save(employee);
         return employeeResponse;
@@ -101,7 +103,7 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public EmployeeResponse updateEmployee(EmployeeRequestForm employeeRequestForm , String id) {
+    public EmployeeResponse updateEmployee(EmployeeRequestForm employeeRequestForm, String id) {
         Optional<Employee> checkDuplicateEmail =
                 Optional.ofNullable(employeeRepository.findByEmail(employeeRequestForm.getEmail()));
         if (checkDuplicateEmail.isPresent()) {
@@ -112,7 +114,7 @@ public class EmployeeServiceImpl implements EmployeeService {
         employee.setEncryptedPassword(bCryptPasswordEncoder.encode(employeeRequestForm.getPassword()));
         employeeRepository.save(employee);
 
-        return modelMapper.map(employee , EmployeeResponse.class);
+        return modelMapper.map(employee, EmployeeResponse.class);
 
     }
 
@@ -139,17 +141,16 @@ public class EmployeeServiceImpl implements EmployeeService {
     public Set<JobCircular> getAppliedJobCircular(Integer employeeId) {
 
         Employee employee = employeeRepository.findById(employeeId).stream()
-                           .filter(employee1 -> employee1.getId().equals(employeeId))
-                           .findFirst()
-                           .orElseThrow(() -> new UsernameNotFoundException("employee not found "+employeeId));
+                .filter(employee1 -> employee1.getId().equals(employeeId))
+                .findFirst()
+                .orElseThrow(() -> new UsernameNotFoundException("employee not found " + employeeId));
 
         return employee.getJobApplyForm()
-                                    .stream()
-                                    .map(JobApplyForm::getJobCircular)
-                                    .collect(Collectors.toSet());
+                .stream()
+                .map(JobApplyForm::getJobCircular)
+                .collect(Collectors.toSet());
 
     }
-
 
 
 }

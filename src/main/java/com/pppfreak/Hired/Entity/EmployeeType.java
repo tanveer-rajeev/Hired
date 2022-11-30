@@ -2,7 +2,7 @@ package com.pppfreak.Hired.Entity;
 
 import javax.persistence.Entity;
 
-public enum  EmployeeType {
+public enum EmployeeType {
 
     EMPLOYEE(1),
     COMPANY(2),

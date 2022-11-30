@@ -9,7 +9,9 @@ import org.springframework.stereotype.Service;
 
 public interface AdminService {
 
-    Admin  addAdmin(AdminRequestForm admin);
+    Admin addAdmin(AdminRequestForm admin);
+
     Admin getAdmin(Integer id);
+
     ResponseEntity<Admin> updateAdmin(AdminRequestForm admin);
 }

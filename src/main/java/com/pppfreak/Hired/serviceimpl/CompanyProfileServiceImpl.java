@@ -27,14 +27,14 @@ public class CompanyProfileServiceImpl implements CompanyProfileService {
     private final CompanyJobTitleRepository companyJobTitleRepository;
 
     @Autowired
-    public CompanyProfileServiceImpl(CompanyProfileRepository companyProfileRepository , ModelMapper modelMapper ,
-                                     EmployeeRepository employeeRepository ,
-                                     BCryptPasswordEncoder bCryptPasswordEncoder ,
+    public CompanyProfileServiceImpl(CompanyProfileRepository companyProfileRepository, ModelMapper modelMapper,
+                                     EmployeeRepository employeeRepository,
+                                     BCryptPasswordEncoder bCryptPasswordEncoder,
 
                                      CompanyJobTitleRepository companyJobTitleRepository) {
         this.companyProfileRepository = companyProfileRepository;
-        this.modelMapper              = modelMapper;
-        this.employeeRepository    = employeeRepository;
+        this.modelMapper = modelMapper;
+        this.employeeRepository = employeeRepository;
         this.bCryptPasswordEncoder = bCryptPasswordEncoder;
         this.companyJobTitleRepository = companyJobTitleRepository;
     }
@@ -67,28 +67,28 @@ public class CompanyProfileServiceImpl implements CompanyProfileService {
 
     @Override
     public CompanyProfile addCompanyProfile(CompanyProfileModel companyProfileModel) {
-        if(companyProfileRepository.findByEmail(companyProfileModel.getEmail())!=null){
+        if (companyProfileRepository.findByEmail(companyProfileModel.getEmail()) != null) {
             throw new RuntimeException("company already exist ");
         }
-       CompanyProfile companyProfile = modelMapper.map(companyProfileModel , CompanyProfile.class);
+        CompanyProfile companyProfile = modelMapper.map(companyProfileModel, CompanyProfile.class);
 
-       companyProfile.setEncryptedPassword(bCryptPasswordEncoder.encode(companyProfileModel.getPassword()));
-       companyProfileRepository.save(companyProfile);
-       return companyProfile;
+        companyProfile.setEncryptedPassword(bCryptPasswordEncoder.encode(companyProfileModel.getPassword()));
+        companyProfileRepository.save(companyProfile);
+        return companyProfile;
     }
 
     @Override
-    public ResponseEntity<HttpStatus> subscribeCompany( Integer companyId,  Integer employeeId){
+    public ResponseEntity<HttpStatus> subscribeCompany(Integer companyId, Integer employeeId) {
 
         Employee employee = employeeRepository.findById(employeeId).stream()
                 .filter(employee1 -> employee1.getId().equals(employeeId))
                 .findFirst()
-                .orElseThrow(() -> new UsernameNotFoundException("employee not found "+employeeId));
+                .orElseThrow(() -> new UsernameNotFoundException("employee not found " + employeeId));
 
         CompanyProfile company = companyProfileRepository.findById(companyId).stream()
                 .filter(companyProfile -> companyProfile.getId().equals(companyId))
                 .findFirst()
-                .orElseThrow(() -> new UsernameNotFoundException("company not found "+companyId));
+                .orElseThrow(() -> new UsernameNotFoundException("company not found " + companyId));
 
         company.registerObserver(employee);    // company get employee subscriber
 
@@ -100,7 +100,7 @@ public class CompanyProfileServiceImpl implements CompanyProfileService {
     }
 
     @Override
-    public ResponseEntity<HttpStatus> unsubscribeCompany(Integer companyId , Integer employeeId) {
+    public ResponseEntity<HttpStatus> unsubscribeCompany(Integer companyId, Integer employeeId) {
         Employee employee = employeeRepository.findById(employeeId).stream()
                 .filter(employee1 -> employee1.getId().equals(employeeId))
                 .findFirst()
@@ -114,18 +114,18 @@ public class CompanyProfileServiceImpl implements CompanyProfileService {
         List<Employee> employees = company.getUnsubscribeList();
         employees.add(employee);
         company.setUnsubscribeList(employees);
-         companyProfileRepository.save(company);
+        companyProfileRepository.save(company);
         return ResponseEntity.ok().body(HttpStatus.ACCEPTED);
     }
 
     @Override
-    public CompanyProfile updateCompanyProfile(CompanyProfileModel companyProfileModel ,
-                                                               Integer companyId) {
+    public CompanyProfile updateCompanyProfile(CompanyProfileModel companyProfileModel,
+                                               Integer companyId) {
         CompanyProfile company = companyProfileRepository.findById(companyId).stream()
                 .filter(companyProfile -> companyProfile.getId().equals(companyId))
                 .findFirst()
                 .orElseThrow(NullPointerException::new);
-        modelMapper.map(companyProfileModel,company);
+        modelMapper.map(companyProfileModel, company);
         companyProfileRepository.save(company);
         return company;
     }

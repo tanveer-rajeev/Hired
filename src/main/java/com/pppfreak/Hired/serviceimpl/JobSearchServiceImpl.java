@@ -22,37 +22,38 @@ public class JobSearchServiceImpl implements JobSearchService {
     private final ModelMapper modelMapper;
     private final CompanyJobTitleRepository companyJobTitleRepository;
     private final JobApplyRepository jobApplyRepository;
+
     @Autowired
-    public JobSearchServiceImpl(JobCircularRepository jobCircularRepository , JobCategoryRepository jobCategoryRepository ,
-                                JobFieldRepository jobFieldRepository , ModelMapper modelMapper ,
-                                CompanyJobTitleRepository companyJobTitleRepository ,
+    public JobSearchServiceImpl(JobCircularRepository jobCircularRepository, JobCategoryRepository jobCategoryRepository,
+                                JobFieldRepository jobFieldRepository, ModelMapper modelMapper,
+                                CompanyJobTitleRepository companyJobTitleRepository,
                                 JobApplyRepository jobApplyRepository) {
-        this.jobCircularRepository     = jobCircularRepository;
-        this.jobCategoryRepository     = jobCategoryRepository;
-        this.jobFieldRepository        = jobFieldRepository;
-        this.modelMapper               = modelMapper;
+        this.jobCircularRepository = jobCircularRepository;
+        this.jobCategoryRepository = jobCategoryRepository;
+        this.jobFieldRepository = jobFieldRepository;
+        this.modelMapper = modelMapper;
         this.companyJobTitleRepository = companyJobTitleRepository;
-        this.jobApplyRepository        = jobApplyRepository;
+        this.jobApplyRepository = jobApplyRepository;
     }
 
     @Override
     public JobCircularResponse getJobById(Integer id) {
 
-       return jobCircularRepository.findById(id)
-               .stream()
-               .filter(jobCircular1 -> jobCircular1.getId().equals(id))
-               .map(jobCircular -> modelMapper.map(jobCircular,JobCircularResponse.class))
-               .findFirst().orElseThrow(()-> new RuntimeException("job circular not found"+id));
+        return jobCircularRepository.findById(id)
+                .stream()
+                .filter(jobCircular1 -> jobCircular1.getId().equals(id))
+                .map(jobCircular -> modelMapper.map(jobCircular, JobCircularResponse.class))
+                .findFirst().orElseThrow(() -> new RuntimeException("job circular not found" + id));
 
     }
 
     @Override
     public List<JobCircularResponse> getAllJobsByJobTitle(String jobTitle) {
-      return companyJobTitleRepository.findByJobTitle(jobTitle)
-              .getJobCirculars()
-              .stream()
-              .map(jobCircular -> modelMapper.map(jobCircular , JobCircularResponse.class))
-              .collect(Collectors.toList());
+        return companyJobTitleRepository.findByJobTitle(jobTitle)
+                .getJobCirculars()
+                .stream()
+                .map(jobCircular -> modelMapper.map(jobCircular, JobCircularResponse.class))
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -65,14 +66,14 @@ public class JobSearchServiceImpl implements JobSearchService {
     @Override
     public List<JobCircularResponse> getAllJobsByJobCategory(Integer id) {
         JobCategory jobCategory = jobCategoryRepository.findById(id).stream()
-                                  .filter(jobCategory1 -> jobCategory1.getId().equals(id))
-                                  .findFirst()
-                                  .orElseThrow(()-> new  RuntimeException("Job category not found"+id));
+                .filter(jobCategory1 -> jobCategory1.getId().equals(id))
+                .findFirst()
+                .orElseThrow(() -> new RuntimeException("Job category not found" + id));
 
         return jobCategory.getJobCirculars()
-                          .stream()
-                          .map(jobCircular -> modelMapper.map(jobCircular,JobCircularResponse.class))
-                          .collect(Collectors.toList());
+                .stream()
+                .map(jobCircular -> modelMapper.map(jobCircular, JobCircularResponse.class))
+                .collect(Collectors.toList());
 
     }
 
@@ -80,38 +81,37 @@ public class JobSearchServiceImpl implements JobSearchService {
     public List<JobCircularResponse> getAllJobsByLocation(String location) {
 
         return jobCircularRepository.findByJobLocation(location)
-                                    .stream()
-                                    .map(jobCircular -> modelMapper.map(jobCircular,JobCircularResponse.class))
-                                    .collect(Collectors.toList());
+                .stream()
+                .map(jobCircular -> modelMapper.map(jobCircular, JobCircularResponse.class))
+                .collect(Collectors.toList());
     }
 
     @Override
     public List<JobCircularResponse> getAllJobsBySkillKeyword(String skill) {
-        List<JobCircular> jobCircularList= new ArrayList<>();
+        List<JobCircular> jobCircularList = new ArrayList<>();
         List<JobCircularResponse> jobCircularResponses = new ArrayList<>();
 
         jobCircularRepository.findAll().forEach(jobCircularList::add);
 
 
-         jobCircularList.forEach(job -> {
+        jobCircularList.forEach(job -> {
 
-             if(job.getCompanyJobTitle().getJobTitle().contains(convertCamelCase(skill))){
-                jobCircularResponses.add(modelMapper.map(job,JobCircularResponse.class));
-            }else if(job.getJobResponsibility().contains(convertCamelCase(skill))){
-                jobCircularResponses.add(modelMapper.map(job,JobCircularResponse.class));
-            }else if(job.getAdditionalRequirements().contains(convertCamelCase(skill))){
-                jobCircularResponses.add(modelMapper.map(job,JobCircularResponse.class));
+            if (job.getCompanyJobTitle().getJobTitle().contains(convertCamelCase(skill))) {
+                jobCircularResponses.add(modelMapper.map(job, JobCircularResponse.class));
+            } else if (job.getJobResponsibility().contains(convertCamelCase(skill))) {
+                jobCircularResponses.add(modelMapper.map(job, JobCircularResponse.class));
+            } else if (job.getAdditionalRequirements().contains(convertCamelCase(skill))) {
+                jobCircularResponses.add(modelMapper.map(job, JobCircularResponse.class));
             }
-         });
-      return jobCircularResponses;
+        });
+        return jobCircularResponses;
     }
 
 
-
-    public static String convertCamelCase(String skill){
-        return  skill
+    public static String convertCamelCase(String skill) {
+        return skill
                 .toUpperCase()
-                .charAt(0)+ skill
+                .charAt(0) + skill
                 .toLowerCase()
                 .substring(1);
     }

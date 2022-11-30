@@ -14,15 +14,15 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
-public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter{
+public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final ApplicationUserService applicationUserService;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Autowired
-    public ApplicationSecurityConfig(ApplicationUserService applicationUserService , BCryptPasswordEncoder bCryptPasswordEncoder) {
+    public ApplicationSecurityConfig(ApplicationUserService applicationUserService, BCryptPasswordEncoder bCryptPasswordEncoder) {
         this.applicationUserService = applicationUserService;
-        this.bCryptPasswordEncoder  = bCryptPasswordEncoder;
+        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
     }
 
     @Override
@@ -33,9 +33,9 @@ public class ApplicationSecurityConfig extends WebSecurityConfigurerAdapter{
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable().authorizeRequests()
-                .antMatchers(HttpMethod.POST ,"/admin/**", "/employees/**","/companies/**",
-                        "/upload/**" , "/cseEmployees/**" , "/jobCategories" ,
-                        "/university" , "/jobFields" , "/expertSkills" ,
+                .antMatchers(HttpMethod.POST, "api/admin/**", "api/employees/**", "api/companies/**",
+                        "/upload/**", "api/cseEmployees/**", "api/jobCategories",
+                        "/university", "/jobFields", "/expertSkills",
                         "/secondarySkills")
                 .permitAll().anyRequest()
                 .authenticated().and().addFilter(getAuthenticationFilter())

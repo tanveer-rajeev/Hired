@@ -28,21 +28,21 @@ public class AuthorizationFilter extends BasicAuthenticationFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws IOException, ServletException {
 
         String header = request.getHeader(SecurityConstrants.HEADER_STRING);
-        if(Strings.isNullOrEmpty(header)  || !header.startsWith(SecurityConstrants.TOKEN_PREFIX)){
-            chain.doFilter(request,response);
+        if (Strings.isNullOrEmpty(header) || !header.startsWith(SecurityConstrants.TOKEN_PREFIX)) {
+            chain.doFilter(request, response);
             return;
         }
-        String token = header.replace(SecurityConstrants.TOKEN_PREFIX,"");
+        String token = header.replace(SecurityConstrants.TOKEN_PREFIX, "");
         try {
 
             Jws<Claims> claimsJws = Jwts.parser().setSigningKey(SecurityConstrants.SECRET_TOKEN)
-                                                 .parseClaimsJws(token);
+                    .parseClaimsJws(token);
             Claims body = claimsJws.getBody();
             String userName = body.getSubject();
             List<Map<String, String>> authorities = (List<Map<String, String>>) body.get("authorities");
             Set<SimpleGrantedAuthority> simpleGrantedAuthorities =
                     authorities.stream().map(m -> new SimpleGrantedAuthority(m.get("authority")))
-                    .collect(Collectors.toSet());
+                            .collect(Collectors.toSet());
 
             Authentication authentication = new UsernamePasswordAuthenticationToken(
                     userName,
@@ -50,9 +50,9 @@ public class AuthorizationFilter extends BasicAuthenticationFilter {
                     simpleGrantedAuthorities
             );
             SecurityContextHolder.getContext().setAuthentication(authentication);
-            chain.doFilter(request,response);
-        }catch (JwtException jwtEx){
-            throw new IllegalStateException(String.format("Token can not be trusted "+token));
+            chain.doFilter(request, response);
+        } catch (JwtException jwtEx) {
+            throw new IllegalStateException(String.format("Token can not be trusted " + token));
         }
 
     }

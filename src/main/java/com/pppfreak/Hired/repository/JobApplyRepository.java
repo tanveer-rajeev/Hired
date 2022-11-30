@@ -5,5 +5,5 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface JobApplyRepository extends CrudRepository<JobApplyForm,Integer> {
+public interface JobApplyRepository extends CrudRepository<JobApplyForm, Integer> {
 }

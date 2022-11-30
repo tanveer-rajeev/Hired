@@ -23,20 +23,20 @@ public class FindEmployeeController {
     private final JobFieldRepository jobFieldRepository;
 
     @Autowired
-    public FindEmployeeController(ExpertSkillRepository expertSkillRepository ,
-                                  SecondarySkillRepository secondarySkillRepository ,
-                                  UniversityBscRepository universityBscRepository ,
-                                  JobCategoryRepository jobCategoryRepository , JobFieldRepository jobFieldRepository) {
-        this.expertSkillRepository    = expertSkillRepository;
+    public FindEmployeeController(ExpertSkillRepository expertSkillRepository,
+                                  SecondarySkillRepository secondarySkillRepository,
+                                  UniversityBscRepository universityBscRepository,
+                                  JobCategoryRepository jobCategoryRepository, JobFieldRepository jobFieldRepository) {
+        this.expertSkillRepository = expertSkillRepository;
         this.secondarySkillRepository = secondarySkillRepository;
-        this.universityBscRepository  = universityBscRepository;
-        this.jobCategoryRepository    = jobCategoryRepository;
-        this.jobFieldRepository       = jobFieldRepository;
+        this.universityBscRepository = universityBscRepository;
+        this.jobCategoryRepository = jobCategoryRepository;
+        this.jobFieldRepository = jobFieldRepository;
     }
 
 
     @GetMapping("expertSkill/{skill}")
-    public Set<CseEmployee> findByExpertSkill(@PathVariable String skill){
+    public Set<CseEmployee> findByExpertSkill(@PathVariable String skill) {
         return expertSkillRepository.findBySkill(skill)
                 .getCseEmployeeSet()
                 .stream()
@@ -45,7 +45,7 @@ public class FindEmployeeController {
     }
 
     @GetMapping("secondarySkill/{skill}")
-    public Set<CseEmployee> findBySecondarySkill(@PathVariable String skill){
+    public Set<CseEmployee> findBySecondarySkill(@PathVariable String skill) {
         return secondarySkillRepository.findBySkill(skill)
                 .getCseEmployees()
                 .stream()
@@ -55,16 +55,16 @@ public class FindEmployeeController {
     }
 
     @GetMapping("jobField/{field}")
-    public List<CseEmployee> findByJobField(@PathVariable String field){
-      return jobFieldRepository.findByField(field)
-              .getCseEmployees()
-              .stream()
-              .filter(CseEmployee::isAvailableForJob)
-              .collect(Collectors.toList());
+    public List<CseEmployee> findByJobField(@PathVariable String field) {
+        return jobFieldRepository.findByField(field)
+                .getCseEmployees()
+                .stream()
+                .filter(CseEmployee::isAvailableForJob)
+                .collect(Collectors.toList());
     }
 
     @GetMapping("universityBsc/{university}")
-    public Set<CseEmployee> findByUniversityBsc(@PathVariable String university){
+    public Set<CseEmployee> findByUniversityBsc(@PathVariable String university) {
         return universityBscRepository.findByUniversityName(university)
                 .getCseEmployee()
                 .stream()
@@ -73,8 +73,8 @@ public class FindEmployeeController {
     }
 
     @GetMapping("jobCategory/{category}")
-    public List<CseEmployee> findByJobCategory(@PathVariable String category){
-        JobCategory jobCategory=jobCategoryRepository.findByCategory(category);
+    public List<CseEmployee> findByJobCategory(@PathVariable String category) {
+        JobCategory jobCategory = jobCategoryRepository.findByCategory(category);
 
         return jobCategory.getEmployees().stream()
                 .map(Employee::getCseEmployeeList)

@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 import javax.persistence.*;
 import java.util.List;
+
 @Data
 @Entity(name = "companiesJobTitle")
 public class CompanyJobTitle {

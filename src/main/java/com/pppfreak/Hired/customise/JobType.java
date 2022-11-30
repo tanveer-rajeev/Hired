@@ -9,13 +9,13 @@ public enum JobType {
     TEXTILE("Textile Engineering"),
     CIVIL("Civil engineering"),
     EEE("Electrical and Electronics Engineering");
-     private final String department;
+    private final String department;
 
     JobType(String department) {
         this.department = department;
     }
 
-    public  String getDepartment() {
+    public String getDepartment() {
         return department;
     }
 }

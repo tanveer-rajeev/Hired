@@ -1,4 +1,5 @@
 package com.pppfreak.Hired.Entity;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
@@ -13,7 +14,7 @@ public class JobApplyForm implements Serializable {
 
     @Id
     @GeneratedValue
-    private Integer  id;
+    private Integer id;
 
     private Integer expectedSalary;
 

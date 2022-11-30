@@ -11,7 +11,7 @@ import java.util.List;
 
 @Data
 @Entity(name = "companyProfile")
-@JsonIdentityInfo(generator= ObjectIdGenerators.PropertyGenerator.class, property="id")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class CompanyProfile implements Subscribe, Serializable {
 
     @Id
@@ -34,8 +34,8 @@ public class CompanyProfile implements Subscribe, Serializable {
 
     @JsonIgnore
     @ManyToMany
-    @JoinTable(name = "unsubscribe_list",joinColumns = @JoinColumn(name = "companyProfileId")
-            ,inverseJoinColumns = @JoinColumn(name = "employeeId"))
+    @JoinTable(name = "unsubscribe_list", joinColumns = @JoinColumn(name = "companyProfileId")
+            , inverseJoinColumns = @JoinColumn(name = "employeeId"))
     private List<Employee> unsubscribeList;
 
     @Override
@@ -53,8 +53,8 @@ public class CompanyProfile implements Subscribe, Serializable {
 
     @Override
     public void notifyObserver(CompanyProfile companyProfile) {
-        for (Employee  employee:  subscriberList) {
-            if(!unsubscribeList.contains(employee)){
+        for (Employee employee : subscriberList) {
+            if (!unsubscribeList.contains(employee)) {
                 employee.update(this);
             }
 

@@ -12,16 +12,25 @@ import java.util.Set;
 
 public interface EmployeeService {
 
-     Employee getEmployeeById(Integer id);
-     Employee getUserByEmail(String  email);
-     EmployeeResponse getUserByUserId(String userId);
-     EmployeeResponse signUp(EmployeeRequestForm employee);
-     List<Employee>  getALlEmployee();
-     EmployeeResponse updateEmployee(EmployeeRequestForm employeeRequestForm,String id);
-     String deleteEmployeeByUserId(String userId);
-     String deleteEmployeeById(Integer employeeId);
+    Employee getEmployeeById(Integer id);
 
-     List<CseEmployee> getCseEmployeeByEmployeeUserId(String userId);
-     Set<JobCircular> getAppliedJobCircular(Integer employeeId);
-     String deleteJobApplyForm(Integer id);
+    Employee getUserByEmail(String email);
+
+    EmployeeResponse getUserByUserId(String userId);
+
+    EmployeeResponse signUp(EmployeeRequestForm employee);
+
+    List<Employee> getALlEmployee();
+
+    EmployeeResponse updateEmployee(EmployeeRequestForm employeeRequestForm, String id);
+
+    String deleteEmployeeByUserId(String userId);
+
+    String deleteEmployeeById(Integer employeeId);
+
+    List<CseEmployee> getCseEmployeeByEmployeeUserId(String userId);
+
+    Set<JobCircular> getAppliedJobCircular(Integer employeeId);
+
+    String deleteJobApplyForm(Integer id);
 }

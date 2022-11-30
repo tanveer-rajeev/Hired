@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface CseEmployeeRepository extends CrudRepository<CseEmployee,Integer> {
+public interface CseEmployeeRepository extends CrudRepository<CseEmployee, Integer> {
 
 
 }

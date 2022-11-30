@@ -13,24 +13,24 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 @EnableConfigurationProperties(StorageProperties.class)
 public class HiredApplication {
 
-	public static void main(String[] args) {
-		SpringApplication.run(HiredApplication.class, args);
-	}
+    public static void main(String[] args) {
+        SpringApplication.run(HiredApplication.class, args);
+    }
 
 
-	@Bean
-	public SpringApplicationContext springApplicationContext(){
-		return new SpringApplicationContext();
-	}
+    @Bean
+    public SpringApplicationContext springApplicationContext() {
+        return new SpringApplicationContext();
+    }
 
-	@Bean
-	public ModelMapper modelMapper(){
-		return new ModelMapper();
-	}
+    @Bean
+    public ModelMapper modelMapper() {
+        return new ModelMapper();
+    }
 
-	@Bean
-	public BCryptPasswordEncoder bCryptPasswordEncoder(){
-		return new BCryptPasswordEncoder();
-	}
+    @Bean
+    public BCryptPasswordEncoder bCryptPasswordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
 }
 

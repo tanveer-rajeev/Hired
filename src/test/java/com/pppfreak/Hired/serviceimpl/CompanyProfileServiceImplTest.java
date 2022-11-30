@@ -38,7 +38,7 @@ class CompanyProfileServiceImplTest {
     CompanyProfileModel companyProfileModel;
 
     @BeforeEach
-    final void setUp(){
+    final void setUp() {
         MockitoAnnotations.initMocks(this);
         companyProfile = new CompanyProfile();
 
@@ -49,7 +49,7 @@ class CompanyProfileServiceImplTest {
         companyProfile.setCompanyActivities("create a search engine ");
         companyProfile.setCompanyWebsiteLink("google.com");
 
-         companyProfileModel = new CompanyProfileModel();
+        companyProfileModel = new CompanyProfileModel();
         companyProfileModel.setEmail("company@gmail.com");
         companyProfileModel.setPassword("encryptedPassword");
         companyProfileModel.setCompanyName("google");
@@ -57,6 +57,7 @@ class CompanyProfileServiceImplTest {
         companyProfileModel.setCompanyActivities("create a search engine ");
         companyProfileModel.setCompanyWebsiteLink("google.com");
     }
+
     @Test
     final void addCompanyProfile() {
 

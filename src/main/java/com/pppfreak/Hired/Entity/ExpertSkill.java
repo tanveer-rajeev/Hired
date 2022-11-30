@@ -6,6 +6,7 @@ import lombok.Data;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Set;
+
 @Data
 @Entity(name = "expertSkill")
 public class ExpertSkill implements Serializable {
@@ -18,7 +19,6 @@ public class ExpertSkill implements Serializable {
     @JsonIgnore
     @ManyToMany(mappedBy = "expertSkills")
     private Set<CseEmployee> cseEmployeeSet;
-
 
 
 }

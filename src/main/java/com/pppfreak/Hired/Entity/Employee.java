@@ -7,6 +7,7 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+
 @Data
 @Entity(name = "employee")
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
@@ -26,24 +27,23 @@ public class Employee implements Observer, Serializable {
     @JoinColumn(name = "jobCategory_id")
     private JobCategory jobCategory;
 
-    @OneToMany(mappedBy = "employee",orphanRemoval = true)
+    @OneToMany(mappedBy = "employee", orphanRemoval = true)
     private List<CseEmployee> cseEmployeeList;
 
     @ManyToMany
     @JoinTable(name = "employeesJobApplyList", joinColumns = @JoinColumn(name = "employeeId"),
-               inverseJoinColumns = @JoinColumn(name = "applyFormId"))
+            inverseJoinColumns = @JoinColumn(name = "applyFormId"))
     private List<JobApplyForm> jobApplyForm;
 
     @ManyToMany
     @JoinTable(name = "notifiedCompany", joinColumns = @JoinColumn(name = "employeeId"),
-               inverseJoinColumns = @JoinColumn(name = "companyProfileId"))
+            inverseJoinColumns = @JoinColumn(name = "companyProfileId"))
     private List<CompanyProfile> notification;
 
     @ManyToMany
     @JoinTable(name = "subscribedCompanies", joinColumns = @JoinColumn(name = "employeeId"),
-               inverseJoinColumns = @JoinColumn(name = "companyProfileId"))
+            inverseJoinColumns = @JoinColumn(name = "companyProfileId"))
     private List<CompanyProfile> subscribedCompanies;
-
 
 
     @Override

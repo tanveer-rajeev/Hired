@@ -20,25 +20,26 @@ public class PointcutDeclaration {
     private Logger logger = Logger.getLogger(getClass().getName());
     //execution(* pppfreak.Experiment.Controller.EmployeeServiceImpl.(..))
 //
-//    @Pointcut("within(pppfreak.Hired.Controller..*)")
-//    private void forControllerPackage(){}
+    @Pointcut("within(pppfreak.Hired.Controller..*)")
+    private void forControllerPackage(){}
 
     @Pointcut("within(com.pppfreak.Hired.serviceimpl.CompanyProfileServiceImpl..*)")
-    private void forGetCompanyProfileByEmail(){}
+    private void forGetCompanyProfileByEmail() {
+    }
 
     //@Around(pointcut="forControllerPackage()",throwing = "e")
     @AfterThrowing(pointcut = "forGetCompanyProfileByEmail()", throwing = "e")
-    private void aroundHandleException(JoinPoint proceedingJoinPoint, Throwable e){
+    private void aroundHandleException(JoinPoint proceedingJoinPoint, Throwable e) {
 
 
         String method = proceedingJoinPoint.getSignature().toShortString();
 
-        logger.info("The method that executed "+method);
+        logger.info("The method that executed " + method);
         Object result;
         try {
             //result = proceedingJoinPoint.proceed();
         } catch (Exception throwable) {
-            logger.warning("Employee not found by this "+throwable.getMessage());
+            logger.warning("Employee not found by this " + throwable.getMessage());
             logger.info(method);
         }
 

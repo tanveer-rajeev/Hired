@@ -7,13 +7,14 @@ import lombok.Data;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
 @Data
 public class JobCircularResponse {
     private JobCategory jobCategory;
     private CompanyJobTitle jobTitle;
     private Integer vacancy;
     private String jobResponsibility;
-    private String  employmentStatus;
+    private String employmentStatus;
     private String educationRequirements;
     private String experienceRequirements;
     private String additionalRequirements;

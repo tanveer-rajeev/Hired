@@ -14,7 +14,7 @@ public interface CseEmployeeService {
 
     CseEmployeeResponse addCseEmployee(CseEmployeeRequestForm employee);
 
-    CseEmployeeResponse updateCseEmployee(CseEmployeeRequestForm employee,Integer id);
+    CseEmployeeResponse updateCseEmployee(CseEmployeeRequestForm employee, Integer id);
 
     String deleteCseEmployee(Integer id);
 

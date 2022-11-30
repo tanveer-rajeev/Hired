@@ -28,18 +28,18 @@ public class EmployeeController {
 
     @GetMapping
 //    @PreAuthorize("hasRole('ROLE_ADMIN')")
-    public List<Employee> getALlEmployee(){
+    public List<Employee> getALlEmployee() {
         return employeeService.getALlEmployee();
     }
 
     @PreAuthorize("hasRole('ROLE_EMPLOYEE')")
-    @GetMapping(path = "/{userId}",produces = MediaType.APPLICATION_JSON_VALUE)
-    public EmployeeResponse getEmployeeByUserId(@PathVariable String userId){
+    @GetMapping(path = "/{userId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public EmployeeResponse getEmployeeByUserId(@PathVariable String userId) {
         return employeeService.getUserByUserId(userId);
     }
 
     @GetMapping("cseEmployees/{userId}")
-    public List<CseEmployee> getAllCseEmployee(@PathVariable String userId){
+    public List<CseEmployee> getAllCseEmployee(@PathVariable String userId) {
         return employeeService.getCseEmployeeByEmployeeUserId(userId);
     }
 
@@ -49,17 +49,17 @@ public class EmployeeController {
     }
 
     @PutMapping("/{userId}")
-    public EmployeeResponse updateEmployee(@RequestBody EmployeeRequestForm employeeRequestForm, @PathVariable String userId){
-        return employeeService.updateEmployee(employeeRequestForm,userId);
+    public EmployeeResponse updateEmployee(@RequestBody EmployeeRequestForm employeeRequestForm, @PathVariable String userId) {
+        return employeeService.updateEmployee(employeeRequestForm, userId);
     }
 
     @DeleteMapping("/{userId}")
-    public String deleteEmployeeByUserId(@PathVariable String userId){
+    public String deleteEmployeeByUserId(@PathVariable String userId) {
         return employeeService.deleteEmployeeByUserId(userId);
     }
 
     @GetMapping("appliedJobs/{employeeId}")
-    public Set<JobCircular> getAllAppliedJobs(@PathVariable Integer employeeId){
-     return    employeeService.getAppliedJobCircular(employeeId);
+    public Set<JobCircular> getAllAppliedJobs(@PathVariable Integer employeeId) {
+        return employeeService.getAppliedJobCircular(employeeId);
     }
 }

@@ -25,78 +25,40 @@ public class CseEmployeeServiceImpl implements CseEmployeeService {
     private final ExpertSkillRepository expertSkillRepository;
     private final SecondarySkillRepository secondarySkillRepository;
     private final UniversityBscRepository universityBscRepository;
+
     @Autowired
-    public CseEmployeeServiceImpl(ModelMapper modelMapper , CseEmployeeRepository cseEmployeeRepository ,
-                                  JobFieldRepository jobFieldRepository , ExpertSkillRepository expertSkillRepository ,
-                                  SecondarySkillRepository secondarySkillRepository ,
+    public CseEmployeeServiceImpl(ModelMapper modelMapper, CseEmployeeRepository cseEmployeeRepository,
+                                  JobFieldRepository jobFieldRepository, ExpertSkillRepository expertSkillRepository,
+                                  SecondarySkillRepository secondarySkillRepository,
                                   UniversityBscRepository universityBscRepository) {
-        this.modelMapper           = modelMapper;
+        this.modelMapper = modelMapper;
         this.cseEmployeeRepository = cseEmployeeRepository;
-        this.jobFieldRepository    = jobFieldRepository;
+        this.jobFieldRepository = jobFieldRepository;
         this.expertSkillRepository = expertSkillRepository;
 
         this.secondarySkillRepository = secondarySkillRepository;
-        this.universityBscRepository  = universityBscRepository;
+        this.universityBscRepository = universityBscRepository;
     }
 
-    public Employee loggedInEmployee(){
+    public Employee loggedInEmployee() {
         return LoggedInUserDetails.getUserEntity();
     }
 
     @Override
-    public List<CseEmployee> getAllCseEmployee(){
+    public List<CseEmployee> getAllCseEmployee() {
         return (List<CseEmployee>) cseEmployeeRepository.findAll();
     }
 
     @Override
     public CseEmployeeResponse addCseEmployee(CseEmployeeRequestForm requestForm) {
 
-        CseEmployee cseEmployee = modelMapper.map(requestForm,CseEmployee.class);
+        CseEmployee cseEmployee = modelMapper.map(requestForm, CseEmployee.class);
         Employee employee = loggedInEmployee();
         cseEmployee.setEmployee(employee);
 
         cseEmployee.setAvailableForJob(requestForm
-                                               .getAvailableForJob()
-                                               .equals("yes"));
-
-        UniversityBsc universityBsc = universityBscRepository.findByUniversityName(
-                                       requestForm.getUniversityBsc().getUniversityName()
-        );
-        cseEmployee.setUniversityBsc(universityBsc);
-
-        JobField jobRole = jobFieldRepository.findByField(requestForm.getJobField().getField());
-        cseEmployee.setJobField(jobRole);
-
-        Set<ExpertSkill> expertSkills = requestForm.getExpertSkills();
-        Set<ExpertSkill> temp = new HashSet<>();
-
-        for (ExpertSkill p : expertSkills) {
-            p = expertSkillRepository.findBySkill(p.getSkill());
-            temp.add(p);
-
-        }
-        Set<SecondarySkill> secondarySkills = requestForm.getSecondarySkills();
-        Set<SecondarySkill> secondSkill = new HashSet<>();
-
-        for (SecondarySkill s : secondarySkills) {
-            s = secondarySkillRepository.findBySkill(s.getSkill());
-            secondSkill.add(s);
-        }
-        cseEmployee.setSecondarySkills(secondSkill);
-        cseEmployee.setExpertSkills(temp);
-
-        cseEmployeeRepository.save(cseEmployee);
-        return modelMapper.map(cseEmployee,CseEmployeeResponse.class);
-    }
-
-    @Override
-    public CseEmployeeResponse updateCseEmployee(CseEmployeeRequestForm requestForm,Integer id) {
-
-        CseEmployee cseEmployee =cseEmployeeRepository.findById(id).stream()
-                                  .filter(cseEmployee1 -> cseEmployee1.getId().equals(id))
-                                  .findFirst()
-                                  .orElseThrow(NullPointerException::new);
-        modelMapper.map(requestForm,cseEmployee);
+                .getAvailableForJob()
+                .equals("yes"));
 
         UniversityBsc universityBsc = universityBscRepository.findByUniversityName(
                 requestForm.getUniversityBsc().getUniversityName()
@@ -125,7 +87,46 @@ public class CseEmployeeServiceImpl implements CseEmployeeService {
         cseEmployee.setExpertSkills(temp);
 
         cseEmployeeRepository.save(cseEmployee);
-        return modelMapper.map(cseEmployee,CseEmployeeResponse.class);
+        return modelMapper.map(cseEmployee, CseEmployeeResponse.class);
+    }
+
+    @Override
+    public CseEmployeeResponse updateCseEmployee(CseEmployeeRequestForm requestForm, Integer id) {
+
+        CseEmployee cseEmployee = cseEmployeeRepository.findById(id).stream()
+                .filter(cseEmployee1 -> cseEmployee1.getId().equals(id))
+                .findFirst()
+                .orElseThrow(NullPointerException::new);
+        modelMapper.map(requestForm, cseEmployee);
+
+        UniversityBsc universityBsc = universityBscRepository.findByUniversityName(
+                requestForm.getUniversityBsc().getUniversityName()
+        );
+        cseEmployee.setUniversityBsc(universityBsc);
+
+        JobField jobRole = jobFieldRepository.findByField(requestForm.getJobField().getField());
+        cseEmployee.setJobField(jobRole);
+
+        Set<ExpertSkill> expertSkills = requestForm.getExpertSkills();
+        Set<ExpertSkill> temp = new HashSet<>();
+
+        for (ExpertSkill p : expertSkills) {
+            p = expertSkillRepository.findBySkill(p.getSkill());
+            temp.add(p);
+
+        }
+        Set<SecondarySkill> secondarySkills = requestForm.getSecondarySkills();
+        Set<SecondarySkill> secondSkill = new HashSet<>();
+
+        for (SecondarySkill s : secondarySkills) {
+            s = secondarySkillRepository.findBySkill(s.getSkill());
+            secondSkill.add(s);
+        }
+        cseEmployee.setSecondarySkills(secondSkill);
+        cseEmployee.setExpertSkills(temp);
+
+        cseEmployeeRepository.save(cseEmployee);
+        return modelMapper.map(cseEmployee, CseEmployeeResponse.class);
 
     }
 
@@ -137,11 +138,11 @@ public class CseEmployeeServiceImpl implements CseEmployeeService {
 
 
     @Override
-    public Optional<CseEmployee> getCseEmployeeById(Integer id){
+    public Optional<CseEmployee> getCseEmployeeById(Integer id) {
         Optional<CseEmployee> employeeRepositoryById = cseEmployeeRepository.findById(id);
-         Optional<CseEmployee> cseEmployee = Optional.empty();
-        if(employeeRepositoryById.isPresent()){
-            cseEmployee= employeeRepositoryById;
+        Optional<CseEmployee> cseEmployee = Optional.empty();
+        if (employeeRepositoryById.isPresent()) {
+            cseEmployee = employeeRepositoryById;
         }
         return cseEmployee;
     }

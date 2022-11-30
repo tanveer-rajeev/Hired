@@ -1,10 +1,12 @@
 package com.pppfreak.Hired.Entity;
+
 import com.fasterxml.jackson.annotation.*;
 import lombok.Data;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Set;
+
 @Data
 @Entity(name = "secondarySkill")
 public class SecondarySkill implements Serializable {

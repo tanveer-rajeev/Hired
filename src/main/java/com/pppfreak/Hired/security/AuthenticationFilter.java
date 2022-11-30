@@ -32,12 +32,12 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
         try {
             LoginRequest cred = new ObjectMapper().readValue(request.getInputStream(),
-                                                                  LoginRequest.class);
+                    LoginRequest.class);
 
             return authenticationManager.authenticate(
                     new UsernamePasswordAuthenticationToken(
                             cred.getEmail()
-                            ,cred.getPassword(),
+                            , cred.getPassword(),
                             new ArrayList<>()
                     )
             );
@@ -48,18 +48,17 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response,
-                                            FilterChain chain, Authentication authResult)
-        {
+                                            FilterChain chain, Authentication authResult) {
 
-        String userEmail = ((UserEntity)authResult.getPrincipal()).getUsername();
+        String userEmail = ((UserEntity) authResult.getPrincipal()).getUsername();
         String token = Jwts.builder().setSubject(userEmail)
-                                     .claim("authorities",authResult.getAuthorities())
-                                     .setIssuedAt(new Date(System.currentTimeMillis()))
-                                     .setExpiration(new Date(System.currentTimeMillis()+SecurityConstrants.EXPERATION_TIME))
-                                     .signWith(SignatureAlgorithm.HS512,SecurityConstrants.SECRET_TOKEN)
-                                     .compact();
+                .claim("authorities", authResult.getAuthorities())
+                .setIssuedAt(new Date(System.currentTimeMillis()))
+                .setExpiration(new Date(System.currentTimeMillis() + SecurityConstrants.EXPERATION_TIME))
+                .signWith(SignatureAlgorithm.HS512, SecurityConstrants.SECRET_TOKEN)
+                .compact();
 
-        response.addHeader(SecurityConstrants.HEADER_STRING,SecurityConstrants.TOKEN_PREFIX+token);
+        response.addHeader(SecurityConstrants.HEADER_STRING, SecurityConstrants.TOKEN_PREFIX + token);
 
     }
 }

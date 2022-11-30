@@ -25,14 +25,14 @@ public class FileUploadController {
     private final CseEmployeeUploadService cseEmployeeUploadService;
 
     @Autowired
-    public FileUploadController(StorageService storageService , CseEmployeeUploadService cseEmployeeUploadService) {
-        this.storageService           = storageService;
+    public FileUploadController(StorageService storageService, CseEmployeeUploadService cseEmployeeUploadService) {
+        this.storageService = storageService;
         this.cseEmployeeUploadService = cseEmployeeUploadService;
     }
 
 
     @PostMapping("cseEmployee/{id}")
-    public String uploadFile(@RequestParam("file") MultipartFile file , @PathVariable Integer id) throws IOException {
+    public String uploadFile(@RequestParam("file") MultipartFile file, @PathVariable Integer id) throws IOException {
 
         storageService.init();
         storageService.storeFile(file);
@@ -40,12 +40,12 @@ public class FileUploadController {
         String viewResumeURI = ServletUriComponentsBuilder.
                 fromCurrentContextPath().path("/upload/").path(fileName).toUriString();
 
-        cseEmployeeUploadService.setResumeLink(viewResumeURI , id);
+        cseEmployeeUploadService.setResumeLink(viewResumeURI, id);
         return viewResumeURI;
     }
 
     @GetMapping("/{fileName}")
-    public void getResumeUri(@PathVariable String fileName , HttpServletResponse response) throws
+    public void getResumeUri(@PathVariable String fileName, HttpServletResponse response) throws
             MalformedURLException {
 
         Resource resource = storageService.loadAsResource(fileName);
@@ -53,7 +53,7 @@ public class FileUploadController {
         try {
 
             InputStream inputStream = resource.getInputStream();
-            IOUtils.copy(inputStream,response.getOutputStream());
+            IOUtils.copy(inputStream, response.getOutputStream());
             response.setHeader("Content-Disposition", "inline; filename=Accepted.pdf");
 
         } catch (IOException ex) {

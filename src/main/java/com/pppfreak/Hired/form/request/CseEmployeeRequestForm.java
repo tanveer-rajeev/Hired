@@ -7,6 +7,7 @@ import com.pppfreak.Hired.Entity.UniversityBsc;
 import lombok.Data;
 
 import java.util.Set;
+
 @Data
 public class CseEmployeeRequestForm {
 
@@ -22,6 +23,6 @@ public class CseEmployeeRequestForm {
 
     private String yearOfExperience;
 
-    private String  availableForJob;
+    private String availableForJob;
 
 }

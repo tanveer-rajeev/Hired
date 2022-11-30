@@ -6,6 +6,7 @@ import lombok.Data;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
+
 @Data
 @Entity(name = "jobField")
 public class JobField implements Serializable {
